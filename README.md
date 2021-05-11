@@ -36,9 +36,16 @@ mdbook init ~/zsh-mdbook
 cd ~/zsh-mdbook/src
 rm *.md
 
+# Ensure DocToc is installed
+sudo npm -g install doctoc
+
 # Return to repository clone and run the make-mdbook script
 ./make-mdbook.sh
 
 # Copy items to mdbook src
 cp -rf ~/zsh_doc_tmp/mdbook_src/* ~/zsh-mdbook/src/
+
+# Serve the mdBook locally at http://localhost:3000
+cd ~/zsh-mdbook
+mdbook serve
 ```

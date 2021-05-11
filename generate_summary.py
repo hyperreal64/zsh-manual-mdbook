@@ -7,12 +7,6 @@ from bs4 import BeautifulSoup
 def hasInteger(input):
     return bool(re.search(r"(?<![\d.])[0-9]+(?![\d.])", input))
 
-
-# Check if input contains float substring
-def hasFloat(input):
-    return bool(re.findall(r"\d+\.\d+", input))
-
-
 # Generate SUMMARY.md from table of contents
 page = requests.get("http://zsh.sourceforge.net/Doc/Release/zsh_toc.html")
 soup = BeautifulSoup(page.content, "html.parser")
