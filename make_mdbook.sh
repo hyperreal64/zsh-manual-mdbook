@@ -9,6 +9,7 @@ _zsh_md_src_dir="${_zsh_doc_tmp_dir}/zsh_md"
 _mdbook_src_dir="${_zsh_doc_tmp_dir}/mdbook_src"
 
 # Ensure zsh_doc_tmp directories exist
+rm -rf "${_zsh_doc_tmp_dir}"
 for dir in "${_zsh_html_src_dir}" "${_zsh_md_src_dir}" "${_mdbook_src_dir}"; do
   if ! [ -d "$dir" ]; then
     mkdir -p "$dir"
@@ -22,8 +23,10 @@ tar xzf "${_zsh_doc_tmp_dir}/zsh_html.tar.gz" -C "${_zsh_doc_tmp_dir}"
 # For some reason, extra files are added to the archive that
 # have no content besides aliases to pages that do.
 # They are all less than 4k, and they are just clutter for mdbook,
-# so we remove them here.
+# so we remove them here, along with the Index pages.
 find "${_zsh_html_src_dir}" -name "*.html" -type 'f' -size -4k -delete
+find "${_zsh_html_src_dir}" -name "*-Index.html" -type 'f' -delete
+find "${_zsh_html_src_dir}" -name "zsh_*.html" -type 'f' -delete
 
 # Remove html noise
 for file in "${_zsh_html_src_dir}"/*.html; do
@@ -33,7 +36,8 @@ for file in "${_zsh_html_src_dir}"/*.html; do
   sed -i '/\[\]{#/d' "$file"
 done
 
-# Rename file extensions from html to md, preserving the original file's name
+# Rename file extensions from html to md, preserving the original file's name,
+# and move them to _zsh_md_src for staging
 for file in "${_zsh_html_src_dir}"/*.html; do 
   mv -- "$file" "${_zsh_md_src_dir}/$(basename -- "$file" .html).md"
 done
@@ -53,3 +57,12 @@ doctoc "${_mdbook_src_dir}"/*.md
 
 # Generate SUMMARY.md from zsh_toc.html
 python3 "${PWD}/generate_summary.py" > "${_mdbook_src_dir}/SUMMARY.md"
+
+# Copy md files to mdbook src
+# First ensure the src directory is empty
+rm -rf "${PWD}/src"
+mkdir "${PWD}/src"
+cp -rf "${_mdbook_src_dir}"/* "${PWD}/src/"
+
+# Cleanup zsh_doc_tmp
+rm -rf "${_zsh_doc_tmp_dir}"
