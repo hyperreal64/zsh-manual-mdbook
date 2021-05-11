@@ -1,0 +1,471 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Roadmap - Zsh Manual</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="The-Z-Shell-Manual.html"><strong aria-hidden="true">1.</strong> The Z Shell Manual</a></li><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">2.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Roadmap.html" class="active"><strong aria-hidden="true">3.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="Invocation.html"><strong aria-hidden="true">4.</strong> Invocation</a></li><li class="chapter-item expanded "><a href="Files.html"><strong aria-hidden="true">5.</strong> Files</a></li><li class="chapter-item expanded "><a href="Shell-Grammar.html"><strong aria-hidden="true">6.</strong> Shell Grammar</a></li><li class="chapter-item expanded "><a href="Redirection.html"><strong aria-hidden="true">7.</strong> Redirection</a></li><li class="chapter-item expanded "><a href="Command-Execution.html"><strong aria-hidden="true">8.</strong> Command Execution</a></li><li class="chapter-item expanded "><a href="Functions.html"><strong aria-hidden="true">9.</strong> Functions</a></li><li class="chapter-item expanded "><a href="Jobs-_0026-Signals.html"><strong aria-hidden="true">10.</strong> Jobs &amp; Signals</a></li><li class="chapter-item expanded "><a href="Arithmetic-Evaluation.html"><strong aria-hidden="true">11.</strong> Arithmetic Evaluation</a></li><li class="chapter-item expanded "><a href="Conditional-Expressions.html"><strong aria-hidden="true">12.</strong> Conditional Expressions</a></li><li class="chapter-item expanded "><a href="Prompt-Expansion.html"><strong aria-hidden="true">13.</strong> Prompt Expansion</a></li><li class="chapter-item expanded "><a href="Expansion.html"><strong aria-hidden="true">14.</strong> Expansion</a></li><li class="chapter-item expanded "><a href="Parameters.html"><strong aria-hidden="true">15.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="Options.html"><strong aria-hidden="true">16.</strong> Options</a></li><li class="chapter-item expanded "><a href="Shell-Builtin-Commands.html"><strong aria-hidden="true">17.</strong> Shell Builtin Commands</a></li><li class="chapter-item expanded "><a href="Zsh-Line-Editor.html"><strong aria-hidden="true">18.</strong> Zsh Line Editor</a></li><li class="chapter-item expanded "><a href="Completion-Widgets.html"><strong aria-hidden="true">19.</strong> Completion Widgets</a></li><li class="chapter-item expanded "><a href="Completion-System.html"><strong aria-hidden="true">20.</strong> Completion System</a></li><li class="chapter-item expanded "><a href="Completion-Using-compctl.html"><strong aria-hidden="true">21.</strong> Completion Using compctl</a></li><li class="chapter-item expanded "><a href="Zsh-Modules.html"><strong aria-hidden="true">22.</strong> Zsh Modules</a></li><li class="chapter-item expanded "><a href="Calendar-Function-System.html"><strong aria-hidden="true">23.</strong> Calendar Function System</a></li><li class="chapter-item expanded "><a href="TCP-Function-System.html"><strong aria-hidden="true">24.</strong> TCP Function System</a></li><li class="chapter-item expanded "><a href="Zftp-Function-System.html"><strong aria-hidden="true">25.</strong> Zftp Function System</a></li><li class="chapter-item expanded "><a href="User-Contributions.html"><strong aria-hidden="true">26.</strong> User Contributions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#3-roadmap">3 Roadmap</a>
+<ul>
+<li><a href="#31-when-the-shell-starts">3.1 When the shell starts</a></li>
+<li><a href="#32-interactive-use">3.2 Interactive Use</a>
+<ul>
+<li><a href="#321-completion">3.2.1 Completion</a></li>
+<li><a href="#322-extending-the-line-editor">3.2.2 Extending the line editor</a></li>
+</ul>
+</li>
+<li><a href="#33-options">3.3 Options</a></li>
+<li><a href="#34-pattern-matching">3.4 Pattern Matching</a></li>
+<li><a href="#35-general-comments-on-syntax">3.5 General Comments on Syntax</a></li>
+<li><a href="#36-programming">3.6 Programming</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Roadmap"></span> <span id="Roadmap-1"></span></p>
+<h1 id="3-roadmap"><a class="header" href="#3-roadmap">3 Roadmap</a></h1>
+<p><span id="index-roadmap"></span></p>
+<p>The Zsh Manual, like the shell itself, is large and often complicated.
+This section of the manual provides some pointers to areas of the shell
+that are likely to be of particular interest to new users, and indicates
+where in the rest of the manual the documentation is to be found.</p>
+<hr />
+<p><span id="When-the-shell-starts"></span></p>
+<h2 id="31-when-the-shell-starts"><a class="header" href="#31-when-the-shell-starts">3.1 When the shell starts</a></h2>
+<p>When it starts, the shell reads commands from various files. These can
+be created or edited to customize the shell. See
+<a href="Files.html#Files">Files</a>.</p>
+<p>If no personal initialization files exist for the current user, a
+function is run to help you change some of the most common settings. It
+won’t appear if your administrator has disabled the <code>zsh/newuser</code>
+module. The function is designed to be self-explanatory. You can run it
+by hand with ‘<code>autoload -Uz zsh-newuser-install; zsh-newuser-install -f</code>’. See also <a href="User-Contributions.html#User-Configuration-Functions">User Configuration
+Functions</a>.</p>
+<hr />
+<p><span id="Interactive-Use"></span></p>
+<h2 id="32-interactive-use"><a class="header" href="#32-interactive-use">3.2 Interactive Use</a></h2>
+<p>Interaction with the shell uses the builtin Zsh Line Editor, ZLE. This
+is described in detail in <a href="Zsh-Line-Editor.html#Zsh-Line-Editor">Zsh Line
+Editor</a>.</p>
+<p>The first decision a user must make is whether to use the Emacs or Vi
+editing mode as the keys for editing are substantially different. Emacs
+editing mode is probably more natural for beginners and can be selected
+explicitly with the command <code>bindkey -e</code>.</p>
+<p>A history mechanism for retrieving previously typed lines (most simply
+with the Up or Down arrow keys) is available; note that, unlike other
+shells, zsh will not save these lines when the shell exits unless you
+set appropriate variables, and the number of history lines retained by
+default is quite small (30 lines). See the description of the shell
+variables (referred to in the documentation as parameters) <code>HISTFILE</code>,
+<code>HISTSIZE</code> and <code>SAVEHIST</code> in <a href="Parameters.html#Parameters-Used-By-The-Shell">Parameters Used By The
+Shell</a>. Note that it’s
+currently only possible to read and write files saving history when the
+shell is interactive, i.e. it does not work from scripts.</p>
+<p>The shell now supports the UTF-8 character set (and also others if
+supported by the operating system). This is (mostly) handled
+transparently by the shell, but the degree of support in terminal
+emulators is variable. There is some discussion of this in the shell
+FAQ, <code>http://www.zsh.org/FAQ/</code>. Note in particular that for combining
+characters to be handled the option <code>COMBINING_CHARS</code> needs to be set.
+Because the shell is now more sensitive to the definition of the
+character set, note that if you are upgrading from an older version of
+the shell you should ensure that the appropriate variable, either <code>LANG</code>
+(to affect all aspects of the shell’s operation) or <code>LC_CTYPE</code> (to
+affect only the handling of character sets) is set to an appropriate
+value. This is true even if you are using a single-byte character set
+including extensions of ASCII such as <code>ISO-8859-1</code> or <code>ISO-8859-15</code>. See
+the description of <code>LC_CTYPE</code> in
+<a href="Parameters.html#Parameters">Parameters</a>.</p>
+<hr />
+<p><span id="Completion-1"></span></p>
+<h3 id="321-completion"><a class="header" href="#321-completion">3.2.1 Completion</a></h3>
+<p>Completion is a feature present in many shells. It allows the user to
+type only a part (usually the prefix) of a word and have the shell fill
+in the rest. The completion system in zsh is programmable. For example,
+the shell can be set to complete email addresses in arguments to the
+mail command from your <code>~/.abook/addressbook</code>; usernames, hostnames, and
+even remote paths in arguments to scp, and so on. Anything that can be
+written in or glued together with zsh can be the source of what the line
+editor offers as possible completions.</p>
+<p>Zsh has two completion systems, an old, so called <code>compctl</code> completion
+(named after the builtin command that serves as its complete and only
+user interface), and a new one, referred to as <code>compsys</code>, organized as
+library of builtin and user-defined functions. The two systems differ in
+their interface for specifying the completion behavior. The new system
+is more customizable and is supplied with completions for many commonly
+used commands; it is therefore to be preferred.</p>
+<p>The completion system must be enabled explicitly when the shell starts.
+For more information see <a href="Completion-System.html#Completion-System">Completion
+System</a>.</p>
+<hr />
+<p><span id="Extending-the-line-editor"></span></p>
+<h3 id="322-extending-the-line-editor"><a class="header" href="#322-extending-the-line-editor">3.2.2 Extending the line editor</a></h3>
+<p>Apart from completion, the line editor is highly extensible by means of
+shell functions. Some useful functions are provided with the shell; they
+provide facilities such as:</p>
+<ul>
+<li>
+<p><code>insert-composed-char</code><br />
+composing characters not found on the keyboard</p>
+</li>
+<li>
+<p><code>match-words-by-style</code><br />
+configuring what the line editor considers a word when moving or
+deleting by word</p>
+</li>
+<li>
+<p><code>history-beginning-search-backward-end</code>, etc.<br />
+alternative ways of searching the shell history</p>
+</li>
+<li>
+<p><code>replace-string</code>, <code>replace-pattern</code><br />
+functions for replacing strings or patterns globally in the command
+line</p>
+</li>
+<li>
+<p><code>edit-command-line</code><br />
+edit the command line with an external editor.</p>
+</li>
+</ul>
+<p>See <a href="User-Contributions.html#ZLE-Functions">ZLE Functions</a> for
+descriptions of these.</p>
+<hr />
+<p><span id="Options-3"></span></p>
+<h2 id="33-options"><a class="header" href="#33-options">3.3 Options</a></h2>
+<p>The shell has a large number of options for changing its behaviour.
+These cover all aspects of the shell; browsing the full documentation is
+the only good way to become acquainted with the many possibilities. See
+<a href="Options.html#Options">Options</a>.</p>
+<hr />
+<p><span id="Pattern-Matching"></span></p>
+<h2 id="34-pattern-matching"><a class="header" href="#34-pattern-matching">3.4 Pattern Matching</a></h2>
+<p>The shell has a rich set of patterns which are available for file
+matching (described in the documentation as ‘filename generation’ and
+also known for historical reasons as ‘globbing’) and for use when
+programming. These are described in <a href="Expansion.html#Filename-Generation">Filename
+Generation</a>.</p>
+<p>Of particular interest are the following patterns that are not commonly
+supported by other systems of pattern matching:</p>
+<ul>
+<li>
+<p><code>**</code><br />
+for matching over multiple directories</p>
+</li>
+<li>
+<p><code>|</code><br />
+for matching either of two alternatives</p>
+</li>
+<li>
+<p><code>~</code>, <code>^</code><br />
+the ability to exclude patterns from matching when the
+<code>EXTENDED_GLOB</code> option is set</p>
+</li>
+<li>
+<p><code>(``...``)</code><br />
+glob qualifiers, included in parentheses at the end of the pattern,
+which select files by type (such as directories) or attribute (such
+as size).</p>
+</li>
+</ul>
+<hr />
+<p><span id="General-Comments-on-Syntax"></span></p>
+<h2 id="35-general-comments-on-syntax"><a class="header" href="#35-general-comments-on-syntax">3.5 General Comments on Syntax</a></h2>
+<p>Although the syntax of zsh is in ways similar to the Korn shell, and
+therefore more remotely to the original UNIX shell, the Bourne shell,
+its default behaviour does not entirely correspond to those shells.
+General shell syntax is introduced in <a href="Shell-Grammar.html#Shell-Grammar">Shell
+Grammar</a>.</p>
+<p>One commonly encountered difference is that variables substituted onto
+the command line are not split into words. See the description of the
+shell option <code>SH_WORD_SPLIT</code> in <a href="Expansion.html#Parameter-Expansion">Parameter
+Expansion</a>. In zsh, you can either
+explicitly request the splitting (e.g. <code>${=foo}</code>) or use an array when
+you want a variable to expand to more than one word. See <a href="Parameters.html#Array-Parameters">Array
+Parameters</a>.</p>
+<hr />
+<p><span id="Programming"></span></p>
+<h2 id="36-programming"><a class="header" href="#36-programming">3.6 Programming</a></h2>
+<p>The most convenient way of adding enhancements to the shell is typically
+by writing a shell function and arranging for it to be autoloaded.
+Functions are described in <a href="Functions.html#Functions">Functions</a>. Users
+changing from the C shell and its relatives should notice that aliases
+are less used in zsh as they don’t perform argument substitution, only
+simple text replacement.</p>
+<p>A few general functions, other than those for the line editor described
+above, are provided with the shell and are described in <a href="User-Contributions.html#User-Contributions">User
+Contributions</a>. Features
+include:</p>
+<ul>
+<li>
+<p><code>promptinit</code><br />
+a prompt theme system for changing prompts easily, see <a href="User-Contributions.html#Prompt-Themes">Prompt
+Themes</a></p>
+</li>
+<li>
+<p><code>zsh-mime-setup</code><br />
+a MIME-handling system which dispatches commands according to the
+suffix of a file as done by graphical file managers</p>
+</li>
+<li>
+<p><code>zcalc</code><br />
+a calculator</p>
+</li>
+<li>
+<p><code>zargs</code><br />
+a version of <code>xargs</code> that makes the <code>find</code> command redundant</p>
+</li>
+<li>
+<p><code>zmv</code><br />
+a command for renaming files by means of shell patterns.</p>
+</li>
+</ul>
+<hr />
+<p>This document was generated on <em>February 15, 2020</em> using
+<a href="http://www.nongnu.org/texi2html/"><em>texi2html 5.0</em></a>.<br />
+Zsh version 5.8, released on February 14, 2020.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="Introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="Invocation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="Introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="Invocation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

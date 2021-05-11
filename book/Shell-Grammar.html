@@ -1,0 +1,871 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Shell Grammar - Zsh Manual</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="The-Z-Shell-Manual.html"><strong aria-hidden="true">1.</strong> The Z Shell Manual</a></li><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">2.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Roadmap.html"><strong aria-hidden="true">3.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="Invocation.html"><strong aria-hidden="true">4.</strong> Invocation</a></li><li class="chapter-item expanded "><a href="Files.html"><strong aria-hidden="true">5.</strong> Files</a></li><li class="chapter-item expanded "><a href="Shell-Grammar.html" class="active"><strong aria-hidden="true">6.</strong> Shell Grammar</a></li><li class="chapter-item expanded "><a href="Redirection.html"><strong aria-hidden="true">7.</strong> Redirection</a></li><li class="chapter-item expanded "><a href="Command-Execution.html"><strong aria-hidden="true">8.</strong> Command Execution</a></li><li class="chapter-item expanded "><a href="Functions.html"><strong aria-hidden="true">9.</strong> Functions</a></li><li class="chapter-item expanded "><a href="Jobs-_0026-Signals.html"><strong aria-hidden="true">10.</strong> Jobs &amp; Signals</a></li><li class="chapter-item expanded "><a href="Arithmetic-Evaluation.html"><strong aria-hidden="true">11.</strong> Arithmetic Evaluation</a></li><li class="chapter-item expanded "><a href="Conditional-Expressions.html"><strong aria-hidden="true">12.</strong> Conditional Expressions</a></li><li class="chapter-item expanded "><a href="Prompt-Expansion.html"><strong aria-hidden="true">13.</strong> Prompt Expansion</a></li><li class="chapter-item expanded "><a href="Expansion.html"><strong aria-hidden="true">14.</strong> Expansion</a></li><li class="chapter-item expanded "><a href="Parameters.html"><strong aria-hidden="true">15.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="Options.html"><strong aria-hidden="true">16.</strong> Options</a></li><li class="chapter-item expanded "><a href="Shell-Builtin-Commands.html"><strong aria-hidden="true">17.</strong> Shell Builtin Commands</a></li><li class="chapter-item expanded "><a href="Zsh-Line-Editor.html"><strong aria-hidden="true">18.</strong> Zsh Line Editor</a></li><li class="chapter-item expanded "><a href="Completion-Widgets.html"><strong aria-hidden="true">19.</strong> Completion Widgets</a></li><li class="chapter-item expanded "><a href="Completion-System.html"><strong aria-hidden="true">20.</strong> Completion System</a></li><li class="chapter-item expanded "><a href="Completion-Using-compctl.html"><strong aria-hidden="true">21.</strong> Completion Using compctl</a></li><li class="chapter-item expanded "><a href="Zsh-Modules.html"><strong aria-hidden="true">22.</strong> Zsh Modules</a></li><li class="chapter-item expanded "><a href="Calendar-Function-System.html"><strong aria-hidden="true">23.</strong> Calendar Function System</a></li><li class="chapter-item expanded "><a href="TCP-Function-System.html"><strong aria-hidden="true">24.</strong> TCP Function System</a></li><li class="chapter-item expanded "><a href="Zftp-Function-System.html"><strong aria-hidden="true">25.</strong> Zftp Function System</a></li><li class="chapter-item expanded "><a href="User-Contributions.html"><strong aria-hidden="true">26.</strong> User Contributions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#6-shell-grammar">6 Shell Grammar</a>
+<ul>
+<li><a href="#61-simple-commands--pipelines">6.1 Simple Commands &amp; Pipelines</a></li>
+<li><a href="#62-precommand-modifiers">6.2 Precommand Modifiers</a></li>
+<li><a href="#63-complex-commands">6.3 Complex Commands</a></li>
+<li><a href="#64-alternate-forms-for-complex-commands">6.4 Alternate Forms For Complex Commands</a></li>
+<li><a href="#65-reserved-words">6.5 Reserved Words</a></li>
+<li><a href="#66-errors">6.6 Errors</a></li>
+<li><a href="#67-comments">6.7 Comments</a></li>
+<li><a href="#68-aliasing">6.8 Aliasing</a>
+<ul>
+<li><a href="#681-alias-difficulties">6.8.1 Alias difficulties</a></li>
+</ul>
+</li>
+<li><a href="#69-quoting">6.9 Quoting</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Shell-Grammar"></span> <span id="Shell-Grammar-1"></span></p>
+<h1 id="6-shell-grammar"><a class="header" href="#6-shell-grammar">6 Shell Grammar</a></h1>
+<p><span id="index-shell-grammar"></span>
+<span id="index-grammar_002c-shell"></span></p>
+<hr />
+<p><span id="Simple-Commands-_0026-Pipelines"></span>
+<span id="Simple-Commands-_0026-Pipelines-1"></span></p>
+<h2 id="61-simple-commands--pipelines"><a class="header" href="#61-simple-commands--pipelines">6.1 Simple Commands &amp; Pipelines</a></h2>
+<p><span id="index-simple-commands"></span>
+<span id="index-commands_002c-simple"></span></p>
+<p>A <em>simple command</em> is a sequence of optional parameter assignments
+followed by blank-separated words, with optional redirections
+interspersed. For a description of assignment, see the beginning of
+<a href="Parameters.html#Parameters">Parameters</a>.</p>
+<p>The first word is the command to be executed, and the remaining words,
+if any, are arguments to the command. If a command name is given, the
+parameter assignments modify the environment of the command when it is
+executed. The value of a simple command is its exit status, or 128 plus
+the signal number if terminated by a signal. For example,</p>
+<div class="example">
+<pre><code class="language-example">echo foo
+</code></pre>
+</div>
+<p>is a simple command with arguments.</p>
+<p><span id="index-pipeline"></span></p>
+<p>A <em>pipeline</em> is either a simple command, or a sequence of two or more
+simple commands where each command is separated from the next by ‘<code>|</code>’
+or ‘<code>|&amp;</code>’. Where commands are separated by ‘<code>|</code>’, the standard output of
+the first command is connected to the standard input of the next. ‘<code>|&amp;</code>’
+is shorthand for ‘<code>2&gt;&amp;1 |</code>’, which connects both the standard output and
+the standard error of the command to the standard input of the next. The
+value of a pipeline is the value of the last command, unless the
+pipeline is preceded by ‘<code>!</code>’ in which case the value is the logical
+inverse of the value of the last command. For example,</p>
+<div class="example">
+<pre><code class="language-example">echo foo | sed 's/foo/bar/'
+</code></pre>
+</div>
+<p>is a pipeline, where the output (‘<code>foo</code>’ plus a newline) of the first
+command will be passed to the input of the second.</p>
+<p><span id="index-coproc"></span> <span id="index-coprocess"></span></p>
+<p>If a pipeline is preceded by ‘<code>coproc</code>’, it is executed as a coprocess;
+a two-way pipe is established between it and the parent shell. The shell
+can read from or write to the coprocess by means of the ‘<code>&gt;&amp;p</code>’ and
+‘<code>&lt;&amp;p</code>’ redirection operators or with ‘<code>print -p</code>’ and ‘<code>read -p</code>’. A
+pipeline cannot be preceded by both ‘<code>coproc</code>’ and ‘<code>!</code>’. If job control
+is active, the coprocess can be treated in other than input and output
+as an ordinary background job.</p>
+<p><span id="index-sublist"></span></p>
+<p>A <em>sublist</em> is either a single pipeline, or a sequence of two or more
+pipelines separated by ‘<code>&amp;&amp;</code>’ or ‘<code>||</code>’. If two pipelines are separated
+by ‘<code>&amp;&amp;</code>’, the second pipeline is executed only if the first succeeds
+(returns a zero status). If two pipelines are separated by ‘<code>||</code>’, the
+second is executed only if the first fails (returns a nonzero status).
+Both operators have equal precedence and are left associative. The value
+of the sublist is the value of the last pipeline executed. For example,</p>
+<div class="example">
+<pre><code class="language-example">dmesg | grep panic &amp;&amp; print yes
+</code></pre>
+</div>
+<p>is a sublist consisting of two pipelines, the second just a simple
+command which will be executed if and only if the <code>grep</code> command returns
+a zero status. If it does not, the value of the sublist is that return
+status, else it is the status returned by the <code>print</code> (almost certainly
+zero).</p>
+<p><span id="index-list"></span></p>
+<p>A <em>list</em> is a sequence of zero or more sublists, in which each sublist
+is terminated by ‘<code>;</code>’, ‘<code>&amp;</code>’, ‘<code>&amp;|</code>’, ‘<code>&amp;!</code>’, or a newline. This
+terminator may optionally be omitted from the last sublist in the list
+when the list appears as a complex command inside ‘<code>(</code>...<code>)</code>’ or
+‘<code>{</code>...<code>}</code>’. When a sublist is terminated by ‘<code>;</code>’ or newline, the
+shell waits for it to finish before executing the next sublist. If a
+sublist is terminated by a ‘<code>&amp;</code>’, ‘<code>&amp;|</code>’, or ‘<code>&amp;!</code>’, the shell executes
+the last pipeline in it in the background, and does not wait for it to
+finish (note the difference from other shells which execute the whole
+sublist in the background). A backgrounded pipeline returns a status of
+zero.</p>
+<p>More generally, a list can be seen as a set of any shell commands
+whatsoever, including the complex commands below; this is implied
+wherever the word ‘list’ appears in later descriptions. For example, the
+commands in a shell function form a special sort of list.</p>
+<hr />
+<p><span id="Precommand-Modifiers"></span>
+<span id="Precommand-Modifiers-1"></span></p>
+<h2 id="62-precommand-modifiers"><a class="header" href="#62-precommand-modifiers">6.2 Precommand Modifiers</a></h2>
+<p><span id="index-precommand-modifiers"></span>
+<span id="index-modifiers_002c-precommand"></span></p>
+<p>A simple command may be preceded by a <em>precommand modifier</em>, which will
+alter how the command is interpreted. These modifiers are shell builtin
+commands with the exception of <code>nocorrect</code> which is a reserved word.</p>
+<p><span id="index-_002d"></span></p>
+<p><code>-</code></p>
+<p>The command is executed with a ‘<code>-</code>’ prepended to its <code>argv[0]</code> string.</p>
+<p><span id="index-builtin"></span></p>
+<p><code>builtin</code></p>
+<p>The command word is taken to be the name of a builtin command, rather
+than a shell function or external command.</p>
+<p><span id="index-command"></span></p>
+<p><code>command</code> [ <code>-pvV</code> ]</p>
+<p>The command word is taken to be the name of an external command, rather
+than a shell function or builtin. If the <code>POSIX_BUILTINS</code> option is set,
+builtins will also be executed but certain special properties of them
+are suppressed. The <code>-p</code> flag causes a default path to be searched
+instead of that in <code>$path</code>. With the <code>-v</code> flag, <code>command</code> is similar to
+<code>whence</code> and with <code>-V</code>, it is equivalent to <code>whence -v</code>.</p>
+<p><span id="index-exec"></span></p>
+<p><code>exec</code> [ <code>-cl</code> ] [ <code>-a</code> <code>argv0</code> ]</p>
+<p>The following command together with any arguments is run in place of the
+current process, rather than as a sub-process. The shell does not fork
+and is replaced. The shell does not invoke <code>TRAPEXIT</code>, nor does it
+source <code>zlogout</code> files. The options are provided for compatibility with
+other shells.</p>
+<p>The <code>-c</code> option clears the environment.</p>
+<p>The <code>-l</code> option is equivalent to the <code>-</code> precommand modifier, to treat
+the replacement command as a login shell; the command is executed with a
+<code>-</code> prepended to its <code>argv[0]</code> string. This flag has no effect if used
+together with the <code>-a</code> option.</p>
+<p>The <code>-a</code> option is used to specify explicitly the <code>argv[0]</code> string (the
+name of the command as seen by the process itself) to be used by the
+replacement command and is directly equivalent to setting a value for
+the <code>ARGV0</code> environment variable.</p>
+<p><span id="index-nocorrect"></span></p>
+<p><code>nocorrect</code></p>
+<p>Spelling correction is not done on any of the words. This must appear
+before any other precommand modifier, as it is interpreted immediately,
+before any parsing is done. It has no effect in non-interactive shells.</p>
+<p><span id="index-noglob"></span></p>
+<p><code>noglob</code></p>
+<p>Filename generation (globbing) is not performed on any of the words.</p>
+<hr />
+<p><span id="Complex-Commands"></span>
+<span id="Complex-Commands-1"></span></p>
+<h2 id="63-complex-commands"><a class="header" href="#63-complex-commands">6.3 Complex Commands</a></h2>
+<p><span id="index-complex-commands"></span>
+<span id="index-commands_002c-complex"></span></p>
+<p>A <em>complex command</em> in zsh is one of the following:</p>
+<p><span id="index-if"></span> <span id="index-if-construct"></span></p>
+<p><code>if</code> <code>list</code> <code>then</code> <code>list</code> [ <code>elif</code> <code>list</code> <code>then</code> <code>list</code> ] ... [
+<code>else</code> <code>list</code> ] <code>fi</code></p>
+<p>The <code>if</code> <code>list</code> is executed, and if it returns a zero exit status, the
+<code>then</code> <code>list</code> is executed. Otherwise, the <code>elif</code> <code>list</code> is executed and
+if its status is zero, the <code>then</code> <code>list</code> is executed. If each <code>elif</code>
+<code>list</code> returns nonzero status, the <code>else</code> <code>list</code> is executed.</p>
+<p><span id="index-for"></span> <span id="index-for-loops"></span>
+<span id="index-loops_002c-for"></span></p>
+<p><code>for</code> <code>name</code> ... [ <code>in</code> <code>word</code> ... ] <code>term</code> <code>do</code> <code>list</code> <code>done</code></p>
+<p>Expand the list of <code>word</code>s, and set the parameter <code>name</code> to each of them
+in turn, executing <code>list</code> each time. If the ‘<code>in</code> <code>word</code>’ is omitted,
+use the positional parameters instead of the <code>word</code>s.</p>
+<p>The <code>term</code> consists of one or more newline or <code>;</code> which terminate the
+<code>word</code>s, and are optional when the ‘<code>in</code> <code>word</code>’ is omitted.</p>
+<p>More than one parameter <code>name</code> can appear before the list of <code>word</code>s. If
+<code>N</code> <code>name</code>s are given, then on each execution of the loop the next <code>N</code>
+<code>word</code>s are assigned to the corresponding parameters. If there are more
+<code>name</code>s than remaining <code>word</code>s, the remaining parameters are each set to
+the empty string. Execution of the loop ends when there is no remaining
+<code>word</code> to assign to the first <code>name</code>. It is only possible for <code>in</code> to
+appear as the first <code>name</code> in the list, else it will be treated as
+marking the end of the list.</p>
+<p><code>for ((</code> [<code>expr1</code>] <code>;</code> [<code>expr2</code>] <code>;</code> [<code>expr3</code>] <code>)) do</code> <code>list</code>
+<code>done</code></p>
+<p>The arithmetic expression <code>expr1</code> is evaluated first (see <a href="Arithmetic-Evaluation.html#Arithmetic-Evaluation">Arithmetic
+Evaluation</a>). The
+arithmetic expression <code>expr2</code> is repeatedly evaluated until it evaluates
+to zero and when non-zero, <code>list</code> is executed and the arithmetic
+expression <code>expr3</code> evaluated. If any expression is omitted, then it
+behaves as if it evaluated to 1.</p>
+<p><span id="index-while"></span> <span id="index-while-loops"></span>
+<span id="index-loops_002c-while"></span></p>
+<p><code>while</code> <code>list</code> <code>do</code> <code>list</code> <code>done</code></p>
+<p>Execute the <code>do</code> <code>list</code> as long as the <code>while</code> <code>list</code> returns a zero
+exit status.</p>
+<p><span id="index-until"></span> <span id="index-until-loops"></span>
+<span id="index-loops_002c-until"></span></p>
+<p><code>until</code> <code>list</code> <code>do</code> <code>list</code> <code>done</code></p>
+<p>Execute the <code>do</code> <code>list</code> as long as <code>until</code> <code>list</code> returns a nonzero exit
+status.</p>
+<p><span id="index-repeat"></span> <span id="index-repeat-loops"></span>
+<span id="index-loops_002c-repeat"></span></p>
+<p><code>repeat</code> <code>word</code> <code>do</code> <code>list</code> <code>done</code></p>
+<p><code>word</code> is expanded and treated as an arithmetic expression, which must
+evaluate to a number <code>n</code>. <code>list</code> is then executed <code>n</code> times.</p>
+<p>The <code>repeat</code> syntax is disabled by default when the shell starts in a
+mode emulating another shell. It can be enabled with the command
+‘<code>enable -r repeat</code>’</p>
+<p><span id="index-case"></span> <span id="index-case-selection"></span>
+<span id="index-selection_002c-case"></span></p>
+<p><code>case</code> <code>word</code> <code>in</code> [ [<code>(</code>] <code>pattern</code> [ <code>|</code> <code>pattern</code> ] ... <code>)</code>
+<code>list</code> (<code>;;</code>|<code>;&amp;</code>|<code>;|</code>) ] ... <code>esac</code></p>
+<p>Execute the <code>list</code> associated with the first <code>pattern</code> that matches
+<code>word</code>, if any. The form of the patterns is the same as that used for
+filename generation. See <a href="Expansion.html#Filename-Generation">Filename
+Generation</a>.</p>
+<p>Note further that, unless the <code>SH_GLOB</code> option is set, the whole pattern
+with alternatives is treated by the shell as equivalent to a group of
+patterns within parentheses, although white space may appear about the
+parentheses and the vertical bar and will be stripped from the pattern
+at those points. White space may appear elsewhere in the pattern; this
+is not stripped. If the <code>SH_GLOB</code> option is set, so that an opening
+parenthesis can be unambiguously treated as part of the case syntax, the
+expression is parsed into separate words and these are treated as strict
+alternatives (as in other shells).</p>
+<p>If the <code>list</code> that is executed is terminated with <code>;&amp;</code> rather than <code>;;</code>,
+the following list is also executed. The rule for the terminator of the
+following list <code>;;</code>, <code>;&amp;</code> or <code>;|</code> is applied unless the <code>esac</code> is
+reached.</p>
+<p>If the <code>list</code> that is executed is terminated with <code>;|</code> the shell
+continues to scan the <code>pattern</code>s looking for the next match, executing
+the corresponding <code>list</code>, and applying the rule for the corresponding
+terminator <code>;;</code>, <code>;&amp;</code> or <code>;|</code>. Note that <code>word</code> is not re-expanded; all
+applicable <code>pattern</code>s are tested with the same <code>word</code>.</p>
+<p><span id="index-select"></span> <span id="index-user-selection"></span>
+<span id="index-selection_002c-user"></span></p>
+<p><code>select</code> <code>name</code> [ <code>in</code> <code>word</code> ... <code>term</code> ] <code>do</code> <code>list</code> <code>done</code></p>
+<p>where <code>term</code> is one or more newline or <code>;</code> to terminate the <code>word</code>s.
+<span id="index-REPLY_002c-use-of"></span> Print the set of <code>word</code>s,
+each preceded by a number. If the <code>in</code> <code>word</code> is omitted, use the
+positional parameters. The <code>PROMPT3</code> prompt is printed and a line is
+read from the line editor if the shell is interactive and that is
+active, or else standard input. If this line consists of the number of
+one of the listed <code>word</code>s, then the parameter <code>name</code> is set to the
+<code>word</code> corresponding to this number. If this line is empty, the
+selection list is printed again. Otherwise, the value of the parameter
+<code>name</code> is set to null. The contents of the line read from standard input
+is saved in the parameter <code>REPLY</code>. <code>list</code> is executed for each selection
+until a break or end-of-file is encountered.</p>
+<p><span id="index-subshell"></span></p>
+<p><code>(</code> <code>list</code> <code>)</code></p>
+<p>Execute <code>list</code> in a subshell. Traps set by the <code>trap</code> builtin are reset
+to their default values while executing <code>list</code>.</p>
+<p><code>{</code> <code>list</code> <code>}</code></p>
+<p>Execute <code>list</code>.</p>
+<p><span id="index-always"></span> <span id="index-always-blocks"></span>
+<span id="index-try-blocks"></span></p>
+<p><code>{</code> <code>try-list</code> <code>} always {</code> <code>always-list</code> <code>}</code></p>
+<p>First execute <code>try-list</code>. Regardless of errors, or <code>break</code> or <code>continue</code>
+commands encountered within <code>try-list</code>, execute <code>always-list</code>. Execution
+then continues from the result of the execution of <code>try-list</code>; in other
+words, any error, or <code>break</code> or <code>continue</code> command is treated in the
+normal way, as if <code>always-list</code> were not present. The two chunks of code
+are referred to as the ‘try block’ and the ‘always block’.</p>
+<p>Optional newlines or semicolons may appear after the <code>always</code>; note,
+however, that they may <em>not</em> appear between the preceding closing brace
+and the <code>always</code>.</p>
+<p>An ‘error’ in this context is a condition such as a syntax error which
+causes the shell to abort execution of the current function, script, or
+list. Syntax errors encountered while the shell is parsing the code do
+not cause the <code>always-list</code> to be executed. For example, an erroneously
+constructed <code>if</code> block in <code>try-list</code> would cause the shell to abort
+during parsing, so that <code>always-list</code> would not be executed, while an
+erroneous substitution such as <code>${*foo*}</code> would cause a run-time error,
+after which <code>always-list</code> would be executed.</p>
+<p>An error condition can be tested and reset with the special integer
+variable <code>TRY_BLOCK_ERROR</code>. Outside an <code>always-list</code> the value is
+irrelevant, but it is initialised to <code>-1</code>. Inside <code>always-list</code>, the
+value is 1 if an error occurred in the <code>try-list</code>, else 0. If
+<code>TRY_BLOCK_ERROR</code> is set to 0 during the <code>always-list</code>, the error
+condition caused by the <code>try-list</code> is reset, and shell execution
+continues normally after the end of <code>always-list</code>. Altering the value
+during the <code>try-list</code> is not useful (unless this forms part of an
+enclosing <code>always</code> block).</p>
+<p>Regardless of <code>TRY_BLOCK_ERROR</code>, after the end of <code>always-list</code> the
+normal shell status <code>$?</code> is the value returned from <code>try-list</code>. This
+will be non-zero if there was an error, even if <code>TRY_BLOCK_ERROR</code> was
+set to zero.</p>
+<p>The following executes the given code, ignoring any errors it causes.
+This is an alternative to the usual convention of protecting code by
+executing it in a subshell.</p>
+<div class="example">
+<pre><code class="language-example">{
+    # code which may cause an error
+  } always {
+    # This code is executed regardless of the error.
+    (( TRY_BLOCK_ERROR = 0 ))
+}
+# The error condition has been reset.
+</code></pre>
+</div>
+<p>When a <code>try</code> block occurs outside of any function, a <code>return</code> or a
+<code>exit</code> encountered in <code>try-list</code> does <em>not</em> cause the execution of
+<code>always-list</code>. Instead, the shell exits immediately after any <code>EXIT</code>
+trap has been executed. Otherwise, a <code>return</code> command encountered in
+<code>try-list</code> will cause the execution of <code>always-list</code>, just like <code>break</code>
+and <code>continue</code>.</p>
+<p><span id="index-function"></span></p>
+<p><code>function</code> <code>word</code> ... [ <code>()</code> ] [ <code>term</code> ] <code>{</code> <code>list</code> <code>}</code></p>
+<p><code>word</code> ... <code>()</code> [ <code>term</code> ] <code>{</code> <code>list</code> <code>}</code></p>
+<p><code>word</code> ... <code>()</code> [ <code>term</code> ] <code>command</code></p>
+<p>where <code>term</code> is one or more newline or <code>;</code>. Define a function which is
+referenced by any one of <code>word</code>. Normally, only one <code>word</code> is provided;
+multiple <code>word</code>s are usually only useful for setting traps. The body of
+the function is the <code>list</code> between the <code>{</code> and <code>}</code>. See
+<a href="Functions.html#Functions">Functions</a>.</p>
+<p>If the option <code>SH_GLOB</code> is set for compatibility with other shells, then
+whitespace may appear between the left and right parentheses when there
+is a single <code>word</code>; otherwise, the parentheses will be treated as
+forming a globbing pattern in that case.</p>
+<p>In any of the forms above, a redirection may appear outside the function
+body, for example</p>
+<div class="example">
+<pre><code class="language-example">func() { ... } 2&gt;&amp;1
+</code></pre>
+</div>
+<p>The redirection is stored with the function and applied whenever the
+function is executed. Any variables in the redirection are expanded at
+the point the function is executed, but outside the function scope.</p>
+<p><span id="index-timing"></span> <span id="index-time"></span></p>
+<p><code>time</code> [ <code>pipeline</code> ]</p>
+<p>The <code>pipeline</code> is executed, and timing statistics are reported on the
+standard error in the form specified by the <code>TIMEFMT</code> parameter. If
+<code>pipeline</code> is omitted, print statistics about the shell process and its
+children.</p>
+<p><span id="index-conditional-expression"></span>
+<span id="index-_005b_005b"></span></p>
+<p><code>[[</code> <code>exp</code> <code>]]</code></p>
+<p>Evaluates the conditional expression <code>exp</code> and return a zero exit status
+if it is true. See <a href="Conditional-Expressions.html#Conditional-Expressions">Conditional
+Expressions</a> for a
+description of <code>exp</code>.</p>
+<hr />
+<p><span id="Alternate-Forms-For-Complex-Commands"></span>
+<span id="Alternate-Forms-For-Complex-Commands-1"></span></p>
+<h2 id="64-alternate-forms-for-complex-commands"><a class="header" href="#64-alternate-forms-for-complex-commands">6.4 Alternate Forms For Complex Commands</a></h2>
+<p><span id="index-alternate-forms-for-complex-commands"></span>
+<span id="index-commands_002c-alternate-forms-for-complex"></span></p>
+<p>Many of zsh’s complex commands have alternate forms. These are
+non-standard and are likely not to be obvious even to seasoned shell
+programmers; they should not be used anywhere that portability of shell
+code is a concern.</p>
+<p>The short versions below only work if <code>sublist</code> is of the form ‘<code>{</code>
+<code>list</code> <code>}</code>’ or if the <code>SHORT_LOOPS</code> option is set. For the <code>if</code>, <code>while</code>
+and <code>until</code> commands, in both these cases the test part of the loop must
+also be suitably delimited, such as by ‘<code>[[</code> <code>...</code> <code>]]</code>’ or ‘<code>((</code> <code>...</code>
+<code>))</code>’, else the end of the test will not be recognized. For the <code>for</code>,
+<code>repeat</code>, <code>case</code> and <code>select</code> commands no such special form for the
+arguments is necessary, but the other condition (the special form of
+<code>sublist</code> or use of the <code>SHORT_LOOPS</code> option) still applies.</p>
+<ul>
+<li>
+<p><code>if</code> <code>list</code> <code>{</code> <code>list</code> <code>}</code> [ <code>elif</code> <code>list</code> <code>{</code> <code>list</code> <code>}</code> ] ... [
+<code>else {</code> <code>list</code> <code>}</code> ]<br />
+An alternate form of <code>if</code>. The rules mean that</p>
+<div class="example">
+<pre><code class="language-example">if [[ -o ignorebraces ]] {
+  print yes
+}
+</code></pre>
+</div>
+<p>works, but</p>
+<div class="example">
+<pre><code class="language-example">if true {  # Does not work!
+  print yes
+}
+</code></pre>
+</div>
+<p>does <em>not</em>, since the test is not suitably delimited.</p>
+</li>
+<li>
+<p><code>if</code> <code>list</code> <code>sublist</code><br />
+A short form of the alternate <code>if</code>. The same limitations on the form
+of <code>list</code> apply as for the previous form.</p>
+</li>
+<li>
+<p><code>for</code> <code>name</code> ... <code>(</code> <code>word</code> ... <code>)</code> <code>sublist</code><br />
+A short form of <code>for</code>.</p>
+</li>
+<li>
+<p><code>for</code> <code>name</code> ... [ <code>in</code> <code>word</code> ... ] <code>term</code> <code>sublist</code><br />
+where <code>term</code> is at least one newline or <code>;</code>. Another short form of
+<code>for</code>.</p>
+</li>
+<li>
+<p><code>for ((</code> [<code>expr1</code>] <code>;</code> [<code>expr2</code>] <code>;</code> [<code>expr3</code>] <code>))</code>
+<code>sublist</code><br />
+A short form of the arithmetic <code>for</code> command.</p>
+<p><span id="index-foreach"></span></p>
+</li>
+<li>
+<p><code>foreach</code> <code>name</code> ... <code>(</code> <code>word</code> ... <code>)</code> <code>list</code> <code>end</code><br />
+Another form of <code>for</code>.</p>
+</li>
+<li>
+<p><code>while</code> <code>list</code> <code>{</code> <code>list</code> <code>}</code><br />
+An alternative form of <code>while</code>. Note the limitations on the form of
+<code>list</code> mentioned above.</p>
+</li>
+<li>
+<p><code>until</code> <code>list</code> <code>{</code> <code>list</code> <code>}</code><br />
+An alternative form of <code>until</code>. Note the limitations on the form of
+<code>list</code> mentioned above.</p>
+</li>
+<li>
+<p><code>repeat</code> <code>word</code> <code>sublist</code><br />
+This is a short form of <code>repeat</code>.</p>
+</li>
+<li>
+<p><code>case</code> <code>word</code> <code>{</code> [ [<code>(</code>] <code>pattern</code> [ <code>|</code> <code>pattern</code> ] ... <code>)</code>
+<code>list</code> (<code>;;</code>|<code>;&amp;</code>|<code>;|</code>) ] ... <code>}</code><br />
+An alternative form of <code>case</code>.</p>
+</li>
+<li>
+<p><code>select</code> <code>name</code> [ <code>in</code> <code>word</code> ... <code>term</code> ] <code>sublist</code><br />
+where <code>term</code> is at least one newline or <code>;</code>. A short form of
+<code>select</code>.</p>
+</li>
+<li>
+<p><code>function</code> <code>word</code> ... [ <code>()</code> ] [ <code>term</code> ] <code>sublist</code><br />
+This is a short form of <code>function</code>.</p>
+</li>
+</ul>
+<hr />
+<p><span id="Reserved-Words"></span> <span id="Reserved-Words-1"></span></p>
+<h2 id="65-reserved-words"><a class="header" href="#65-reserved-words">6.5 Reserved Words</a></h2>
+<p><span id="index-reserved-words"></span>
+<span id="index-disable_002c-use-of"></span></p>
+<p>The following words are recognized as reserved words when used as the
+first word of a command unless quoted or disabled using <code>disable -r</code>:</p>
+<p><code>do done esac then elif else fi for case if while function repeat time until select coproc nocorrect foreach end ! [[ { } declare export float integer local readonly typeset</code></p>
+<p>Additionally, ‘<code>}</code>’ is recognized in any position if neither the
+<code>IGNORE_BRACES</code> option nor the <code>IGNORE_CLOSE_BRACES</code> option is set.</p>
+<hr />
+<p><span id="Errors"></span> <span id="Errors-1"></span></p>
+<h2 id="66-errors"><a class="header" href="#66-errors">6.6 Errors</a></h2>
+<p><span id="index-errors_002c-handling-of"></span></p>
+<p>Certain errors are treated as fatal by the shell: in an interactive
+shell, they cause control to return to the command line, and in a
+non-interactive shell they cause the shell to be aborted. In older
+versions of zsh, a non-interactive shell running a script would not
+abort completely, but would resume execution at the next command to be
+read from the script, skipping the remainder of any functions or shell
+constructs such as loops or conditions; this somewhat illogical
+behaviour can be recovered by setting the option <code>CONTINUE_ON_ERROR</code>.</p>
+<p>Fatal errors found in non-interactive shells include:</p>
+<ul>
+<li>Failure to parse shell options passed when invoking the shell</li>
+<li>Failure to change options with the <code>set</code> builtin</li>
+<li>Parse errors of all sorts, including failures to parse mathematical
+expressions</li>
+<li>Failures to set or modify variable behaviour with <code>typeset</code>,
+<code>local</code>, <code>declare</code>, <code>export</code>, <code>integer</code>, <code>float</code></li>
+<li>Execution of incorrectly positioned loop control structures
+(<code>continue</code>, <code>break</code>)</li>
+<li>Attempts to use regular expression with no regular expression module
+available</li>
+<li>Disallowed operations when the <code>RESTRICTED</code> options is set</li>
+<li>Failure to create a pipe needed for a pipeline</li>
+<li>Failure to create a multio</li>
+<li>Failure to autoload a module needed for a declared shell feature</li>
+<li>Errors creating command or process substitutions</li>
+<li>Syntax errors in glob qualifiers</li>
+<li>File generation errors where not caught by the option <code>BAD_PATTERN</code></li>
+<li>All bad patterns used for matching within case statements</li>
+<li>File generation failures where not caused by <code>NO_MATCH</code> or similar
+options</li>
+<li>All file generation errors where the pattern was used to create a
+multio</li>
+<li>Memory errors where detected by the shell</li>
+<li>Invalid subscripts to shell variables</li>
+<li>Attempts to assign read-only variables</li>
+<li>Logical errors with variables such as assignment to the wrong type</li>
+<li>Use of invalid variable names</li>
+<li>Errors in variable substitution syntax</li>
+<li>Failure to convert characters in <code>$’</code>...<code>’</code> expressions</li>
+</ul>
+<p>If the <code>POSIX_BUILTINS</code> option is set, more errors associated with shell
+builtin commands are treated as fatal, as specified by the POSIX
+standard.</p>
+<hr />
+<p><span id="Comments"></span> <span id="Comments-1"></span></p>
+<h2 id="67-comments"><a class="header" href="#67-comments">6.7 Comments</a></h2>
+<p><span id="index-comments"></span>
+<span id="index-INTERACTIVE_005fCOMMENTS_002c-use-of"></span>
+<span id="index-histchars_002c-use-of"></span></p>
+<p>In non-interactive shells, or in interactive shells with the
+<code>INTERACTIVE_COMMENTS</code> option set, a word beginning with the third
+character of the <code>histchars</code> parameter (‘<code>#</code>’ by default) causes that
+word and all the following characters up to a newline to be ignored.</p>
+<hr />
+<p><span id="Aliasing"></span> <span id="Aliasing-1"></span></p>
+<h2 id="68-aliasing"><a class="header" href="#68-aliasing">6.8 Aliasing</a></h2>
+<p><span id="index-aliasing"></span></p>
+<p>Every eligible <em>word</em> in the shell input is checked to see if there is
+an alias defined for it. If so, it is replaced by the text of the alias
+if it is in command position (if it could be the first word of a simple
+command), or if the alias is global. If the replacement text ends with a
+space, the next word in the shell input is always eligible for purposes
+of alias expansion. <span id="index-alias_002c-use-of"></span>
+<span id="index-aliases_002c-global"></span> An alias is defined using
+the <code>alias</code> builtin; global aliases may be defined using the <code>-g</code> option
+to that builtin.</p>
+<p>A <em>word</em> is defined as:</p>
+<ul>
+<li>Any plain string or glob pattern</li>
+<li>Any quoted string, using any quoting method (note that the quotes
+must be part of the alias definition for this to be eligible)</li>
+<li>Any parameter reference or command substitution</li>
+<li>Any series of the foregoing, concatenated without whitespace or
+other tokens between them</li>
+<li>Any reserved word (<code>case</code>, <code>do</code>, <code>else</code>, etc.)</li>
+<li>With global aliasing, any command separator, any redirection
+operator, and ‘<code>(</code>’ or ‘<code>)</code>’ when not part of a glob pattern</li>
+</ul>
+<p>Alias expansion is done on the shell input before any other expansion
+except history expansion. Therefore, if an alias is defined for the word
+<code>foo</code>, alias expansion may be avoided by quoting part of the word, e.g.
+<code>\foo</code>. Any form of quoting works, although there is nothing to prevent
+an alias being defined for the quoted form such as <code>\foo</code> as well.</p>
+<p>When <code>POSIX_ALIASES</code> is set, only plain unquoted strings are eligible
+for aliasing. The <code>alias</code> builtin does not reject ineligible aliases,
+but they are not expanded.</p>
+<p>For use with completion, which would remove an initial backslash
+followed by a character that isn’t special, it may be more convenient to
+quote the word by starting with a single quote, i.e. <code>’foo</code>; completion
+will automatically add the trailing single quote.</p>
+<hr />
+<p><span id="Alias-difficulties"></span></p>
+<h3 id="681-alias-difficulties"><a class="header" href="#681-alias-difficulties">6.8.1 Alias difficulties</a></h3>
+<p>Although aliases can be used in ways that bend normal shell syntax, not
+every string of non-white-space characters can be used as an alias.</p>
+<p>Any set of characters not listed as a word above is not a word, hence no
+attempt is made to expand it as an alias, no matter how it is defined
+(i.e. via the builtin or the special parameter <code>aliases</code> described in
+<a href="Zsh-Modules.html#The-zsh_002fparameter-Module">The zsh/parameter
+Module</a>). However, as
+noted in the case of <code>POSIX_ALIASES</code> above, the shell does not attempt
+to deduce whether the string corresponds to a word at the time the alias
+is created.</p>
+<p>For example, an expression containing an <code>=</code> at the start of a command
+line is an assignment and cannot be expanded as an alias; a lone <code>=</code> is
+not an assignment but can only be set as an alias using the parameter,
+as otherwise the <code>=</code> is taken part of the syntax of the builtin command.</p>
+<p>It is not presently possible to alias the ‘<code>((</code>’ token that introduces
+arithmetic expressions, because until a full statement has been parsed,
+it cannot be distinguished from two consecutive ‘<code>(</code>’ tokens introducing
+nested subshells. Also, if a separator such as <code>&amp;&amp;</code> is aliased, <code>\&amp;&amp;</code>
+turns into the two tokens <code>\&amp;</code> and <code>&amp;</code>, each of which may have been
+aliased separately. Similarly for <code>\&lt;&lt;</code>, <code>\&gt;|</code>, etc.</p>
+<p>There is a commonly encountered problem with aliases illustrated by the
+following code:</p>
+<div class="example">
+<pre><code class="language-example">alias echobar='echo bar'; echobar
+</code></pre>
+</div>
+<p>This prints a message that the command <code>echobar</code> could not be found.
+This happens because aliases are expanded when the code is read in; the
+entire line is read in one go, so that when <code>echobar</code> is executed it is
+too late to expand the newly defined alias. This is often a problem in
+shell scripts, functions, and code executed with ‘<code>source</code>’ or ‘<code>.</code>’.
+Consequently, use of functions rather than aliases is recommended in
+non-interactive code.</p>
+<p>Note also the unhelpful interaction of aliases and function definitions:</p>
+<div class="example">
+<pre><code class="language-example">alias func='noglob func'
+func() {
+    echo Do something with $*
+}
+</code></pre>
+</div>
+<p>Because aliases are expanded in function definitions, this causes the
+following command to be executed:</p>
+<div class="example">
+<pre><code class="language-example">noglob func() {
+    echo Do something with $*
+}
+</code></pre>
+</div>
+<p>which defines <code>noglob</code> as well as <code>func</code> as functions with the body
+given. To avoid this, either quote the name <code>func</code> or use the
+alternative function definition form ‘<code>function func</code>’. Ensuring the
+alias is defined after the function works but is problematic if the code
+fragment might be re-executed.</p>
+<hr />
+<p><span id="Quoting"></span> <span id="Quoting-1"></span></p>
+<h2 id="69-quoting"><a class="header" href="#69-quoting">6.9 Quoting</a></h2>
+<p><span id="index-quoting"></span></p>
+<p>A character may be <em>quoted</em> (that is, made to stand for itself) by
+preceding it with a ‘<code>\</code>’. ‘<code>\</code>’ followed by a newline is ignored.</p>
+<p>A string enclosed between ‘<code>$’</code>’ and ‘<code>’</code>’ is processed the same way as
+the string arguments of the <code>print</code> builtin, and the resulting string is
+considered to be entirely quoted. A literal ‘<code>’</code>’ character can be
+included in the string by using the ‘<code>\’</code>’ escape.</p>
+<p><span id="index-RC_005fQUOTES_002c-use-of"></span></p>
+<p>All characters enclosed between a pair of single quotes (<code>’’</code>) that is
+not preceded by a ‘<code>$</code>’ are quoted. A single quote cannot appear within
+single quotes unless the option <code>RC_QUOTES</code> is set, in which case a pair
+of single quotes are turned into a single quote. For example,</p>
+<div class="example">
+<pre><code class="language-example">print ''''
+</code></pre>
+</div>
+<p>outputs nothing apart from a newline if <code>RC_QUOTES</code> is not set, but one
+single quote if it is set.</p>
+<p>Inside double quotes (<code>&quot;&quot;</code>), parameter and command substitution occur,
+and ‘<code>\</code>’ quotes the characters ‘<code>\</code>’, ‘<code>‘</code>’, ‘<code>&quot;</code>’, ‘<code>$</code>’, and the
+first character of <code>$histchars</code> (default ‘<code>!</code>’).</p>
+<hr />
+<p>This document was generated on <em>February 15, 2020</em> using
+<a href="http://www.nongnu.org/texi2html/"><em>texi2html 5.0</em></a>.<br />
+Zsh version 5.8, released on February 14, 2020.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="Files.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="Redirection.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="Files.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="Redirection.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
