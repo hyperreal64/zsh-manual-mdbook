@@ -29,13 +29,6 @@ git clone https://github.com/hyperreal64/zsh-manual-mdbook
 cd zsh-manual-mdbook
 pip install -r requirements.txt
 
-# Initialize an mdbook project at (e.g.) ~/zsh-mdbook
-mdbook init ~/zsh-mdbook
-
-# Remove sample items from mdbook src
-cd ~/zsh-mdbook/src
-rm *.md
-
 # Ensure DocToc is installed
 sudo npm -g install doctoc
 
