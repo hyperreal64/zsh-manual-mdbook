@@ -1,0 +1,855 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Zftp Function System - Zsh Manual</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="The-Z-Shell-Manual.html"><strong aria-hidden="true">1.</strong> The Z Shell Manual</a></li><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">2.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Roadmap.html"><strong aria-hidden="true">3.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="Invocation.html"><strong aria-hidden="true">4.</strong> Invocation</a></li><li class="chapter-item expanded "><a href="Files.html"><strong aria-hidden="true">5.</strong> Files</a></li><li class="chapter-item expanded "><a href="Shell-Grammar.html"><strong aria-hidden="true">6.</strong> Shell Grammar</a></li><li class="chapter-item expanded "><a href="Redirection.html"><strong aria-hidden="true">7.</strong> Redirection</a></li><li class="chapter-item expanded "><a href="Command-Execution.html"><strong aria-hidden="true">8.</strong> Command Execution</a></li><li class="chapter-item expanded "><a href="Functions.html"><strong aria-hidden="true">9.</strong> Functions</a></li><li class="chapter-item expanded "><a href="Jobs-_0026-Signals.html"><strong aria-hidden="true">10.</strong> Jobs &amp; Signals</a></li><li class="chapter-item expanded "><a href="Arithmetic-Evaluation.html"><strong aria-hidden="true">11.</strong> Arithmetic Evaluation</a></li><li class="chapter-item expanded "><a href="Conditional-Expressions.html"><strong aria-hidden="true">12.</strong> Conditional Expressions</a></li><li class="chapter-item expanded "><a href="Prompt-Expansion.html"><strong aria-hidden="true">13.</strong> Prompt Expansion</a></li><li class="chapter-item expanded "><a href="Expansion.html"><strong aria-hidden="true">14.</strong> Expansion</a></li><li class="chapter-item expanded "><a href="Parameters.html"><strong aria-hidden="true">15.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="Options.html"><strong aria-hidden="true">16.</strong> Options</a></li><li class="chapter-item expanded "><a href="Shell-Builtin-Commands.html"><strong aria-hidden="true">17.</strong> Shell Builtin Commands</a></li><li class="chapter-item expanded "><a href="Zsh-Line-Editor.html"><strong aria-hidden="true">18.</strong> Zsh Line Editor</a></li><li class="chapter-item expanded "><a href="Completion-Widgets.html"><strong aria-hidden="true">19.</strong> Completion Widgets</a></li><li class="chapter-item expanded "><a href="Completion-System.html"><strong aria-hidden="true">20.</strong> Completion System</a></li><li class="chapter-item expanded "><a href="Completion-Using-compctl.html"><strong aria-hidden="true">21.</strong> Completion Using compctl</a></li><li class="chapter-item expanded "><a href="Zsh-Modules.html"><strong aria-hidden="true">22.</strong> Zsh Modules</a></li><li class="chapter-item expanded "><a href="Calendar-Function-System.html"><strong aria-hidden="true">23.</strong> Calendar Function System</a></li><li class="chapter-item expanded "><a href="TCP-Function-System.html"><strong aria-hidden="true">24.</strong> TCP Function System</a></li><li class="chapter-item expanded "><a href="Zftp-Function-System.html" class="active"><strong aria-hidden="true">25.</strong> Zftp Function System</a></li><li class="chapter-item expanded "><a href="User-Contributions.html"><strong aria-hidden="true">26.</strong> User Contributions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#25-zftp-function-system">25 Zftp Function System</a>
+<ul>
+<li><a href="#251-description">25.1 Description</a></li>
+<li><a href="#252-installation">25.2 Installation</a></li>
+<li><a href="#253-functions">25.3 Functions</a>
+<ul>
+<li><a href="#2531-opening-a-connection">25.3.1 Opening a connection</a></li>
+<li><a href="#2532-directory-management">25.3.2 Directory management</a></li>
+<li><a href="#2533-status-commands">25.3.3 Status commands</a></li>
+<li><a href="#2534-retrieving-files">25.3.4 Retrieving files</a></li>
+<li><a href="#2535-sending-files">25.3.5 Sending files</a></li>
+<li><a href="#2536-closing-the-connection">25.3.6 Closing the connection</a></li>
+<li><a href="#2537-session-management">25.3.7 Session management</a></li>
+<li><a href="#2538-bookmarks">25.3.8 Bookmarks</a></li>
+<li><a href="#2539-other-functions">25.3.9 Other functions</a></li>
+</ul>
+</li>
+<li><a href="#254-miscellaneous-features">25.4 Miscellaneous Features</a>
+<ul>
+<li><a href="#2541-configuration">25.4.1 Configuration</a></li>
+<li><a href="#2542-remote-globbing">25.4.2 Remote globbing</a></li>
+<li><a href="#2543-automatic-and-temporary-reopening">25.4.3 Automatic and temporary reopening</a></li>
+<li><a href="#2544-completion">25.4.4 Completion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Zftp-Function-System"></span>
+<span id="Zftp-Function-System-1"></span></p>
+<h1 id="25-zftp-function-system"><a class="header" href="#25-zftp-function-system">25 Zftp Function System</a></h1>
+<p><span id="index-zftp-function-system"></span>
+<span id="index-FTP_002c-functions-for-using-shell-as-client"></span></p>
+<hr />
+<p><span id="Description-4"></span></p>
+<h2 id="251-description"><a class="header" href="#251-description">25.1 Description</a></h2>
+<p>This describes the set of shell functions supplied with the source
+distribution as an interface to the <code>zftp</code> builtin command, allowing you
+to perform FTP operations from the shell command line or within
+functions or scripts. The interface is similar to a traditional FTP
+client (e.g. the <code>ftp</code> command itself, see man page ftp(1)), but as it
+is entirely done within the shell all the familiar completion, editing
+and globbing features, and so on, are present, and macros are
+particularly simple to write as they are just ordinary shell functions.</p>
+<p>The prerequisite is that the <code>zftp</code> command, as described in <a href="Zsh-Modules.html#The-zsh_002fzftp-Module">The
+zsh/zftp Module</a> , must be
+available in the version of <code>zsh</code> installed at your site. If the shell
+is configured to load new commands at run time, it probably is: typing
+‘<code>zmodload zsh/zftp</code>’ will make sure (if that runs silently, it has
+worked). If this is not the case, it is possible <code>zftp</code> was linked into
+the shell anyway: to test this, type ‘<code>which zftp</code>’ and if <code>zftp</code> is
+available you will get the message ‘<code>zftp: shell built-in command</code>’.</p>
+<p>Commands given directly with <code>zftp</code> builtin may be interspersed between
+the functions in this suite; in a few cases, using <code>zftp</code> directly may
+cause some of the status information stored in shell parameters to
+become invalid. Note in particular the description of the variables
+<code>$ZFTP_TMOUT</code>, <code>$ZFTP_PREFS</code> and <code>$ZFTP_VERBOSE</code> for <code>zftp</code>.</p>
+<hr />
+<p><span id="Installation"></span> <span id="Installation-1"></span></p>
+<h2 id="252-installation"><a class="header" href="#252-installation">25.2 Installation</a></h2>
+<p>You should make sure all the functions from the <code>Functions/Zftp</code>
+directory of the source distribution are available; they all begin with
+the two letters ‘<code>zf</code>’. They may already have been installed on your
+system; otherwise, you will need to find them and copy them. The
+directory should appear as one of the elements of the <code>$fpath</code> array
+(this should already be the case if they were installed), and at least
+the function <code>zfinit</code> should be autoloaded; it will autoload the rest.
+Finally, to initialize the use of the system you need to call the
+<code>zfinit</code> function. The following code in your <code>.zshrc</code> will arrange for
+this; assume the functions are stored in the directory <code>~/myfns</code>:</p>
+<div class="example">
+<pre><code class="language-example">fpath=(~/myfns $fpath)
+autoload -U zfinit
+zfinit
+</code></pre>
+</div>
+<p>Note that <code>zfinit</code> assumes you are using the <code>zmodload</code> method to load
+the <code>zftp</code> command. If it is already built into the shell, change
+<code>zfinit</code> to <code>zfinit -n</code>. It is helpful (though not essential) if the
+call to <code>zfinit</code> appears after any code to initialize the new completion
+system, else unnecessary <code>compctl</code> commands will be given.</p>
+<hr />
+<p><span id="Zftp-Functions"></span> <span id="Functions-2"></span></p>
+<h2 id="253-functions"><a class="header" href="#253-functions">25.3 Functions</a></h2>
+<p>The sequence of operations in performing a file transfer is essentially
+the same as that in a standard FTP client. Note that, due to a quirk of
+the shell’s <code>getopts</code> builtin, for those functions that handle options
+you must use ‘<code>-``-</code>’ rather than ‘<code>-</code>’ to ensure the remaining
+arguments are treated literally (a single ‘<code>-</code>’ is treated as an
+argument).</p>
+<hr />
+<p><span id="Opening-a-connection"></span></p>
+<h3 id="2531-opening-a-connection"><a class="header" href="#2531-opening-a-connection">25.3.1 Opening a connection</a></h3>
+<p><span id="index-zfparams"></span></p>
+<p><code>zfparams</code> [ <code>host</code> [ <code>user</code> [ <code>password</code> ... ] ] ]</p>
+<p>Set or show the parameters for a future <code>zfopen</code> with no arguments. If
+no arguments are given, the current parameters are displayed (the
+password will be shown as a line of asterisks). If a <code>host</code> is given,
+and either the <code>user</code> or <code>password</code> is not, they will be prompted for;
+also, any parameter given as ‘<code>?</code>’ will be prompted for, and if the
+‘<code>?</code>’ is followed by a string, that will be used as the prompt. As
+<code>zfopen</code> calls <code>zfparams</code> to store the parameters, this usually need not
+be called directly.</p>
+<p>A single argument ‘<code>-</code>’ will delete the stored parameters. This will
+also cause the memory of the last directory (and so on) on the other
+host to be deleted.</p>
+<p><span id="index-zfopen"></span></p>
+<p><code>zfopen</code> [ <code>-1</code> ] [ <code>host</code> [ <code>user</code> [ <code>password</code> [ <code>account</code> ] ]
+] ]</p>
+<p>If <code>host</code> is present, open a connection to that host under username
+<code>user</code> with password <code>password</code> (and, on the rare occasions when it is
+necessary, account <code>account</code>). If a necessary parameter is missing or
+given as ‘<code>?</code>’ it will be prompted for. If <code>host</code> is not present, use a
+previously stored set of parameters.</p>
+<p>If the command was successful, and the terminal is compatible with
+<code>xterm</code> or is <code>sun-cmd</code>, a summary will appear in the title bar, giving
+the local <code>host:directory</code> and the remote <code>host:directory</code>; this is
+handled by the function <code>zftp_chpwd</code>, described below.</p>
+<p>Normally, the <code>host</code>, <code>user</code> and <code>password</code> are internally recorded for
+later re-opening, either by a <code>zfopen</code> with no arguments, or
+automatically (see below). With the option ‘<code>-1</code>’, no information is
+stored. Also, if an open command with arguments failed, the parameters
+will not be retained (and any previous parameters will also be deleted).
+A <code>zfopen</code> on its own, or a <code>zfopen -1</code>, never alters the stored
+parameters.</p>
+<p>Both <code>zfopen</code> and <code>zfanon</code> (but not <code>zfparams</code>) understand URLs of the
+form <code>ftp://``host</code>/<code>path...</code> as meaning to connect to the <code>host</code>, then
+change directory to <code>path</code> (which must be a directory, not a file). The
+‘<code>ftp://</code>’ can be omitted; the trailing ‘<code>/</code>’ is enough to trigger
+recognition of the <code>path</code>. Note prefixes other than ‘<code>ftp:</code>’ are not
+recognized, and that all characters after the first slash beyond <code>host</code>
+are significant in <code>path</code>.</p>
+<p><span id="index-zfanon"></span></p>
+<p><code>zfanon</code> [ <code>-1</code> ] <code>host</code></p>
+<p>Open a connection <code>host</code> for anonymous FTP. The username used is
+‘<code>anonymous</code>’. The password (which will be reported the first time) is
+generated as <code>user``@``host</code>; this is then stored in the shell parameter
+<code>$EMAIL_ADDR</code> which can alternatively be set manually to a</p>
+<hr />
+<p><span id="Directory-management"></span></p>
+<h3 id="2532-directory-management"><a class="header" href="#2532-directory-management">25.3.2 Directory management</a></h3>
+<p><span id="index-zfcd"></span></p>
+<p><code>zfcd</code> [ <code>dir</code> ]</p>
+<p><code>zfcd -</code></p>
+<p><code>zfcd</code> <code>old</code> <code>new</code></p>
+<p>Change the current directory on the remote server: this is implemented
+to have many of the features of the shell builtin <code>cd</code>.</p>
+<p>In the first form with <code>dir</code> present, change to the directory <code>dir</code>. The
+command ‘<code>zfcd ..</code>’ is treated specially, so is guaranteed to work on
+non-UNIX servers (note this is handled internally by <code>zftp</code>). If <code>dir</code>
+is omitted, has the effect of ‘<code>zfcd ~</code>’.</p>
+<p>The second form changes to the directory previously current.</p>
+<p>The third form attempts to change the current directory by replacing the
+first occurrence of the string <code>old</code> with the string <code>new</code> in the
+current directory.</p>
+<p>Note that in this command, and indeed anywhere a remote filename is
+expected, the string which on the local host corresponds to ‘<code>~</code>’ is
+converted back to a ‘<code>~</code>’ before being passed to the remote machine.
+This is convenient because of the way expansion is performed on the
+command line before <code>zfcd</code> receives a string. For example, suppose the
+command is ‘<code>zfcd ~/foo</code>’. The shell will expand this to a full path
+such as ‘<code>zfcd /home/user2/pws/foo</code>’. At this stage, <code>zfcd</code> recognises
+the initial path as corresponding to ‘<code>~</code>’ and will send the directory
+to the remote host as <code>~/foo</code>, so that the ‘<code>~</code>’ will be expanded by the
+server to the correct remote host directory. Other named directories of
+the form ‘<code>~name</code>’ are not treated in this fashion.</p>
+<p><span id="index-zfhere"></span></p>
+<p><code>zfhere</code></p>
+<p>Change directory on the remote server to the one corresponding to the
+current local directory, with special handling of ‘<code>~</code>’ as in <code>zfcd</code>.
+For example, if the current local directory is <code>~/foo/bar</code>, then
+<code>zfhere</code> performs the effect of ‘<code>zfcd ~/foo/bar</code>’.</p>
+<p><span id="index-zfdir"></span></p>
+<p><code>zfdir</code> [ <code>-rfd</code> ] [ <code>-</code> ] [ <code>dir-options</code> ] [ <code>dir</code> ]</p>
+<p>Produce a long directory listing. The arguments <code>dir-options</code> and <code>dir</code>
+are passed directly to the server and their effect is implementation
+dependent, but specifying a particular remote directory <code>dir</code> is usually
+possible. The output is passed through a pager given by the environment
+variable <code>$PAGER</code>, or ‘<code>more</code>’ if that is not set.</p>
+<p>The directory is usually cached for re-use. In fact, two caches are
+maintained. One is for use when there is no <code>dir-options</code> or <code>dir</code>, i.e.
+a full listing of the current remote directory; it is flushed when the
+current remote directory changes. The other is kept for repeated use of
+<code>zfdir</code> with the same arguments; for example, repeated use of ‘<code>zfdir /pub/gnu</code>’ will only require the directory to be retrieved on the first
+call. Alternatively, this cache can be re-viewed with the <code>-r</code> option.
+As relative directories will confuse <code>zfdir</code>, the <code>-f</code> option can be
+used to force the cache to be flushed before the directory is listed.
+The option <code>-d</code> will delete both caches without showing a directory
+listing; it will also delete the cache of file names in the current
+remote directory, if any.</p>
+<p><span id="index-zfls"></span></p>
+<p><code>zfls</code> [ <code>ls-options</code> ] [ <code>dir</code> ]</p>
+<p>List files on the remote server. With no arguments, this will produce a
+simple list of file names for the current remote directory. Any
+arguments are passed directly to the server. No pager and no caching is
+used.</p>
+<hr />
+<p><span id="Status-commands"></span></p>
+<h3 id="2533-status-commands"><a class="header" href="#2533-status-commands">25.3.3 Status commands</a></h3>
+<p><span id="index-zftype"></span></p>
+<p><code>zftype</code> [ <code>type</code> ]</p>
+<p>With no arguments, show the type of data to be transferred, usually
+ASCII or binary. With an argument, change the type: the types ‘<code>A</code>’ or
+‘<code>ASCII</code>’ for ASCII data and ‘<code>B</code>’ or ‘<code>BINARY</code>’, ‘<code>I</code>’ or ‘<code>IMAGE</code>’
+for binary data are understood case-insensitively.</p>
+<p><span id="index-zfstat"></span></p>
+<p><code>zfstat</code> [ <code>-v</code> ]</p>
+<p>Show the status of the current or last connection, as well as the status
+of some of <code>zftp</code>’s status variables. With the <code>-v</code> option, a more
+verbose listing is produced by querying the server for its version of
+events, too.</p>
+<hr />
+<p><span id="Retrieving-files"></span></p>
+<h3 id="2534-retrieving-files"><a class="header" href="#2534-retrieving-files">25.3.4 Retrieving files</a></h3>
+<p>The commands for retrieving files all take at least two options. <code>-G</code>
+suppresses remote filename expansion which would otherwise be performed
+(see below for a more detailed description of that). <code>-t</code> attempts to
+set the modification time of the local file to that of the remote file:
+see the description of the function <code>zfrtime</code> below for more
+information.</p>
+<p><span id="index-zfget"></span></p>
+<p><code>zfget</code> [ <code>-Gtc</code> ] <code>file1</code> ...</p>
+<p>Retrieve all the listed files <code>file1</code> ... one at a time from the remote
+server. If a file contains a ‘<code>/</code>’, the full name is passed to the
+remote server, but the file is stored locally under the name given by
+the part after the final ‘<code>/</code>’. The option <code>-c</code> (cat) forces all files
+to be sent as a single stream to standard output; in this case the <code>-t</code>
+option has no effect.</p>
+<p><span id="index-zfuget"></span></p>
+<p><code>zfuget</code> [ <code>-Gvst</code> ] <code>file1</code> ...</p>
+<p>As <code>zfget</code>, but only retrieve files where the version on the remote
+server is newer (has a later modification time), or where the local file
+does not exist. If the remote file is older but the files have different
+sizes, or if the sizes are the same but the remote file is newer, the
+user will usually be queried. With the option <code>-s</code>, the command runs
+silently and will always retrieve the file in either of those two cases.
+With the option <code>-v</code>, the command prints more information about the
+files while it is working out whether or not to transfer them.</p>
+<p><span id="index-zfcget"></span></p>
+<p><code>zfcget</code> [ <code>-Gt</code> ] <code>file1</code> ...</p>
+<p>As <code>zfget</code>, but if any of the local files exists, and is shorter than
+the corresponding remote file, the command assumes that it is the result
+of a partially completed transfer and attempts to transfer the rest of
+the file. This is useful on a poor connection which keeps failing.</p>
+<p>Note that this requires a commonly implemented, but non-standard,
+version of the FTP protocol, so is not guaranteed to work on all
+servers.</p>
+<p><span id="index-zfgcp"></span></p>
+<p><code>zfgcp</code> [ <code>-Gt</code> ] <code>remote-file</code> <code>local-file</code></p>
+<p><code>zfgcp</code> [ <code>-Gt</code> ] <code>rfile1</code> ... <code>ldir</code></p>
+<p>This retrieves files from the remote server with arguments behaving
+similarly to the <code>cp</code> command.</p>
+<p>In the first form, copy <code>remote-file</code> from the server to the local file
+<code>local-file</code>.</p>
+<p>In the second form, copy all the remote files <code>rfile1</code> ... into the
+local directory <code>ldir</code> retaining the same basenames. This assumes UNIX
+directory semantics.</p>
+<hr />
+<p><span id="Sending-files"></span></p>
+<h3 id="2535-sending-files"><a class="header" href="#2535-sending-files">25.3.5 Sending files</a></h3>
+<p><span id="index-zfput"></span></p>
+<p><code>zfput</code> [ <code>-r</code> ] <code>file1</code> ...</p>
+<p>Send all the <code>file1</code> ... given separately to the remote server. If a
+filename contains a ‘<code>/</code>’, the full filename is used locally to find the
+file, but only the basename is used for the remote file name.</p>
+<p>With the option <code>-r</code>, if any of the <code>files</code> are directories they are
+sent recursively with all their subdirectories, including files
+beginning with ‘<code>.</code>’. This requires that the remote machine understand
+UNIX file semantics, since ‘<code>/</code>’ is used as a directory separator.</p>
+<p><span id="index-zfuput"></span></p>
+<p><code>zfuput</code> [ <code>-vs</code> ] <code>file1</code> ...</p>
+<p>As <code>zfput</code>, but only send files which are newer than their remote
+equivalents, or if the remote file does not exist. The logic is the same
+as for <code>zfuget</code>, but reversed between local and remote files.</p>
+<p><span id="index-zfcput"></span></p>
+<p><code>zfcput</code> <code>file1</code> ...</p>
+<p>As <code>zfput</code>, but if any remote file already exists and is shorter than
+the local equivalent, assume it is the result of an incomplete transfer
+and send the rest of the file to append to the existing part. As the FTP
+append command is part of the standard set, this is in principle more
+likely to work than <code>zfcget</code>.</p>
+<p><span id="index-zfpcp"></span></p>
+<p><code>zfpcp</code> <code>local-file</code> <code>remote-file</code></p>
+<p><code>zfpcp</code> <code>lfile1</code> ... <code>rdir</code></p>
+<p>This sends files to the remote server with arguments behaving similarly
+to the <code>cp</code> command.</p>
+<p>With two arguments, copy <code>local-file</code> to the server as <code>remote-file</code>.</p>
+<p>With more than two arguments, copy all the local files <code>lfile1</code> ... into
+the existing remote directory <code>rdir</code> retaining the same basenames. This
+assumes UNIX directory semantics.</p>
+<p>A problem arises if you attempt to use <code>zfpcp</code> <code>lfile1</code> <code>rdir</code>, i.e. the
+second form of copying but with two arguments, as the command has no
+simple way of knowing if <code>rdir</code> corresponds to a directory or a
+filename. It attempts to resolve this in various ways. First, if the
+<code>rdir</code> argument is ‘<code>.</code>’ or ‘<code>..</code>’ or ends in a slash, it is assumed to
+be a directory. Secondly, if the operation of copying to a remote file
+in the first form failed, and the remote server sends back the expected
+failure code 553 and a reply including the string ‘<code>Is a directory</code>’,
+then <code>zfpcp</code> will retry using the second form.</p>
+<hr />
+<p><span id="Closing-the-connection"></span></p>
+<h3 id="2536-closing-the-connection"><a class="header" href="#2536-closing-the-connection">25.3.6 Closing the connection</a></h3>
+<p><span id="index-zfclose"></span></p>
+<p><code>zfclose</code></p>
+<p>Close the connection.</p>
+<hr />
+<p><span id="Session-management"></span></p>
+<h3 id="2537-session-management"><a class="header" href="#2537-session-management">25.3.7 Session management</a></h3>
+<p><span id="index-zfsession"></span></p>
+<p><code>zfsession</code> [ <code>-lvod</code> ] [ <code>sessname</code> ]</p>
+<p>Allows you to manage multiple FTP sessions at once. By default,
+connections take place in a session called ‘<code>default</code>’; by giving the
+command ‘<code>zfsession</code> <code>sessname</code>’ you can change to a new or existing
+session with a name of your choice. The new session remembers its own
+connection, as well as associated shell parameters, and also the
+host/user parameters set by <code>zfparams</code>. Hence you can have different
+sessions set up to connect to different hosts, each remembering the
+appropriate host, user and password.</p>
+<p>With no arguments, <code>zfsession</code> prints the name of the current session;
+with the option <code>-l</code> it lists all sessions which currently exist, and
+with the option <code>-v</code> it gives a verbose list showing the host and
+directory for each session, where the current session is marked with an
+asterisk. With <code>-o</code>, it will switch to the most recent previous session.</p>
+<p>With <code>-d</code>, the given session (or else the current one) is removed;
+everything to do with it is completely forgotten. If it was the only
+session, a new session called ‘<code>default</code>’ is created and made current.
+It is safest not to delete sessions while background commands using
+<code>zftp</code> are active.</p>
+<p><span id="index-zftransfer"></span></p>
+<p><code>zftransfer</code> <code>sess1``:``file1</code> <code>sess2``:``file2</code></p>
+<p>Transfer files between two sessions; no local copy is made. The file is
+read from the session <code>sess1</code> as <code>file1</code> and written to session <code>sess2</code>
+as file <code>file2</code>; <code>file1</code> and <code>file2</code> may be relative to the current
+directories of the session. Either <code>sess1</code> or <code>sess2</code> may be omitted
+(though the colon should be retained if there is a possibility of a
+colon appearing in the file name) and defaults to the current session;
+<code>file2</code> may be omitted or may end with a slash, in which case the
+basename of <code>file1</code> will be added. The sessions <code>sess1</code> and <code>sess2</code> must
+be distinct.</p>
+<p>The operation is performed using pipes, so it is required that the
+connections still be valid in a subshell, which is not the case under
+versions of some operating systems, presumably due to a system bug.</p>
+<hr />
+<p><span id="Bookmarks"></span></p>
+<h3 id="2538-bookmarks"><a class="header" href="#2538-bookmarks">25.3.8 Bookmarks</a></h3>
+<p>The two functions <code>zfmark</code> and <code>zfgoto</code> allow you to ‘bookmark’ the
+present location (host, user and directory) of the current FTP
+connection for later use. The file to be used for storing and retrieving
+bookmarks is given by the parameter <code>$ZFTP_BMFILE</code>; if not set when one
+of the two functions is called, it will be set to the file <code>.zfbkmarks</code>
+in the directory where your zsh startup files live (usually <code>~</code>).</p>
+<p><span id="index-zfmark"></span></p>
+<p><code>zfmark</code> [ <code>bookmark</code> ]</p>
+<p>If given an argument, mark the current host, user and directory under
+the name <code>bookmark</code> for later use by <code>zfgoto</code>. If there is no connection
+open, use the values for the last connection immediately before it was
+closed; it is an error if there was none. Any existing bookmark under
+the same name will be silently replaced.</p>
+<p>If not given an argument, list the existing bookmarks and the points to
+which they refer in the form <code>user``@``host``:``directory</code>; this is the
+format in which they are stored, and the file may be edited directly.</p>
+<p><span id="index-zfgoto"></span></p>
+<p><code>zfgoto</code> [ <code>-n</code> ] <code>bookmark</code></p>
+<p>Return to the location given by <code>bookmark</code>, as previously set by
+<code>zfmark</code>. If the location has user ‘<code>ftp</code>’ or ‘<code>anonymous</code>’, open the
+connection with <code>zfanon</code>, so that no password is required. If the user
+and host parameters match those stored for the current session, if any,
+those will be used, and again no password is required. Otherwise a
+password will be prompted for.</p>
+<p>With the option <code>-n</code>, the bookmark is taken to be a nickname stored by
+the <code>ncftp</code> program in its bookmark file, which is assumed to be
+<code>~/.ncftp/bookmarks</code>. The function works identically in other ways. Note
+that there is no mechanism for adding or modifying <code>ncftp</code> bookmarks
+from the zftp functions.</p>
+<hr />
+<p><span id="Other-functions"></span></p>
+<h3 id="2539-other-functions"><a class="header" href="#2539-other-functions">25.3.9 Other functions</a></h3>
+<p>Mostly, these functions will not be called directly (apart from
+<code>zfinit</code>), but are described here for completeness. You may wish to
+alter <code>zftp_chpwd</code> and <code>zftp_progress</code>, in particular.</p>
+<p><span id="index-zfinit"></span></p>
+<p><code>zfinit</code> [ <code>-n</code> ]</p>
+<p>As described above, this is used to initialize the zftp function system.
+The <code>-n</code> option should be used if the zftp command is already built into
+the shell.</p>
+<p><span id="index-zfautocheck"></span></p>
+<p><code>zfautocheck</code> [ <code>-dn</code> ]</p>
+<p>This function is called to implement automatic reopening behaviour, as
+described in more detail below. The options must appear in the first
+argument; <code>-n</code> prevents the command from changing to the old directory,
+while <code>-d</code> prevents it from setting the variable <code>do_close</code>, which it
+otherwise does as a flag for automatically closing the connection after
+a transfer. The host and directory for the last session are stored in
+the variable <code>$zflastsession</code>, but the internal host/user/password
+parameters must also be correctly set.</p>
+<p><span id="index-zfcd_005fmatch"></span></p>
+<p><code>zfcd_match prefix suffix</code></p>
+<p>This performs matching for completion of remote directory names. If the
+remote server is UNIX, it will attempt to persuade the server to list
+the remote directory with subdirectories marked, which usually works but
+is not guaranteed. On other hosts it simply calls <code>zfget_match</code> and
+hence completes all files, not just directories. On some systems,
+directories may not even look like filenames.</p>
+<p><span id="index-zfget_005fmatch"></span></p>
+<p><code>zfget_match prefix suffix</code></p>
+<p>This performs matching for completion of remote filenames. It caches
+files for the current directory (only) in the shell parameter
+<code>$zftp_fcache</code>. It is in the form to be called by the <code>-K</code> option of
+<code>compctl</code>, but also works when called from a widget-style completion
+function with <code>prefix</code> and <code>suffix</code> set appropriately.</p>
+<p><span id="index-zfrglob"></span></p>
+<p><code>zfrglob varname</code></p>
+<p>Perform remote globbing, as describes in more detail below. <code>varname</code> is
+the name of a variable containing the pattern to be expanded; if there
+were any matches, the same variable will be set to the expanded set of
+filenames on return.</p>
+<p><span id="index-zfrtime"></span></p>
+<p><code>zfrtime</code> <code>lfile</code> <code>rfile</code> [ <code>time</code> ]</p>
+<p>Set the local file <code>lfile</code> to have the same modification time as the
+remote file <code>rfile</code>, or the explicit time <code>time</code> in FTP format
+<code>CCYYMMDDhhmmSS</code> for the GMT timezone. This uses the shell’s
+<code>zsh/datetime</code> module to perform the conversion from GMT to local time.</p>
+<p><span id="index-zftp_005fchpwd_002c-supplied-version"></span></p>
+<p><code>zftp_chpwd</code></p>
+<p>This function is called every time a connection is opened, or closed, or
+the remote directory changes. This version alters the title bar of an
+<code>xterm</code>-compatible or <code>sun-cmd</code> terminal emulator to reflect the local
+and remote hostnames and current directories. It works best when
+combined with the function <code>chpwd</code>. In particular, a function of the
+form</p>
+<div class="example">
+<pre><code class="language-example">chpwd() {
+  if [[ -n $ZFTP_USER ]]; then
+    zftp_chpwd
+  else
+    # usual chpwd e.g put host:directory in title bar
+  fi
+}
+</code></pre>
+</div>
+<p>fits in well.</p>
+<p><span id="index-zftp_005fprogress_002c-supplied-version"></span></p>
+<p><code>zftp_progress</code></p>
+<p>This function shows the status of the transfer. It will not write
+anything unless the output is going to a terminal; however, if you
+transfer files in the background, you should turn off progress reports
+by hand using ‘<code>zstyle ’:zftp:*’ progress none</code>’. Note also that if you
+alter it, any output <em>must</em> be to standard error, as standard output may
+be a file being received. The form of the progress meter, or whether it
+is used at all, can be configured without altering the function, as
+described in the next section.</p>
+<p><span id="index-zffcache"></span></p>
+<p><code>zffcache</code></p>
+<p>This is used to implement caching of files in the current directory for
+each session separately. It is used by <code>zfget_match</code> and <code>zfrglob</code>.</p>
+<hr />
+<p><span id="Miscellaneous-Features"></span>
+<span id="Miscellaneous-Features-1"></span></p>
+<h2 id="254-miscellaneous-features"><a class="header" href="#254-miscellaneous-features">25.4 Miscellaneous Features</a></h2>
+<hr />
+<p><span id="Configuration-3"></span></p>
+<h3 id="2541-configuration"><a class="header" href="#2541-configuration">25.4.1 Configuration</a></h3>
+<p><span id="index-zftp-function-system_002c-configuration"></span>
+<span id="index-zftp-function-system_002c-styles"></span>
+<span id="index-styles-in-zftp-functions"></span></p>
+<p>Various styles are available using the standard shell style mechanism,
+described in <a href="Zsh-Modules.html#The-zsh_002fzutil-Module">The zsh/zutil
+Module</a>. Briefly, the command
+‘<code>zstyle ’:zftp:*’</code> <code>style</code> <code>value</code> ...’. defines the <code>style</code> to have
+value <code>value</code>; more than one value may be given, although that is not
+useful in the cases described here. These values will then be used
+throughout the zftp function system. For more precise control, the first
+argument, which gives a context in which the style applies, can be
+modified to include a particular function, as for example
+‘<code>:zftp:zfget</code>’: the style will then have the given value only in
+the <code>zfget</code> function. Values for the same style in different contexts
+may be set; the most specific function will be used, where strings are
+held to be more specific than patterns, and longer patterns and shorter
+patterns. Note that only the top level function name, as called by the
+user, is used; calling of lower level functions is transparent to the
+user. Hence modifications to the title bar in <code>zftp_chpwd</code> use the
+contexts <code>:zftp:zfopen</code>, <code>:zftp:zfcd</code>, etc., depending where it was
+called from. The following styles are understood:</p>
+<p><span id="index-progress_002c-zftp-style"></span></p>
+<p><code>progress</code></p>
+<p>Controls the way that <code>zftp_progress</code> reports on the progress of a
+transfer. If empty, unset, or ‘<code>none</code>’, no progress report is made; if
+‘<code>bar</code>’ a growing bar of inverse video is shown; if ‘<code>percent</code>’ (or
+any other string, though this may change in future), the percentage of
+the file transferred is shown. The bar meter requires that the width of
+the terminal be available via the <code>$COLUMNS</code> parameter (normally this is
+set automatically). If the size of the file being transferred is not
+available, <code>bar</code> and <code>percent</code> meters will simply show the number of
+bytes transferred so far.</p>
+<p>When <code>zfinit</code> is run, if this style is not defined for the context
+<code>:zftp:*</code>, it will be set to ‘bar’.</p>
+<p><span id="index-update_002c-zftp-style"></span></p>
+<p><code>update</code></p>
+<p>Specifies the minimum time interval between updates of the progress
+meter in seconds. No update is made unless new data has been received,
+so the actual time interval is limited only by <code>$ZFTP_TIMEOUT</code>.</p>
+<p>As described for <code>progress</code>, <code>zfinit</code> will force this to default to 1.</p>
+<p><span id="index-remote_002dglob_002c-zftp-style"></span></p>
+<p><code>remote-glob</code></p>
+<p>If set to ‘<code>1</code>’, ‘<code>yes</code>’ or ‘<code>true</code>’, filename generation (globbing) is
+performed on the remote machine instead of by zsh itself; see below.</p>
+<p><span id="index-titlebar_002c-zftp-style"></span></p>
+<p><code>titlebar</code></p>
+<p>If set to ‘<code>1</code>’, ‘<code>yes</code>’ or ‘<code>true</code>’, <code>zftp_chpwd</code> will put the remote
+host and remote directory into the titlebar of terminal emulators such
+as xterm or sun-cmd that allow this.</p>
+<p>As described for <code>progress</code>, <code>zfinit</code> will force this to default to 1.</p>
+<p><span id="index-chpwd_002c-zftp-style"></span></p>
+<p><code>chpwd</code></p>
+<p>If set to ‘<code>1</code>’ ‘<code>yes</code>’ or ‘<code>true</code>’, <code>zftp_chpwd</code> will call the function
+<code>chpwd</code> when a connection is closed. This is useful if the remote host
+details were put into the terminal title bar by <code>zftp_chpwd</code> and your
+usual <code>chpwd</code> also modifies the title bar.</p>
+<p>When <code>zfinit</code> is run, it will determine whether <code>chpwd</code> exists and if so
+it will set the default value for the style to 1 if none exists already.</p>
+<p>Note that there is also an associative array <code>zfconfig</code> which contains
+values used by the function system. This should not be modified or
+overwritten.</p>
+<hr />
+<p><span id="Remote-globbing"></span></p>
+<h3 id="2542-remote-globbing"><a class="header" href="#2542-remote-globbing">25.4.2 Remote globbing</a></h3>
+<p><span id="index-zftp-function-system_002c-remote-globbing"></span></p>
+<p>The commands for retrieving files usually perform filename generation
+(globbing) on their arguments; this can be turned off by passing the
+option <code>-G</code> to each of the commands. Normally this operates by
+retrieving a complete list of files for the directory in question, then
+matching these locally against the pattern supplied. This has the
+advantage that the full range of zsh patterns (respecting the setting of
+the option <code>EXTENDED_GLOB</code>) can be used. However, it means that the
+directory part of a filename will not be expanded and must be given
+exactly. If the remote server does not support the UNIX directory
+semantics, directory handling is problematic and it is recommended that
+globbing only be used within the current directory. The list of files in
+the current directory, if retrieved, will be cached, so that subsequent
+globs in the same directory without an intervening <code>zfcd</code> are much
+faster.</p>
+<p>If the <code>remote-glob</code> style (see above) is set, globbing is instead
+performed on the remote host: the server is asked for a list of matching
+files. This is highly dependent on how the server is implemented, though
+typically UNIX servers will provide support for basic glob patterns.
+This may in some cases be faster, as it avoids retrieving the entire
+list of directory contents.</p>
+<hr />
+<p><span id="Automatic-and-temporary-reopening"></span></p>
+<h3 id="2543-automatic-and-temporary-reopening"><a class="header" href="#2543-automatic-and-temporary-reopening">25.4.3 Automatic and temporary reopening</a></h3>
+<p><span id="index-zftp-function-system_002c-automatic-reopening"></span></p>
+<p>As described for the <code>zfopen</code> command, a subsequent <code>zfopen</code> with no
+parameters will reopen the connection to the last host (this includes
+connections made with the <code>zfanon</code> command). Opened in this fashion, the
+connection starts in the default remote directory and will remain open
+until explicitly closed.</p>
+<p>Automatic re-opening is also available. If a connection is not currently
+open and a command requiring a connection is given, the last connection
+is implicitly reopened. In this case the directory which was current
+when the connection was closed again becomes the current directory
+(unless, of course, the command given changes it). Automatic reopening
+will also take place if the connection was close by the remote server
+for whatever reason (e.g. a timeout). It is not available if the <code>-1</code>
+option to <code>zfopen</code> or <code>zfanon</code> was used.</p>
+<p>Furthermore, if the command issued is a file transfer, the connection
+will be closed after the transfer is finished, hence providing a
+one-shot mode for transfers. This does not apply to directory changing
+or listing commands; for example a <code>zfdir</code> may reopen a connection but
+will leave it open. Also, automatic closure will only ever happen in the
+same command as automatic opening, i.e a <code>zfdir</code> directly followed by a
+<code>zfget</code> will never close the connection automatically.</p>
+<p>Information about the previous connection is given by the <code>zfstat</code>
+function. So, for example, if that reports:</p>
+<div class="example">
+<pre><code class="language-example">Session:        default
+Not connected.
+Last session:   ftp.bar.com:/pub/textfiles
+</code></pre>
+</div>
+<p>then the command <code>zfget file.txt</code> will attempt to reopen a connection to
+<code>ftp.bar.com</code>, retrieve the file <code>/pub/textfiles/file.txt</code>, and
+immediately close the connection again. On the other hand, <code>zfcd ..</code>
+will open the connection in the directory <code>/pub</code> and leave it open.</p>
+<p>Note that all the above is local to each session; if you return to a
+previous session, the connection for that session is the one which will
+be reopened.</p>
+<hr />
+<p><span id="Completion-3"></span></p>
+<h3 id="2544-completion"><a class="header" href="#2544-completion">25.4.4 Completion</a></h3>
+<p>Completion of local and remote files, directories, sessions and
+bookmarks is supported. The older, <code>compctl</code>-style completion is defined
+when <code>zfinit</code> is called; support for the new widget-based completion
+system is provided in the function <code>Completion/Zsh/Command/_zftp</code>, which
+should be installed with the other functions of the completion system
+and hence should automatically be available.</p>
+<hr />
+<p>This document was generated on <em>February 15, 2020</em> using
+<a href="http://www.nongnu.org/texi2html/"><em>texi2html 5.0</em></a>.<br />
+Zsh version 5.8, released on February 14, 2020.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="TCP-Function-System.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="User-Contributions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="TCP-Function-System.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="User-Contributions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>TCP Function System - Zsh Manual</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="The-Z-Shell-Manual.html"><strong aria-hidden="true">1.</strong> The Z Shell Manual</a></li><li class="chapter-item expanded "><a href="Introduction.html"><strong aria-hidden="true">2.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="Roadmap.html"><strong aria-hidden="true">3.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="Invocation.html"><strong aria-hidden="true">4.</strong> Invocation</a></li><li class="chapter-item expanded "><a href="Files.html"><strong aria-hidden="true">5.</strong> Files</a></li><li class="chapter-item expanded "><a href="Shell-Grammar.html"><strong aria-hidden="true">6.</strong> Shell Grammar</a></li><li class="chapter-item expanded "><a href="Redirection.html"><strong aria-hidden="true">7.</strong> Redirection</a></li><li class="chapter-item expanded "><a href="Command-Execution.html"><strong aria-hidden="true">8.</strong> Command Execution</a></li><li class="chapter-item expanded "><a href="Functions.html"><strong aria-hidden="true">9.</strong> Functions</a></li><li class="chapter-item expanded "><a href="Jobs-_0026-Signals.html"><strong aria-hidden="true">10.</strong> Jobs &amp; Signals</a></li><li class="chapter-item expanded "><a href="Arithmetic-Evaluation.html"><strong aria-hidden="true">11.</strong> Arithmetic Evaluation</a></li><li class="chapter-item expanded "><a href="Conditional-Expressions.html"><strong aria-hidden="true">12.</strong> Conditional Expressions</a></li><li class="chapter-item expanded "><a href="Prompt-Expansion.html"><strong aria-hidden="true">13.</strong> Prompt Expansion</a></li><li class="chapter-item expanded "><a href="Expansion.html"><strong aria-hidden="true">14.</strong> Expansion</a></li><li class="chapter-item expanded "><a href="Parameters.html"><strong aria-hidden="true">15.</strong> Parameters</a></li><li class="chapter-item expanded "><a href="Options.html"><strong aria-hidden="true">16.</strong> Options</a></li><li class="chapter-item expanded "><a href="Shell-Builtin-Commands.html"><strong aria-hidden="true">17.</strong> Shell Builtin Commands</a></li><li class="chapter-item expanded "><a href="Zsh-Line-Editor.html"><strong aria-hidden="true">18.</strong> Zsh Line Editor</a></li><li class="chapter-item expanded "><a href="Completion-Widgets.html"><strong aria-hidden="true">19.</strong> Completion Widgets</a></li><li class="chapter-item expanded "><a href="Completion-System.html"><strong aria-hidden="true">20.</strong> Completion System</a></li><li class="chapter-item expanded "><a href="Completion-Using-compctl.html"><strong aria-hidden="true">21.</strong> Completion Using compctl</a></li><li class="chapter-item expanded "><a href="Zsh-Modules.html"><strong aria-hidden="true">22.</strong> Zsh Modules</a></li><li class="chapter-item expanded "><a href="Calendar-Function-System.html"><strong aria-hidden="true">23.</strong> Calendar Function System</a></li><li class="chapter-item expanded "><a href="TCP-Function-System.html" class="active"><strong aria-hidden="true">24.</strong> TCP Function System</a></li><li class="chapter-item expanded "><a href="Zftp-Function-System.html"><strong aria-hidden="true">25.</strong> Zftp Function System</a></li><li class="chapter-item expanded "><a href="User-Contributions.html"><strong aria-hidden="true">26.</strong> User Contributions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#24-tcp-function-system">24 TCP Function System</a>
+<ul>
+<li><a href="#241-description">24.1 Description</a></li>
+<li><a href="#242-tcp-user-functions">24.2 TCP User Functions</a>
+<ul>
+<li><a href="#2421-basic-io">24.2.1 Basic I/O</a></li>
+<li><a href="#2422-session-management">24.2.2 Session Management</a></li>
+<li><a href="#2423-advanced-io">24.2.3 Advanced I/O</a></li>
+<li><a href="#2424-one-shot-file-transfer">24.2.4 ‘One-shot’ file transfer</a></li>
+</ul>
+</li>
+<li><a href="#243-tcp-user-defined-functions">24.3 TCP User-defined Functions</a></li>
+<li><a href="#244-tcp-utility-functions">24.4 TCP Utility Functions</a></li>
+<li><a href="#245-tcp-user-parameters">24.5 TCP User Parameters</a></li>
+<li><a href="#246-tcp-user-defined-parameters">24.6 TCP User-defined Parameters</a></li>
+<li><a href="#247-tcp-utility-parameters">24.7 TCP Utility Parameters</a></li>
+<li><a href="#248-tcp-examples">24.8 TCP Examples</a></li>
+<li><a href="#249-tcp-bugs">24.9 TCP Bugs</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="TCP-Function-System"></span>
+<span id="TCP-Function-System-1"></span></p>
+<h1 id="24-tcp-function-system"><a class="header" href="#24-tcp-function-system">24 TCP Function System</a></h1>
+<p><span id="index-TCP-function-system"></span>
+<span id="index-ztcp_002c-function-system-based-on"></span></p>
+<hr />
+<p><span id="Description"></span></p>
+<h2 id="241-description"><a class="header" href="#241-description">24.1 Description</a></h2>
+<p>A module <code>zsh/net/tcp</code> is provided to provide network I/O over TCP/IP
+from within the shell; see its description in <a href="Zsh-Modules.html#Zsh-Modules">Zsh
+Modules</a>. This manual page describes a
+function suite based on the module. If the module is installed, the
+functions are usually installed at the same time, in which case they
+will be available for autoloading in the default function search path.
+In addition to the <code>zsh/net/tcp</code> module, the <code>zsh/zselect</code> module is
+used to implement timeouts on read operations. For troubleshooting tips,
+consult the corresponding advice for the <code>zftp</code> functions described in
+<a href="Zftp-Function-System.html#Zftp-Function-System">Zftp Function System</a>.</p>
+<p>There are functions corresponding to the basic I/O operations open,
+close, read and send, named <code>tcp_open</code> etc., as well as a function
+<code>tcp_expect</code> for pattern match analysis of data read as input. The
+system makes it easy to receive data from and send data to multiple
+named sessions at once. In addition, it can be linked with the shell’s
+line editor in such a way that input data is automatically shown at the
+terminal. Other facilities available including logging, filtering and
+configurable output prompts.</p>
+<p>To use the system where it is available, it should be enough to
+‘<code>autoload -U tcp_open</code>’ and run <code>tcp_open</code> as documented below to
+start a session. The <code>tcp_open</code> function will autoload the remaining
+functions.</p>
+<hr />
+<p><span id="TCP-Functions"></span> <span id="TCP-User-Functions"></span></p>
+<h2 id="242-tcp-user-functions"><a class="header" href="#242-tcp-user-functions">24.2 TCP User Functions</a></h2>
+<hr />
+<p><span id="Basic-I_002fO"></span></p>
+<h3 id="2421-basic-io"><a class="header" href="#2421-basic-io">24.2.1 Basic I/O</a></h3>
+<p><span id="index-tcp_005fopen"></span></p>
+<p><code>tcp_open</code> [ <code>-qz</code> ] <code>host port</code> [ <code>sess</code> ]</p>
+<p><code>tcp_open</code> [ <code>-qz</code> ] [ <code>-s</code> <code>sess</code> | <code>-l</code> <code>sess</code>[<code>,</code>...] ] ...</p>
+<p><code>tcp_open</code> [ <code>-qz</code> ] [ <code>-a</code> <code>fd</code> | <code>-f</code> <code>fd</code> ] [ <code>sess</code> ]</p>
+<p>Open a new session. In the first and simplest form, open a TCP
+connection to host <code>host</code> at port <code>port</code>; numeric and symbolic forms are
+understood for both.</p>
+<p>If <code>sess</code> is given, this becomes the name of the session which can be
+used to refer to multiple different TCP connections. If <code>sess</code> is not
+given, the function will invent a numeric name value (note this is <em>not</em>
+the same as the file descriptor to which the session is attached). It is
+recommended that session names not include ‘funny’ characters, where
+funny characters are not well-defined but certainly do not include
+alphanumerics or underscores, and certainly do include whitespace.</p>
+<p>In the second case, one or more sessions to be opened are given by name.
+A single session name is given after <code>-s</code> and a comma-separated list
+after <code>-l</code>; both options may be repeated as many times as necessary. A
+failure to open any session causes <code>tcp_open</code> to abort. The host and
+port are read from the file <code>.ztcp_sessions</code> in the same directory as
+the user’s zsh initialisation files, i.e. usually the home directory,
+but <code>$ZDOTDIR</code> if that is set. The file consists of lines each giving a
+session name and the corresponding host and port, in that order (note
+the session name comes first, not last), separated by whitespace.</p>
+<p>The third form allows passive and fake TCP connections. If the option
+<code>-a</code> is used, its argument is a file descriptor open for listening for
+connections. No function front-end is provided to open such a file
+descriptor, but a call to ‘<code>ztcp -l</code> <code>port</code>’ will create one with the
+file descriptor stored in the parameter <code>$REPLY</code>. The listening port can
+be closed with ‘<code>ztcp -c</code> <code>fd</code>’. A call to ‘<code>tcp_open -a</code> <code>fd</code>’ will
+block until a remote TCP connection is made to <code>port</code> on the local
+machine. At this point, a session is created in the usual way and is
+largely indistinguishable from an active connection created with one of
+the first two forms.</p>
+<p>If the option <code>-f</code> is used, its argument is a file descriptor which is
+used directly as if it were a TCP session. How well the remainder of the
+TCP function system copes with this depends on what actually underlies
+this file descriptor. A regular file is likely to be unusable; a FIFO
+(pipe) of some sort will work better, but note that it is not a good
+idea for two different sessions to attempt to read from the same FIFO at
+once.</p>
+<p>If the option <code>-q</code> is given with any of the three forms, <code>tcp_open</code> will
+not print informational messages, although it will in any case exit with
+an appropriate status.</p>
+<p>If the line editor (zle) is in use, which is typically the case if the
+shell is interactive, <code>tcp_open</code> installs a handler inside zle which
+will check for new data at the same time as it checks for keyboard
+input. This is convenient as the shell consumes no CPU time while
+waiting; the test is performed by the operating system. Giving the
+option <code>-z</code> to any of the forms of <code>tcp_open</code> prevents the handler from
+being installed, so data must be read explicitly. Note, however, this is
+not necessary for executing complete sets of send and read commands from
+a function, as zle is not active at this point. Generally speaking, the
+handler is only active when the shell is waiting for input at a command
+prompt or in the <code>vared</code> builtin. The option has no effect if zle is not
+active; ‘<code>[[ -o zle]]</code>’ will test for this.</p>
+<p>The first session to be opened becomes the current session and
+subsequent calls to <code>tcp_open</code> do not change it. The current session is
+stored in the parameter <code>$TCP_SESS</code>; see below for more detail about the
+parameters used by the system.</p>
+<p>The function <code>tcp_on_open</code>, if defined, is called when a session is
+opened. See the description below.</p>
+<p><span id="index-tcp_005fclose"></span></p>
+<p><code>tcp_close</code> [ <code>-qn</code> ] [ <code>-a</code> | <code>-l</code> <code>sess</code>[<code>,</code>...] | <code>sess</code> ... ]</p>
+<p>Close the named sessions, or the current session if none is given, or
+all open sessions if <code>-a</code> is given. The options <code>-l</code> and <code>-s</code> are both
+handled for consistency with <code>tcp_open</code>, although the latter is
+redundant.</p>
+<p>If the session being closed is the current one, <code>$TCP_SESS</code> is unset,
+leaving no current session, even if there are other sessions still open.</p>
+<p>If the session was opened with <code>tcp_open -f</code>, the file descriptor is
+closed so long as it is in the range 0 to 9 accessible directly from the
+command line. If the option <code>-n</code> is given, no attempt will be made to
+close file descriptors in this case. The <code>-n</code> option is not used for
+genuine <code>ztcp</code> session; the file descriptors are always closed with the
+session.</p>
+<p>If the option <code>-q</code> is given, no informational messages will be printed.</p>
+<p><span id="index-tcp_005fread"></span></p>
+<p><code>tcp_read </code>[ <code>-bdq</code> ] [ <code>-t</code> <code>TO</code> ] [ <code>-T</code> <code>TO</code> ]</p>
+<p><code>         </code>[ <code>-a</code> | <code>-u</code> <code>fd</code>[<code>,</code>...] | <code>-l</code> <code>sess</code>[<code>,</code>...] | <code>-s</code>
+<code>sess</code> ... ]</p>
+<p>Perform a read operation on the current session, or on a list of
+sessions if any are given with <code>-u</code>, <code>-l</code> or <code>-s</code>, or all open sessions
+if the option <code>-a</code> is given. Any of the <code>-u</code>, <code>-l</code> or <code>-s</code> options may
+be repeated or mixed together. The <code>-u</code> option specifies a file
+descriptor directly (only those managed by this system are useful), the
+other two specify sessions as described for <code>tcp_open</code> above.</p>
+<p>The function checks for new data available on all the sessions listed.
+Unless the <code>-b</code> option is given, it will not block waiting for new data.
+Any one line of data from any of the available sessions will be read,
+stored in the parameter <code>$TCP_LINE</code>, and displayed to standard output
+unless <code>$TCP_SILENT</code> contains a non-empty string. When printed to
+standard output the string <code>$TCP_PROMPT</code> will be shown at the start of
+the line; the default form for this includes the name of the session
+being read. See below for more information on these parameters. In this
+mode, <code>tcp_read</code> can be called repeatedly until it returns status 2
+which indicates all pending input from all specified sessions has been
+handled.</p>
+<p>With the option <code>-b</code>, equivalent to an infinite timeout, the function
+will block until a line is available to read from one of the specified
+sessions. However, only a single line is returned.</p>
+<p>The option <code>-d</code> indicates that all pending input should be drained. In
+this case <code>tcp_read</code> may process multiple lines in the manner given
+above; only the last is stored in <code>$TCP_LINE</code>, but the complete set is
+stored in the array <code>$tcp_lines</code>. This is cleared at the start of each
+call to <code>tcp_read</code>.</p>
+<p>The options <code>-t</code> and <code>-T</code> specify a timeout in seconds, which may be a
+floating point number for increased accuracy. With <code>-t</code> the timeout is
+applied before each line read. With <code>-T</code>, the timeout applies to the
+overall operation, possibly including multiple read operations if the
+option <code>-d</code> is present; without this option, there is no distinction
+between <code>-t</code> and <code>-T</code>.</p>
+<p>The function does not print informational messages, but if the option
+<code>-q</code> is given, no error message is printed for a non-existent session.</p>
+<p>A return status of 2 indicates a timeout or no data to read. Any other
+non-zero return status indicates some error condition.</p>
+<p>See <code>tcp_log</code> for how to control where data is sent by <code>tcp_read</code>.</p>
+<p><span id="index-tcp_005fsend"></span></p>
+<p><code>tcp_send</code> [ <code>-cnq</code> ] [ <code>-s</code> <code>sess</code> | <code>-l</code> <code>sess</code>[<code>,</code>...] ] <code>data</code>
+...</p>
+<p><code>tcp_send</code> [ <code>-cnq</code> ] <code>-a</code> <code>data</code> ...</p>
+<p>Send the supplied data strings to all the specified sessions in turn.
+The underlying operation differs little from a ‘<code>print -r</code>’ to the
+session’s file descriptor, although it attempts to prevent the shell
+from dying owing to a <code>SIGPIPE</code> caused by an attempt to write to a
+defunct session.</p>
+<p>The option <code>-c</code> causes <code>tcp_send</code> to behave like <code>cat</code>. It reads lines
+from standard input until end of input and sends them in turn to the
+specified session(s) exactly as if they were given as <code>data</code> arguments
+to individual <code>tcp_send</code> commands.</p>
+<p>The option <code>-n</code> prevents <code>tcp_send</code> from putting a newline at the end of
+the data strings.</p>
+<p>The remaining options all behave as for <code>tcp_read</code>.</p>
+<p>The data arguments are not further processed once they have been passed
+to <code>tcp_send</code>; they are simply passed down to <code>print -r</code>.</p>
+<p>If the parameter <code>$TCP_OUTPUT</code> is a non-empty string and logging is
+enabled then the data sent to each session will be echoed to the log
+file(s) with <code>$TCP_OUTPUT</code> in front where appropriate, much in the
+manner of <code>$TCP_PROMPT</code>.</p>
+<hr />
+<p><span id="Session-Management"></span></p>
+<h3 id="2422-session-management"><a class="header" href="#2422-session-management">24.2.2 Session Management</a></h3>
+<p><span id="index-tcp_005falias"></span></p>
+<p><code>tcp_alias</code> [ <code>-q</code> ] <code>alias``=``sess</code> ...</p>
+<p><code>tcp_alias</code> [ <code>-q</code> ] [ <code>alias</code> ... ]</p>
+<p><code>tcp_alias</code> <code>-d</code> [ <code>-q</code> ] <code>alias</code> ...</p>
+<p>This function is not particularly well tested.</p>
+<p>The first form creates an alias for a session name; <code>alias</code> can then be
+used to refer to the existing session <code>sess</code>. As many aliases may be
+listed as required.</p>
+<p>The second form lists any aliases specified, or all aliases if none.</p>
+<p>The third form deletes all the aliases listed. The underlying sessions
+are not affected.</p>
+<p>The option <code>-q</code> suppresses an inconsistently chosen subset of error
+messages.</p>
+<p><span id="index-tcp_005flog"></span></p>
+<p><code>tcp_log</code> [ <code>-asc</code> ] [ <code>-n</code> | <code>-N</code> ] [ <code>logfile</code> ]</p>
+<p>With an argument <code>logfile</code>, all future input from <code>tcp_read</code> will be
+logged to the named file. Unless <code>-a</code> (append) is given, this file will
+first be truncated or created empty. With no arguments, show the current
+status of logging.</p>
+<p>With the option <code>-s</code>, per-session logging is enabled. Input from
+<code>tcp_read</code> is output to the file <code>logfile``.``sess</code>. As the session is
+automatically discriminated by the filename, the contents are raw (no
+<code>$TCP_PROMPT</code>). The option <code>-a</code> applies as above. Per-session logging
+and logging of all data in one file are not mutually exclusive.</p>
+<p>The option <code>-c</code> closes all logging, both complete and per-session logs.</p>
+<p>The options <code>-n</code> and <code>-N</code> respectively turn off or restore output of
+data read by <code>tcp_read</code> to standard output; hence ‘<code>tcp_log -cn</code>’ turns
+off all output by <code>tcp_read</code>.</p>
+<p>The function is purely a convenient front end to setting the parameters
+<code>$TCP_LOG</code>, <code>$TCP_LOG_SESS</code>, <code>$TCP_SILENT</code>, which are described below.</p>
+<p><span id="index-tcp_005frename"></span></p>
+<p><code>tcp_rename</code> <code>old</code> <code>new</code></p>
+<p>Rename session <code>old</code> to session <code>new</code>. The old name becomes invalid.</p>
+<p><span id="index-tcp_005fsess"></span></p>
+<p><code>tcp_sess</code> [ <code>sess</code> [ <code>command</code> [ <code>arg</code> ... ] ] ]</p>
+<p>With no arguments, list all the open sessions and associated file
+descriptors. The current session is marked with a star. For use in
+functions, direct access to the parameters <code>$tcp_by_name</code>, <code>$tcp_by_fd</code>
+and <code>$TCP_SESS</code> is probably more convenient; see below.</p>
+<p>With a <code>sess</code> argument, set the current session to <code>sess</code>. This is
+equivalent to changing <code>$TCP_SESS</code> directly.</p>
+<p>With additional arguments, temporarily set the current session while
+executing ‘<code>command</code> <code>arg</code> ...’. <code>command</code> is re-evaluated so as to
+expand aliases etc., but the remaining <code>arg</code>s are passed through as that
+appear to <code>tcp_sess</code>. The original session is restored when <code>tcp_sess</code>
+exits.</p>
+<hr />
+<p><span id="Advanced-I_002fO"></span></p>
+<h3 id="2423-advanced-io"><a class="header" href="#2423-advanced-io">24.2.3 Advanced I/O</a></h3>
+<p><span id="index-tcp_005fcommand"></span></p>
+<p><code>tcp_command</code> <code>send-option</code> ... <code>send-argument</code> ...</p>
+<p>This is a convenient front-end to <code>tcp_send</code>. All arguments are passed
+to <code>tcp_send</code>, then the function pauses waiting for data. While data is
+arriving at least every <code>$TCP_TIMEOUT</code> (default 0.3) seconds, data is
+handled and printed out according to the current settings. Status 0 is
+always returned.</p>
+<p>This is generally only useful for interactive use, to prevent the
+display becoming fragmented by output returned from the connection.
+Within a programme or function it is generally better to handle reading
+data by a more explicit method.</p>
+<p><span id="index-tcp_005fexpect"></span></p>
+<p><code>tcp_expect </code>[ <code>-q</code> ] [ <code>-p</code> <code>var</code> | <code>-P</code> <code>var</code> ] [ <code>-t</code> <code>TO</code> |
+<code>-T</code> <code>TO</code> ]</p>
+<p><code>           </code>[ <code>-a</code> | <code>-s</code> <code>sess</code> | <code>-l</code> <code>sess</code>[<code>,</code>...] ] <code>pattern</code>
+...</p>
+<p>Wait for input matching any of the given <code>pattern</code>s from any of the
+specified sessions. Input is ignored until an input line matches one of
+the given patterns; at this point status zero is returned, the matching
+line is stored in <code>$TCP_LINE</code>, and the full set of lines read during the
+call to <code>tcp_expect</code> is stored in the array <code>$tcp_expect_lines</code>.</p>
+<p>Sessions are specified in the same way as <code>tcp_read</code>: the default is to
+use the current session, otherwise the sessions specified by <code>-a</code>, <code>-s</code>,
+or <code>-l</code> are used.</p>
+<p>Each <code>pattern</code> is a standard zsh extended-globbing pattern; note that it
+needs to be quoted to avoid it being expanded immediately by filename
+generation. It must match the full line, so to match a substring there
+must be a ‘<code>*</code>’ at the start and end. The line matched against includes
+the <code>$TCP_PROMPT</code> added by <code>tcp_read</code>. It is possible to include the
+globbing flags ‘<code>#b</code>’ or ‘<code>#m</code>’ in the patterns to make backreferences
+available in the parameters <code>$MATCH</code>, <code>$match</code>, etc., as described in
+the base zsh documentation on pattern matching.</p>
+<p>Unlike <code>tcp_read</code>, the default behaviour of <code>tcp_expect</code> is to block
+indefinitely until the required input is found. This can be modified by
+specifying a timeout with <code>-t</code> or <code>-T</code>; these function as in <code>tcp_read</code>,
+specifying a per-read or overall timeout, respectively, in seconds, as
+an integer or floating-point number. As <code>tcp_read</code>, the function returns
+status 2 if a timeout occurs.</p>
+<p>The function returns as soon as any one of the patterns given match. If
+the caller needs to know which of the patterns matched, the option <code>-p</code>
+<code>var</code> can be used; on return, <code>$var</code> is set to the number of the pattern
+using ordinary zsh indexing, i.e. the first is 1, and so on. Note the
+absence of a ‘<code>$</code>’ in front of <code>var</code>. To avoid clashes, the parameter
+cannot begin with ‘<code>_expect</code>’. The index -1 is used if there is a
+timeout and 0 if there is no match.</p>
+<p>The option <code>-P</code> <code>var</code> works similarly to <code>-p</code>, but instead of numerical
+indexes the regular arguments must begin with a prefix followed by a
+colon: that prefix is then used as a tag to which <code>var</code> is set when the
+argument matches. The tag <code>timeout</code> is used if there is a timeout and
+the empty string if there is no match. Note it is matches do not need to
+be distinguished.</p>
+<p>The option <code>-q</code> is passed directly down to <code>tcp_read</code>.</p>
+<p>As all input is done via <code>tcp_read</code>, all the usual rules about output of
+lines read apply. One exception is that the parameter <code>$tcp_lines</code> will
+only reflect the line actually matched by <code>tcp_expect</code>; use
+<code>$tcp_expect_lines</code> for the full set of lines read during the function
+call.</p>
+<p><span id="index-tcp_005fproxy"></span></p>
+<p><code>tcp_proxy</code></p>
+<p>This is a simple-minded function to accept a TCP connection and execute
+a command with I/O redirected to the connection. Extreme caution should
+be taken as there is no security whatsoever and this can leave your
+computer open to the world. Ideally, it should only be used behind a
+firewall.</p>
+<p>The first argument is a TCP port on which the function will listen.</p>
+<p>The remaining arguments give a command and its arguments to execute with
+standard input, standard output and standard error redirected to the
+file descriptor on which the TCP session has been accepted. If no
+command is given, a new zsh is started. This gives everyone on your
+network direct access to your account, which in many cases will be a bad
+thing.</p>
+<p>The command is run in the background, so <code>tcp_proxy</code> can then accept new
+connections. It continues to accept new connections until interrupted.</p>
+<p><span id="index-tcp_005fspam"></span></p>
+<p><code>tcp_spam</code> [ <code>-ertv</code> ] [ <code>-a</code> | <code>-s</code> <code>sess</code> | <code>-l</code> <code>sess</code>[<code>,</code>...]
+] <code>cmd</code> [ <code>arg</code> ... ]</p>
+<p>Execute ‘<code>cmd</code> [ <code>arg</code> ... ]’ for each session in turn. Note this
+executes the command and arguments; it does not send the command line as
+data unless the <code>-t</code> (transmit) option is given.</p>
+<p>The sessions may be selected explicitly with the standard <code>-a</code>, <code>-s</code> or
+<code>-l</code> options, or may be chosen implicitly. If none of the three options
+is given the rules are: first, if the array <code>$tcp_spam_list</code> is set,
+this is taken as the list of sessions, otherwise all sessions are taken.
+Second, any sessions given in the array <code>$tcp_no_spam_list</code> are removed
+from the list of sessions.</p>
+<p>Normally, any sessions added by the ‘<code>-a</code>’ flag or when all sessions are
+chosen implicitly are spammed in alphabetic order; sessions given by the
+<code>$tcp_spam_list</code> array or on the command line are spammed in the order
+given. The <code>-r</code> flag reverses the order however it was arrived it.</p>
+<p>The <code>-v</code> flag specifies that a <code>$TCP_PROMPT</code> will be output before each
+session. This is output after any modification to <code>TCP_SESS</code> by the
+user-defined <code>tcp_on_spam</code> function described below. (Obviously that
+function is able to generate its own output.)</p>
+<p>If the option <code>-e</code> is present, the line given as ‘<code>cmd</code> [ <code>arg</code> ... ]’
+is executed using <code>eval</code>, otherwise it is executed without any further
+processing.</p>
+<p><span id="index-tcp_005ftalk"></span></p>
+<p><code>tcp_talk</code></p>
+<p>This is a fairly simple-minded attempt to force input to the line editor
+to go straight to the default <code>TCP_SESS</code>.</p>
+<p>An escape string, <code>$TCP_TALK_ESCAPE</code>, default ‘<code>:</code>’, is used to allow
+access to normal shell operation. If it is on its own at the start of
+the line, or followed only by whitespace, the line editor returns to
+normal operation. Otherwise, the string and any following whitespace are
+skipped and the remainder of the line executed as shell input without
+any change of the line editor’s operating mode.</p>
+<p>The current implementation is somewhat deficient in terms of use of the
+command history. For this reason, many users will prefer to use some
+form of alternative approach for sending data easily to the current
+session. One simple approach is to alias some special character (such as
+‘<code>%</code>’) to ‘<code>tcp_command -``-</code>’.</p>
+<p><span id="index-tcp_005fwait"></span></p>
+<p><code>tcp_wait</code></p>
+<p>The sole argument is an integer or floating point number which gives the
+seconds to delay. The shell will do nothing for that period except wait
+for input on all TCP sessions by calling <code>tcp_read -a</code>. This is similar
+to the interactive behaviour at the command prompt when zle handlers are
+installed.</p>
+<hr />
+<p><span id="g_t_0060One_002dshot_0027-file-transfer"></span></p>
+<h3 id="2424-one-shot-file-transfer"><a class="header" href="#2424-one-shot-file-transfer">24.2.4 ‘One-shot’ file transfer</a></h3>
+<ul>
+<li>
+<p><code>tcp_point</code> <code>port</code><br />
+<code>tcp_shoot</code> <code>host</code> <code>port</code><br />
+This pair of functions provide a simple way to transfer a file
+between two hosts within the shell. Note, however, that bulk data
+transfer is currently done using <code>cat</code>. <code>tcp_point</code> reads any data
+arriving at <code>port</code> and sends it to standard output; <code>tcp_shoot</code>
+connects to <code>port</code> on <code>host</code> and sends its standard input. Any
+unused <code>port</code> may be used; the standard mechanism for picking a port
+is to think of a random four-digit number above 1024 until one
+works.</p>
+<p>To transfer a file from host <code>woodcock</code> to host <code>springes</code>, on
+<code>springes</code>:</p>
+<div class="example">
+<pre><code class="language-example">tcp_point 8091 &gt;output_file
+</code></pre>
+</div>
+<p>and on <code>woodcock</code>:</p>
+<div class="example">
+<pre><code class="language-example">tcp_shoot springes 8091 &lt;input_file
+</code></pre>
+</div>
+<p>As these two functions do not require <code>tcp_open</code> to set up a TCP
+connection first, they may need to be autoloaded separately.</p>
+</li>
+</ul>
+<hr />
+<p><span id="TCP-User_002ddefined-Functions"></span></p>
+<h2 id="243-tcp-user-defined-functions"><a class="header" href="#243-tcp-user-defined-functions">24.3 TCP User-defined Functions</a></h2>
+<p>Certain functions, if defined by the user, will be called by the
+function system in certain contexts. This facility depends on the module
+<code>zsh/parameter</code>, which is usually available in interactive shells as the
+completion system depends on it. None of the functions need be defined;
+they simply provide convenient hooks when necessary.</p>
+<p>Typically, these are called after the requested action has been taken,
+so that the various parameters will reflect the new state.</p>
+<p><span id="index-tcp_005fon_005falias"></span></p>
+<p><code>tcp_on_alias</code> <code>alias</code> <code>fd</code></p>
+<p>When an alias is defined, this function will be called with two
+arguments: the name of the alias, and the file descriptor of the
+corresponding session.</p>
+<p><span id="index-tcp_005fon_005fawol"></span></p>
+<p><code>tcp_on_awol</code> <code>sess</code> <code>fd</code></p>
+<p>If the function <code>tcp_fd_handler</code> is handling input from the line editor
+and detects that the file descriptor is no longer reusable, by default
+it removes it from the list of file descriptors handled by this method
+and prints a message. If the function <code>tcp_on_awol</code> is defined it is
+called immediately before this point. It may return status 100, which
+indicates that the normal handling should still be performed; any other
+return status indicates that no further action should be taken and the
+<code>tcp_fd_handler</code> should return immediately with the given status.
+Typically the action of <code>tcp_on_awol</code> will be to close the session.</p>
+<p>The variable <code>TCP_INVALIDATE_ZLE</code> will be a non-empty string if it is
+necessary to invalidate the line editor display using ‘<code>zle -I</code>’ before
+printing output from the function.</p>
+<p>(‘AWOL’ is military jargon for ‘absent without leave’ or some variation.
+It has no pre-existing technical meaning known to the author.)</p>
+<p><span id="index-tcp_005fon_005fclose"></span></p>
+<p><code>tcp_on_close</code> <code>sess</code> <code>fd</code></p>
+<p>This is called with the name of a session being closed and the file
+descriptor which corresponded to that session. Both will be invalid by
+the time the function is called.</p>
+<p><span id="index-tcp_005fon_005fopen"></span></p>
+<p><code>tcp_on_open</code> <code>sess</code> <code>fd</code></p>
+<p>This is called after a new session has been defined with the session
+name and file descriptor as arguments. If it returns a non-zero status,
+opening the session is assumed to fail and the session is closed again;
+however, <code>tcp_open</code> will continue to attempt to open any remaining
+sessions given on the command line.</p>
+<p><span id="index-tcp_005fon_005frename"></span></p>
+<p><code>tcp_on_rename</code> <code>oldsess</code> <code>fd</code> <code>newsess</code></p>
+<p>This is called after a session has been renamed with the three arguments
+old session name, file descriptor, new session name.</p>
+<p><span id="index-tcp_005fon_005fspam"></span></p>
+<p><code>tcp_on_spam</code> <code>sess</code> <code>command ...</code></p>
+<p>This is called once for each session spammed, just <em>before</em> a command is
+executed for a session by <code>tcp_spam</code>. The arguments are the session name
+followed by the command list to be executed. If <code>tcp_spam</code> was called
+with the option <code>-t</code>, the first command will be <code>tcp_send</code>.</p>
+<p>This function is called after <code>$TCP_SESS</code> is set to reflect the session
+to be spammed, but before any use of it is made. Hence it is possible to
+alter the value of <code>$TCP_SESS</code> within this function. For example, the
+session arguments to <code>tcp_spam</code> could include extra information to be
+stripped off and processed in <code>tcp_on_spam</code>.</p>
+<p>If the function sets the parameter <code>$REPLY</code> to ‘<code>done</code>’, the command
+line is not executed; in addition, no prompt is printed for the <code>-v</code>
+option to <code>tcp_spam</code>.</p>
+<p><span id="index-tcp_005fon_005funalias"></span></p>
+<p><code>tcp_on_unalias</code> <code>alias</code> <code>fd</code></p>
+<p>This is called with the name of an alias and the corresponding session’s
+file descriptor after an alias has been deleted.</p>
+<hr />
+<p><span id="TCP-Utility-Functions"></span></p>
+<h2 id="244-tcp-utility-functions"><a class="header" href="#244-tcp-utility-functions">24.4 TCP Utility Functions</a></h2>
+<p>The following functions are used by the TCP function system but will
+rarely if ever need to be called directly.</p>
+<p><span id="index-tcp_005ffd_005fhandler"></span></p>
+<p><code>tcp_fd_handler</code></p>
+<p>This is the function installed by <code>tcp_open</code> for handling input from
+within the line editor, if that is required. It is in the format
+documented for the builtin ‘<code>zle -F</code>’ in <a href="Zsh-Line-Editor.html#Zle-Builtins">Zle
+Builtins</a> .</p>
+<p>While active, the function sets the parameter <code>TCP_HANDLER_ACTIVE</code> to 1.
+This allows shell code called internally (for example, by setting
+<code>tcp_on_read</code>) to tell if is being called when the shell is otherwise
+idle at the editor prompt.</p>
+<p><span id="index-tcp_005foutput"></span></p>
+<p><code>tcp_output</code> [ <code>-q</code> ] <code>-P</code> <code>prompt</code> <code>-F</code> <code>fd</code> <code>-S</code> <code>sess</code></p>
+<p>This function is used for both logging and handling output to standard
+output, from within <code>tcp_read</code> and (if <code>$TCP_OUTPUT</code> is set) <code>tcp_send</code>.</p>
+<p>The <code>prompt</code> to use is specified by <code>-P</code>; the default is the empty
+string. It can contain:</p>
+<ul>
+<li>
+<p><code>%c</code><br />
+Expands to 1 if the session is the current session, otherwise 0.
+Used with ternary expressions such as ‘<code>%(c.-.+)</code>’ to output ‘<code>+</code>’
+for the current session and ‘<code>-</code>’ otherwise.</p>
+</li>
+<li>
+<p><code>%f</code><br />
+Replaced by the session’s file descriptor.</p>
+</li>
+<li>
+<p><code>%s</code><br />
+Replaced by the session name.</p>
+</li>
+<li>
+<p><code>%%</code><br />
+Replaced by a single ‘<code>%</code>’.</p>
+</li>
+</ul>
+<p>The option <code>-q</code> suppresses output to standard output, but not to any log
+files which are configured.</p>
+<p>The <code>-S</code> and <code>-F</code> options are used to pass in the session name and file
+descriptor for possible replacement in the prompt.</p>
+<hr />
+<p><span id="TCP-Parameters"></span> <span id="TCP-User-Parameters"></span></p>
+<h2 id="245-tcp-user-parameters"><a class="header" href="#245-tcp-user-parameters">24.5 TCP User Parameters</a></h2>
+<p>Parameters follow the usual convention that uppercase is used for
+scalars and integers, while lowercase is used for normal and associative
+array. It is always safe for user code to read these parameters. Some
+parameters may also be set; these are noted explicitly. Others are
+included in this group as they are set by the function system for the
+user’s benefit, i.e. setting them is typically not useful but is benign.</p>
+<p>For example, ‘<code>local TCP_SILENT=1</code>’ specifies that data read during the
+function call will not be printed to standard output, regardless of the
+setting outside the function. Likewise, ‘<code>local TCP_SESS=``sess</code>’ sets a
+session for the duration of a function, and ‘<code>local TCP_PROMPT=</code>’
+specifies that no prompt is used for input during the function.</p>
+<p><span id="index-tcp_005fexpect_005flines"></span></p>
+<p><code>tcp_expect_lines</code></p>
+<p>Array. The set of lines read during the last call to <code>tcp_expect</code>,
+including the last (<code>$TCP_LINE</code>).</p>
+<p><span id="index-tcp_005ffilter"></span></p>
+<p><code>tcp_filter</code></p>
+<p>Array. May be set directly. A set of extended globbing patterns which,
+if matched in <code>tcp_output</code>, will cause the line not to be printed to
+standard output. The patterns should be defined as described for the
+arguments to <code>tcp_expect</code>. Output of line to log files is not affected.</p>
+<p><span id="index-TCP_005fHANDLER_005fACTIVE"></span></p>
+<p><code>TCP_HANDLER_ACTIVE</code></p>
+<p>Scalar. Set to 1 within <code>tcp_fd_handler</code> to indicate to functions called
+recursively that they have been called during an editor session.
+Otherwise unset.</p>
+<p><span id="index-TCP_005fLINE"></span></p>
+<p><code>TCP_LINE</code></p>
+<p>The last line read by <code>tcp_read</code>, and hence also <code>tcp_expect</code>.</p>
+<p><span id="index-TCP_005fLINE_005fFD"></span></p>
+<p><code>TCP_LINE_FD</code></p>
+<p>The file descriptor from which <code>$TCP_LINE</code> was read.
+<code>${tcp_by_fd[$TCP_LINE_FD]}</code> will give the corresponding session name.</p>
+<p><span id="index-tcp_005flines"></span></p>
+<p><code>tcp_lines</code></p>
+<p>Array. The set of lines read during the last call to <code>tcp_read</code>,
+including the last (<code>$TCP_LINE</code>).</p>
+<p><span id="index-TCP_005fLOG"></span></p>
+<p><code>TCP_LOG</code></p>
+<p>May be set directly, although it is also controlled by <code>tcp_log</code>. The
+name of a file to which output from all sessions will be sent. The
+output is proceeded by the usual <code>$TCP_PROMPT</code>. If it is not an absolute
+path name, it will follow the user’s current directory.</p>
+<p><span id="index-TCP_005fLOG_005fSESS"></span></p>
+<p><code>TCP_LOG_SESS</code></p>
+<p>May be set directly, although it is also controlled by <code>tcp_log</code>. The
+prefix for a set of files to which output from each session separately
+will be sent; the full filename is <code>${TCP_LOG_SESS}.``sess</code>. Output to
+each file is raw; no prompt is added. If it is not an absolute path
+name, it will follow the user’s current directory.</p>
+<p><span id="index-tcp_005fno_005fspam_005flist"></span></p>
+<p><code>tcp_no_spam_list</code></p>
+<p>Array. May be set directly. See <code>tcp_spam</code> for how this is used.</p>
+<p><span id="index-TCP_005fOUTPUT"></span></p>
+<p><code>TCP_OUTPUT</code></p>
+<p>May be set directly. If a non-empty string, any data sent to a session
+by <code>tcp_send</code> will be logged. This parameter gives the prompt to be used
+in a file specified by <code>$TCP_LOG</code> but not in a file generated from
+<code>$TCP_LOG_SESS</code>. The prompt string has the same format as <code>TCP_PROMPT</code>
+and the same rules for its use apply.</p>
+<p><span id="index-TCP_005fPROMPT"></span></p>
+<p><code>TCP_PROMPT</code></p>
+<p>May be set directly. Used as the prefix for data read by <code>tcp_read</code>
+which is printed to standard output or to the log file given by
+<code>$TCP_LOG</code>, if any. Any ‘<code>%s</code>’, ‘<code>%f</code>’ or ‘<code>%%</code>’ occurring in the string
+will be replaced by the name of the session, the session’s underlying
+file descriptor, or a single ‘<code>%</code>’, respectively. The expression ‘<code>%c</code>’
+expands to 1 if the session being read is the current session, else 0;
+this is most useful in ternary expressions such as ‘<code>%(c.-.+)</code>’ which
+outputs ‘<code>+</code>’ if the session is the current one, else ‘<code>-</code>’.</p>
+<p>If the prompt starts with <code>%P</code>, this is stripped and the complete result
+of the previous stage is passed through standard prompt <code>%</code>-style
+formatting before being output.</p>
+<p><span id="index-TCP_005fREAD_005fDEBUG"></span></p>
+<p><code>TCP_READ_DEBUG</code></p>
+<p>May be set directly. If this has non-zero length, <code>tcp_read</code> will give
+some limited diagnostics about data being read.</p>
+<p><span id="index-TCP_005fSECONDS_005fSTART"></span></p>
+<p><code>TCP_SECONDS_START</code></p>
+<p>This value is created and initialised to zero by tcp_open.</p>
+<p>The functions <code>tcp_read</code> and <code>tcp_expect</code> use the shell’s <code>SECONDS</code>
+parameter for their own timing purposes. If that parameter is not of
+floating point type on entry to one of the functions, it will create a
+local parameter <code>SECONDS</code> which is floating point and set the parameter
+<code>TCP_SECONDS_START</code> to the previous value of <code>$SECONDS</code>. If the
+parameter is already floating point, it is used without a local copy
+being created and <code>TCP_SECONDS_START</code> is not set. As the global value is
+zero, the shell elapsed time is guaranteed to be the sum of <code>$SECONDS</code>
+and <code>$TCP_SECONDS_START</code>.</p>
+<p>This can be avoided by setting <code>SECONDS</code> globally to a floating point
+value using ‘<code>typeset -F SECONDS</code>’; then the TCP functions will never
+make a local copy and never set <code>TCP_SECONDS_START</code> to a non-zero value.</p>
+<p><span id="index-TCP_005fSESS"></span></p>
+<p><code>TCP_SESS</code></p>
+<p>May be set directly. The current session; must refer to one of the
+sessions established by <code>tcp_open</code>.</p>
+<p><span id="index-TCP_005fSILENT"></span></p>
+<p><code>TCP_SILENT</code></p>
+<p>May be set directly, although it is also controlled by <code>tcp_log</code>. If of
+non-zero length, data read by <code>tcp_read</code> will not be written to standard
+output, though may still be written to a log file.</p>
+<p><span id="index-tcp_005fspam_005flist"></span></p>
+<p><code>tcp_spam_list</code></p>
+<p>Array. May be set directly. See the description of the function
+<code>tcp_spam</code> for how this is used.</p>
+<p><span id="index-TCP_005fTALK_005fESCAPE"></span></p>
+<p><code>TCP_TALK_ESCAPE</code></p>
+<p>May be set directly. See the description of the function <code>tcp_talk</code> for
+how this is used.</p>
+<p><span id="index-TCP_005fTIMEOUT"></span></p>
+<p><code>TCP_TIMEOUT</code></p>
+<p>May be set directly. Currently this is only used by the function
+<code>tcp_command</code>, see above.</p>
+<hr />
+<p><span id="TCP-User_002ddefined-Parameters"></span></p>
+<h2 id="246-tcp-user-defined-parameters"><a class="header" href="#246-tcp-user-defined-parameters">24.6 TCP User-defined Parameters</a></h2>
+<p>The following parameters are not set by the function system, but have a
+special effect if set by the user.</p>
+<p><span id="index-tcp_005fon_005fread"></span></p>
+<p><code>tcp_on_read</code></p>
+<p>This should be an associative array; if it is not, the behaviour is
+undefined. Each key is the name of a shell function or other command,
+and the corresponding value is a shell pattern (using <code>EXTENDED_GLOB</code>).
+Every line read from a TCP session directly or indirectly using
+<code>tcp_read</code> (which includes lines read by <code>tcp_expect</code>) is compared
+against the pattern. If the line matches, the command given in the key
+is called with two arguments: the name of the session from which the
+line was read, and the line itself.</p>
+<p>If any function called to handle a line returns a non-zero status, the
+line is not output. Thus a <code>tcp_on_read</code> handler containing only the
+instruction ‘<code>return 1</code>’ can be used to suppress output of particular
+lines (see, however, <code>tcp_filter</code> above). However, the line is still
+stored in <code>TCP_LINE</code> and <code>tcp_lines</code>; this occurs after all
+<code>tcp_on_read</code> processing.</p>
+<hr />
+<p><span id="TCP-Utility-Parameters"></span></p>
+<h2 id="247-tcp-utility-parameters"><a class="header" href="#247-tcp-utility-parameters">24.7 TCP Utility Parameters</a></h2>
+<p>These parameters are controlled by the function system; they may be read
+directly, but should not usually be set by user code.</p>
+<p><span id="index-tcp_005faliases"></span></p>
+<p><code>tcp_aliases</code></p>
+<p>Associative array. The keys are the names of sessions established with
+<code>tcp_open</code>; each value is a space-separated list of aliases which refer
+to that session.</p>
+<p><span id="index-tcp_005fby_005ffd"></span></p>
+<p><code>tcp_by_fd</code></p>
+<p>Associative array. The keys are session file descriptors; each value is
+the name of that session.</p>
+<p><span id="index-tcp_005fby_005fname"></span></p>
+<p><code>tcp_by_name</code></p>
+<p>Associative array. The keys are the names of sessions; each value is the
+file descriptor associated with that session.</p>
+<hr />
+<p><span id="TCP-Examples"></span> <span id="TCP-Examples-1"></span></p>
+<h2 id="248-tcp-examples"><a class="header" href="#248-tcp-examples">24.8 TCP Examples</a></h2>
+<p>Here is a trivial example using a remote calculator.</p>
+<p>To create a calculator server on port 7337 (see the <code>dc</code> manual page for
+quite how infuriating the underlying command is):</p>
+<div class="example">
+<pre><code class="language-example">tcp_proxy 7337 dc
+</code></pre>
+</div>
+<p>To connect to this from the same host with a session also named ‘<code>dc</code>’:</p>
+<div class="example">
+<pre><code class="language-example">tcp_open localhost 7337 dc
+</code></pre>
+</div>
+<p>To send a command to the remote session and wait a short while for
+output (assuming <code>dc</code> is the current session):</p>
+<div class="example">
+<pre><code class="language-example">tcp_command 2 4 + p
+</code></pre>
+</div>
+<p>To close the session:</p>
+<div class="example">
+<pre><code class="language-example">tcp_close
+</code></pre>
+</div>
+<p>The <code>tcp_proxy</code> needs to be killed to be stopped. Note this will not
+usually kill any connections which have already been accepted, and also
+that the port is not immediately available for reuse.</p>
+<p>The following chunk of code puts a list of sessions into an xterm
+header, with the current session followed by a star.</p>
+<div class="example">
+<pre><code class="language-example">print -n &quot;\033]2;TCP:&quot; ${(k)tcp_by_name:/$TCP_SESS/$TCP_SESS\*} &quot;\a&quot;
+</code></pre>
+</div>
+<hr />
+<p><span id="TCP-Bugs"></span> <span id="TCP-Bugs-1"></span></p>
+<h2 id="249-tcp-bugs"><a class="header" href="#249-tcp-bugs">24.9 TCP Bugs</a></h2>
+<p>The function <code>tcp_read</code> uses the shell’s normal <code>read</code> builtin. As this
+reads a complete line at once, data arriving without a terminating
+newline can cause the function to block indefinitely.</p>
+<p>Though the function suite works well for interactive use and for data
+arriving in small amounts, the performance when large amounts of data
+are being exchanged is likely to be extremely poor.</p>
+<hr />
+<p>This document was generated on <em>February 15, 2020</em> using
+<a href="http://www.nongnu.org/texi2html/"><em>texi2html 5.0</em></a>.<br />
+Zsh version 5.8, released on February 14, 2020.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="Calendar-Function-System.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="Zftp-Function-System.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="Calendar-Function-System.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="Zftp-Function-System.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

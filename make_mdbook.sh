@@ -36,15 +36,9 @@ for file in "${_zsh_html_src_dir}"/*.html; do
   sed -i '/\[\]{#/d' "$file"
 done
 
-# Rename file extensions from html to md, preserving the original file's name,
-# and move them to _zsh_md_src for staging
-for file in "${_zsh_html_src_dir}"/*.html; do 
-  mv -- "$file" "${_zsh_md_src_dir}/$(basename -- "$file" .html).md"
-done
-
 # Convert html to md with pandoc
-for file in "${_zsh_md_src_dir}"/*.md; do
-  pandoc "$file" -f html -t gfm -o "$file";
+for file in "${_zsh_html_src_dir}"/*.html; do
+  pandoc "$file" -f html -t gfm -o "${_zsh_md_src_dir}/$(basename -- "$file" .html).md";
 done
 
 # Move md files to mdbook_src_dir
@@ -56,13 +50,13 @@ done
 doctoc "${_mdbook_src_dir}"/*.md
 
 # Generate SUMMARY.md from zsh_toc.html
-python3 "${PWD}/generate_summary.py" > "${_mdbook_src_dir}/SUMMARY.md"
+python3 "${PWD}/gen_summ_manual.py" > "${_mdbook_src_dir}/SUMMARY.md"
 
 # Copy md files to mdbook src
 # First ensure the src directory is empty
-rm -rf "${PWD}/src"
-mkdir "${PWD}/src"
-cp -rf "${_mdbook_src_dir}"/* "${PWD}/src/"
+rm -rf "${PWD}/zsh_manual/src"
+mkdir "${PWD}/zsh_manual/src"
+cp -rf "${_mdbook_src_dir}"/* "${PWD}/zsh_manual/src/"
 
 # Cleanup zsh_doc_tmp
 rm -rf "${_zsh_doc_tmp_dir}"

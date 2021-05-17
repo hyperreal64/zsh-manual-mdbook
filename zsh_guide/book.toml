@@ -1,0 +1,6 @@
+[book]
+authors = ["Jeffrey Serio"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Zsh User's Guide"

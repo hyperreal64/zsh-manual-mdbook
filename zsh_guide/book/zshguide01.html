@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>A short introduction - Zsh User&#x27;s Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="zshguide.html">A User's Guide to the Z-Shell</a></li><li class="chapter-item expanded "><a href="zshguide01.html" class="active"><strong aria-hidden="true">1.</strong> A short introduction</a></li><li class="chapter-item expanded "><a href="zshguide02.html"><strong aria-hidden="true">2.</strong> What to put in your startup files</a></li><li class="chapter-item expanded "><a href="zshguide03.html"><strong aria-hidden="true">3.</strong> Dealing with basic shell syntax</a></li><li class="chapter-item expanded "><a href="zshguide04.html"><strong aria-hidden="true">4.</strong> The Z-Shell Line Editor</a></li><li class="chapter-item expanded "><a href="zshguide05.html"><strong aria-hidden="true">5.</strong> Substitutions</a></li><li class="chapter-item expanded "><a href="zshguide06.html"><strong aria-hidden="true">6.</strong> Completion, old and new</a></li><li class="chapter-item expanded "><a href="zshguide07.html"><strong aria-hidden="true">7.</strong> Modules and other bits and pieces Not written</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Zsh User&#x27;s Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#chapter-1-a-short-introduction">Chapter 1: A short introduction</a>
+<ul>
+<li><a href="#11-other-shells-and-other-guides">1.1: Other shells and other guides</a></li>
+<li><a href="#12-versions-of-zsh">1.2: Versions of zsh</a></li>
+<li><a href="#13-conventions">1.3: Conventions</a></li>
+<li><a href="#14-acknowledgments">1.4: Acknowledgments</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="intro"></span><span id="l1"></span></p>
+<h1 id="chapter-1-a-short-introduction"><a class="header" href="#chapter-1-a-short-introduction">Chapter 1: A short introduction</a></h1>
+<p>The Z-Shell, `zsh' for short, is a command interpreter for UNIX
+systems, or in UNIX jargon, a `shell', because it wraps around the
+commands you use. More than that, however, zsh is a particularly
+powerful shell --- and it's free, and under regular maintenance --- with
+lots of interactive features allowing you to do the maximum work with
+the minimum fuss. Of course, for that you need to know what the shell
+can do and how, and that's what this guide is for.</p>
+<p>The most basic basics: I shall assume you have access to a UNIX system,
+otherwise the rest of this is not going to be much use. You can also use
+zsh under Windows by installing Cygwin, which provides a UNIX-like
+environment for programmes --- given the weakness of the standard
+Windows command interpreter, this is a good thing to do. There are ports
+of older versions of zsh to Windows which run natively, i.e. without a
+UNIX environment, although these have a slightly different behaviour in
+some respects and I won't talk about them further.</p>
+<p>I'll also assume some basic knowledge of UNIX; you should know how the
+filesystem works, i.e. what <code>/home/users/pws/.zshrc</code> and <code>../file</code> mean,
+and some basic commands, for example <code>ls</code>, and you should have
+experience with using <code>rm</code> to delete completely the wrong file by
+accident, and that sort of thing. In something like `<code>rm file</code>', I will
+often refer to the `command' (<code>rm</code>, of course) and the `argument(s)'
+(anything else coming after the command which is used by it), and to the
+complete thing you typed in one go as the `command line'.</p>
+<p>You're also going to need zsh itself; if you're reading this, you may
+well already have it, but if you don't, you or your system administrator
+should read <a href="zshguide08.html#appa">Appendix A</a>. For now, we'll suppose
+you're sitting in front of a terminal with zsh already running.</p>
+<p>Now to the shell. After you log in, you probably see some prompt (a
+series of symbols on the screen indicating that you can input a
+command), such as `<code>$</code>' or `<code>%</code>', possibly with some other text in
+front --- later, we'll see how you can change that text in interesting
+ways. That prompt comes from the shell. Type `<code>print hello</code>', then
+backspace over `<code>hello</code>' and type `<code>goodbye</code>'. Now hit the `Return'
+key (or `Enter' key, I'll just say <code>&lt;RET&gt;</code> from now on, likewise
+<code>&lt;TAB&gt;</code> for the tab key, <code>&lt;SPC&gt;</code> for the space key); unless you have a
+serious practical-joker problem on your system, you will see
+`<code>goodbye</code>', and the shell will come back with another prompt. All of
+the time up to when you hit <code>&lt;RET&gt;</code>, you were interacting with the shell
+and its editor, called `Z-Shell Line Editor' or `zle' for short; only
+then did the shell go away and tell the <code>print</code> command to print out a
+message. So you can see that the shell is important.</p>
+<p>However, if all you're doing is typing simple commands like that, why do
+you need anything complicated? In that case, you don't; but real life's
+not that simple. In the rest of this guide, I describe how, with zsh's
+help, you can:</p>
+<ul>
+<li>customise the environment in which you work, by using startup files,</li>
+<li>write your own commands to shorten tasks and store things in shell
+variables (`parameters') so you don't have to remember them,</li>
+<li>use zle to minimise the amount of typing you have to do --- in zsh,
+you can even edit small files that way,</li>
+<li>pick the files you want to use for a particular command such as <code>mv</code>
+or <code>ls</code> using zsh's very sophisticated filename generation (known
+colloquially as `globbing') system,</li>
+<li>tell the editor what sort of arguments you use with particular
+commands, so that you only need to type part of the name and it will
+complete the rest, using zsh's unrivalled programmable completion
+system,</li>
+<li>use the extra add-ons (`modules') supplied with the latest version
+of zsh to do other things you usually can't do in a shell at all.</li>
+</ul>
+<p>That's only a tiny sample. Since there's so much to say, this guide will
+concentrate on the things zsh does best, and in particular the things it
+has which other shells don't. The next chapter gives a few of the
+basics, by trying to explain how to set the shell up the way you want
+it. Like the rest of the guide, it's not intended to be exhaustive, for
+which you should look at the shell manual.</p>
+<p>Some other things you should probably know straight away. First, the
+shell is always running, even when the command you typed is running,
+too; the shell simply hangs around waiting for it to finish: you may
+know from other shells about putting commands in the <strong>background</strong> by
+putting an `<code>&amp;</code>' after the command, which means that the shell doesn't
+wait for them to finish. The shell is there even if the command's in the
+foreground, but in this case doing nothing.</p>
+<p>Second, it doesn't just run other people's commands, it has some of its
+own, called <strong>builtin commands</strong> or just <strong>builtins</strong>, and you can even
+add your own commands as lists of instructions to the shell called
+<strong>functions</strong>; builtins and functions always run in the shell itself.
+That's important to know, because things which don't run in the shell
+itself can't affect it, and hence can't alter parameters, functions,
+aliases, and all the other things I shall talk about.</p>
+<p><span id="l2"></span></p>
+<h2 id="11-other-shells-and-other-guides"><a class="header" href="#11-other-shells-and-other-guides">1.1: Other shells and other guides</a></h2>
+<p>If you want a basic grounding in how shells work, what their syntax is
+(i.e. how to write commands), and how to write scripts and functions,
+you should read one of the many books on the subject. In particular, you
+will get most out of a book that describes the Korn shell (ksh), as zsh
+is very similar to this --- so similar that it will be worth my while
+pointing out differences as we go along, since they can confuse ksh
+users. Recent versions of zsh can emulate ksh (strictly, the 1988
+version of ksh, although there are increasingly features from the 1993
+version) quite closely, although it's not perfect, and less perfect the
+more closely you look. However, it's important to realise that if you
+just start up any old zsh there is no guarantee that it will be set up
+to work like ksh; unless you or your system adminstrator have changed
+some settings, it certainly won't be. You might not see that straight
+away, but it affects the shell in subtle ways. I will talk about
+emulation a bit more later on.</p>
+<p>A few other shells are worth mentioning. The grandfather of all UNIX
+shells is sh, now known as the Bourne shell but originally just referred
+to as `the shell'. The story is similar to ksh: zsh can emulate sh
+quite closely (much more closely than ksh, since sh is considerably
+simpler), but in general you need to make sure it's set up to do that
+before you can be sure it will emulate sh.</p>
+<p>You may also come across the `Bourne-Again Shell', bash. This is a
+freely-available enhancement of sh written by the GNU project --- but it
+is not always enhanced along the lines of ksh, and hence in many ways it
+is very different from zsh. On some free UNIX-like systems such as
+Linux/GNU (which is what people usually mean by Linux), the command sh
+is really bash, so there you should be extra careful when trying to
+ensure that something which runs under the so-called `sh' will also run
+under zsh. Some Linux systems also have another simpler Bourne shell
+clone, ash; as it's simpler, it's more like the original Bourne shell.</p>
+<p>Some more modern operating systems talk about `the POSIX shell'. This
+is an attempt to standardize UNIX shells; it's most like the Korn shell,
+although, a bit confusingly, it's often just called sh, because the
+standard says that it should be. Usually, this just means you get a bit
+extra free with your sh and it still does what you expect. Zsh has made
+some attempts to fit the standard, but you have to tell it to --- again,
+simply starting up `zsh' will not have the right settings for that.</p>
+<p>There is another common family of shells with, unfortunately,
+incompatible syntax. The source of this family is the C-Shell, csh, so
+called because its syntax looks more like the C programming language.
+This became widespread when the only other shell available was sh
+because csh had better interactive features, such as job control. It was
+then enhanced to make tcsh, which has many of the interactive features
+you will also find in zsh, and so became very popular. Despite these
+common features, the syntax of zsh is very different, so you should not
+try and use csh/tcsh commands beyond the very simplest in zsh; but if
+you are a tcsh user, you will find virtually every capability you are
+used to in zsh somewhere, plus a lot more.</p>
+<p><span id="l3"></span></p>
+<h2 id="12-versions-of-zsh"><a class="header" href="#12-versions-of-zsh">1.2: Versions of zsh</a></h2>
+<p>At the time of writing, the most recent version of zsh available for
+widespread use was 4.0.6. You will commonly find two sets of older zsh's
+around. The 3.0 series, of which the last release was 3.0.9, was a
+stable release, with only bug fixes since the first release of zsh 3.
+The 3.1 series were beta versions, with lots of new features; the last
+of these, 3.1.9, was not so different from 4.0.1; the main change is
+that the shell has now been declared stable, so that as with zsh 3 there
+will be a set of bug fixes, labelled 4.0, and a set with new functions
+in, labelled 4.1. As 4.0 replaces all zsh 3 versions, I will try to keep
+things simple and talk about that; but every now and then it will be
+helpful to point out where older versions were different.</p>
+<p>One notable feature of zsh is the completion of command line arguments.
+The system changed in 3.1.6 and 3.1.7 to make it a lot more
+configurable, and (provided you keep your wits about you) a little less
+obscure. I therefore won't describe the old completion system, which
+used the `compctl' command, in any detail; a very brief introduction is
+given in the zsh FAQ. The old system remains available, however we
+strongly recommend new users to start with the new one. See <a href="zshguide06.html#comp">chapter
+6</a> `Completion, old and new' for the lowdown on
+new-style completion.</p>
+<p>There won't be a big difference between 4.0 and 4.1, just bug fixes and
+a few evolutionary changes, plus some extra modules. There will be some
+notes in <a href="zshguide07.html#ragbag">chapter 7</a> about new features in 4.1,
+but nothing you write for 4.0 is likely to become obsolete in the
+foreseeable future.</p>
+<p><span id="l4"></span></p>
+<h2 id="13-conventions"><a class="header" href="#13-conventions">1.3: Conventions</a></h2>
+<p>Most of what I say will be reasonably self-contained (which means I use
+phrases like `as I said before' and `as I'll discuss later on' more
+than a real stylist would like, and the number times I refer to other
+chapters is excessive), but there are some points I should perhaps draw
+your attention to before you leap in.</p>
+<p>I will often write chunks of code as you would put them in a file for
+execution (a `script' or a `function', the differences to be discussed
+<em>passim</em>):</p>
+<pre><code>  if [[ $ZSH_VERSION = 3.* ]]; then
+    print This is a release of the third version of zsh.
+  else
+    print This is either very new or very old.
+  fi
+</code></pre>
+<p>but sometimes I will show both what you type into a shell interactively,
+and what the shell throws back at you:</p>
+<pre><code>  % print $ZSH_VERSION
+  3.1.9
+  % print $CPUTYPE
+  i586
+</code></pre>
+<p>Here, `<code>%</code>' shows the prompt the shell puts up to tell you it is
+expecting input (and the space immediately after is part of it).
+Actually, you probably see something before the percent sign like the
+name of the machine or your user name, or maybe something fancier. I've
+pruned it to the minimum to avoid confusion, and kept it as reminder
+that this is the line you type.</p>
+<p>If you're reading an electronic version of this guide, and want to copy
+lines with the `<code>%</code>' in front into a terminal to be executed, there's a
+neat way of doing this where you don't even have to edit the line first:</p>
+<pre><code>  alias %=' '
+</code></pre>
+<p>Then <code>%</code> at the start of a line is turned into nothing whatsoever; the
+space just indicates that any following aliases should be expanded. So
+the line `<code>% print $CPUTYPE</code>' will ignore the `<code>%</code>' and execute the
+rest of the line. (I hope it's obvious, but your <em>own</em> prompt is always
+ignored; this is just if you copy the prompts from the guide into the
+shell.)</p>
+<p>There are lots of different types of object in zsh, but one of the most
+common is parameters, which I will always show with a `<code>$</code>' sign in
+front, like `<code>$ZSH_VERSION</code>', to remind you they are parameters. You
+need to remember that when you're setting or fiddling with the parameter
+itself, rather than its value, you omit the `<code>$</code>'. When you do and
+don't need it should become clearer as we go along.</p>
+<p>The other objects I'll show specially are shell options --- choices
+about how the shell is to work --- which I write like this:
+`<code>SH_WORD_SPLIT</code>', `<code>NO_NOMATCH</code>', `<code>ZLE</code>'. Again, that's not the
+whole story since whenever the shell expects options you can write them
+in upper or lower case with as many or as few underscores as you like;
+and often in code chunks I'll use the simplest form instead:
+`<code>shwordsplit</code>', `<code>nonomatch</code>', `<code>zle</code>'. If you're philosophical you
+can think of it as expressing the category difference between talking
+about programming and actual programming, but really it's just me being
+inconsistent.</p>
+<p>You may find it odd that I use three hyphens to signify a dash. That's
+actually a convention used in the printed version of this guide, which
+is made with LaTeX. One day, I will turn this into a macro and it will
+appear properly in other versions; but then, one day the universe will
+come to an end.</p>
+<p><span id="l5"></span></p>
+<h2 id="14-acknowledgments"><a class="header" href="#14-acknowledgments">1.4: Acknowledgments</a></h2>
+<p>I am grateful for comments from various zsh users. In particular, I have
+had detailed comments and corrections from Bart Schaefer, Sven `Mr
+Completion' Wischnowsky and Oliver Kiddle. It's usual to add that any
+remaining errors are my own, but that's so stark staringly obvious as to
+be ridiculous. I mean, who wrote this? Never mind.</p>
+<p>Most of this written on one or another release of Linux Mandrake (a
+derivative of Red Hat), with the usual GNU and XFree86 tools. Since all
+of this was free, it only seems fair to say `thank you' for the gift.
+It also works a lot better than the operating system that came with this
+particular PC.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="zshguide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="zshguide02.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="zshguide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="zshguide02.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
