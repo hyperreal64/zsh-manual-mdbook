@@ -1,5 +1,9 @@
 # zsh-manual-mdbook
 
+[Zsh Manual](https://zsh-manual.netlify.app)
+
+[Zsh User's Guide by Peter Stephenson](https://zsh-user-guide.netlify.app)
+
 This is a markdown version of the [Zsh Manual](http://zsh.sourceforge.net/Doc/).
 It is generated with a Bash script that removes some non-markdown-friendly
 elements and converts the .html files to markdown using Pandoc. The SUMMARY.md
