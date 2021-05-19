@@ -40,5 +40,6 @@ sudo npm -g install doctoc
 ./make-mdbook.sh
 
 # Serve locally
+cd zsh_manual/
 mdbook serve
 ```

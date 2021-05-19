@@ -38,12 +38,7 @@ done
 
 # Convert html to md with pandoc
 for file in "${_zsh_html_src_dir}"/*.html; do
-  pandoc "$file" -f html -t gfm -o "${_zsh_md_src_dir}/$(basename -- "$file" .html).md";
-done
-
-# Move md files to mdbook_src_dir
-for file in "${_zsh_md_src_dir}"/*.md; do
-  mv "$file" "${_mdbook_src_dir}"/
+  pandoc "$file" -f html -t gfm -o "${_mdbook_src_dir}/$(basename -- "$file" .html).md";
 done
 
 # Generate TOC with doctoc
