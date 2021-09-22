@@ -9,7 +9,7 @@
 - [Redirection](./Redirection.md)
 - [Command Execution](./Command-Execution.md)
 - [Functions](./Functions.md)
-- [Jobs & Signals](./Jobs-_0026-Signals.md)
+- [Jobs & Signals](./Jobs-&-Signals.md)
 - [Arithmetic Evaluation](./Arithmetic-Evaluation.md)
 - [Conditional Expressions](./Conditional-Expressions.md)
 - [Prompt Expansion](./Prompt-Expansion.md)

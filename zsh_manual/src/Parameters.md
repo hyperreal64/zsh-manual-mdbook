@@ -1546,7 +1546,8 @@ lists and for the line editor.
 
 `LISTMAX`
 
-In the line editor, the number of matches to list without asking most as
+In the line editor, the number of matches to list without asking first.
+If the value is negative, the list will be shown if it spans at most as
 many lines as given by the absolute value. If set to zero, the shell
 asks only if the top of the listing would scroll off the screen.
 

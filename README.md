@@ -29,15 +29,17 @@ cargo install mdbook
 # Clone this repository
 git clone https://github.com/hyperreal64/zsh-manual-mdbook
 
-# Install Python dependencies
+# Install Perl dependencies
+# Ensure cpanminus is installed from your distro's repos
+# e.g. sudo apt install cpanminus or sudo dnf install cpanminus
 cd zsh-manual-mdbook
-pip install -r requirements.txt
+sudo cpanm Archive::Extract File::Basename HTTP::Simple IPC::Cmd Mojo::DOM Mojo::UserAgent
 
 # Ensure DocToc is installed
 sudo npm -g install doctoc
 
 # Return to repository clone and run the make-mdbook script
-./make-mdbook.sh
+./make-mdbook.pl
 
 # Serve locally
 cd zsh_manual/
