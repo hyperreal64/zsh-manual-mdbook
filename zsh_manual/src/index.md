@@ -3,17 +3,17 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [The Z Shell Manual](#the-z-shell-manual)
-    - [Version 5.8](#version-58)
-    - [Updated February 14, 2020](#updated-february-14-2020)
+    - [Version 5.9](#version-59)
+    - [Updated May 14, 2022](#updated-may-14-2022)
 - [The Z Shell Manual](#the-z-shell-manual-1)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # The Z Shell Manual
 
-### Version 5.8
+### Version 5.9
 
-### Updated February 14, 2020
+### Updated May 14, 2022
 
 **Original documentation by Paul Falstad**  
 
@@ -32,7 +32,7 @@ permission notice identical to this one.
 Permission is granted to copy and distribute translations of this manual
 into another language, under the above conditions for modified versions.
 
------
+------------------------------------------------------------------------
 
 <span id="Top"></span> <span id="The-Z-Shell-Manual-2"></span>
 
@@ -46,7 +46,7 @@ compatible, either.
 
 <span id="index-version"></span>
 
-Version 5.8, last updated February 14, 2020.
+Version 5.9, last updated May 14, 2022.
 
 — Indices —
 
@@ -80,8 +80,8 @@ Zftp Function System
 
 User Contributions
 
------
+------------------------------------------------------------------------
 
-This document was generated on *February 15, 2020* using
-[*texi2html 5.0*](http://www.nongnu.org/texi2html/).  
-Zsh version 5.8, released on February 14, 2020.
+This document was generated on *May 14, 2022* using [*texi2html
+5.0*](http://www.nongnu.org/texi2html/).  
+Zsh version 5.9, released on May 14, 2022.

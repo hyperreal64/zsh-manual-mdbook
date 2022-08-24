@@ -107,5 +107,11 @@ system("rm -rf $cwd/zsh_manual/src") == 0                or die "$?";
 mkdir("$cwd/zsh_manual/src")                             or die "$?";
 system("cp $mdbook_src_dir/* $cwd/zsh_manual/src/") == 0 or die "$?";
 
+# Replace ``` example with ```zsh for syntax highlighting
+@files = <$cwd/zsh_manual/src/*.md>;
+foreach my $file (@files) {
+    system("sed -i 's/``` example/```zsh/g' '$file'") == 0 or die "$?";
+}
+
 # Cleanup zsh_doc_tmp
 system("rm -rf $zsh_doc_tmp_dir") == 0 or die "$?";
