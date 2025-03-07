@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html lang="en" class="mocha sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Completion Using compctl - Zsh Manual</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./theme/catppuccin.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "mocha" : "mocha";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('mocha')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappe</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#21-completion-using-compctl">21 Completion Using compctl</a>
+<ul>
+<li><a href="#211-types-of-completion">21.1 Types of completion</a></li>
+<li><a href="#212-description">21.2 Description</a></li>
+<li><a href="#213-command-flags">21.3 Command Flags</a></li>
+<li><a href="#214-option-flags">21.4 Option Flags</a>
+<ul>
+<li><a href="#2141-simple-flags">21.4.1 Simple Flags</a></li>
+<li><a href="#2142-flags-with-arguments">21.4.2 Flags with Arguments</a></li>
+<li><a href="#2143-control-flags">21.4.3 Control Flags</a></li>
+</ul>
+</li>
+<li><a href="#215-alternative-completion">21.5 Alternative Completion</a></li>
+<li><a href="#216-extended-completion">21.6 Extended Completion</a></li>
+<li><a href="#217-example">21.7 Example</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Completion-Using-compctl"></span> <span
+id="Completion-Using-compctl-1"></span></p>
+<h1 id="21-completion-using-compctl"><a class="header" href="#21-completion-using-compctl">21 Completion Using compctl</a></h1>
+<p><span id="index-completion_002c-programmable-2"></span> <span
+id="index-completion_002c-controlling-2"></span></p>
+<hr />
+<p><span id="Types-of-completion"></span></p>
+<h2 id="211-types-of-completion"><a class="header" href="#211-types-of-completion">21.1 Types of completion</a></h2>
+<p>This version of zsh has two ways of performing completion of words on
+the command line. New users of the shell may prefer to use the newer and
+more powerful system based on shell functions; this is described in
+<a href="Completion-System.html#Completion-System">Completion System</a>, and the
+basic shell mechanisms which support it are described in <a href="Completion-Widgets.html#Completion-Widgets">Completion
+Widgets</a>. This chapter
+describes the older compctl command.</p>
+<hr />
+<p><span id="Description-5"></span></p>
+<h2 id="212-description"><a class="header" href="#212-description">21.2 Description</a></h2>
+<p><span id="index-compctl"></span></p>
+<p>compctl [ -CDT ] <code>options</code> [ <code>command</code> ... ]</p>
+<p>compctl [ -CDT ] <code>options</code> [ -x <code>pattern</code> <code>options</code> - ... -- ]</p>
+<p>        [ + <code>options</code> [ -x ... -- ] ... [+] ] [ <code>command</code> ... ]</p>
+<p>compctl -M <code>match-specs</code> ...</p>
+<p>compctl -L [ -CDTM ] [ <code>command</code> ... ]</p>
+<p>compctl + <code>command</code> ...</p>
+<p>Control the editor’s completion behavior according to the supplied set
+of <code>options</code>. Various editing commands, notably expand-or-complete-word,
+usually bound to tab, will attempt to complete a word typed by the user,
+while others, notably delete-char-or-list, usually bound to ^D in EMACS
+editing mode, list the possibilities; compctl controls what those
+possibilities are. They may for example be filenames (the most common
+case, and hence the default), shell variables, or words from a
+user-specified list.</p>
+<hr />
+<p><span id="Command-Flags"></span> <span id="Command-Flags-1"></span></p>
+<h2 id="213-command-flags"><a class="header" href="#213-command-flags">21.3 Command Flags</a></h2>
+<p>Completion of the arguments of a command may be different for each
+command or may use the default. The behavior when completing the command
+word itself may also be separately specified. These correspond to the
+following flags and arguments, all of which (except for -L) may be
+combined with any combination of the <code>options</code> described subsequently in
+<a href="#Option-Flags">Option Flags</a>:</p>
+<p><code>command</code> ...<br />
+controls completion for the named commands, which must be listed last on
+the command line. If completion is attempted for a command with a
+pathname containing slashes and no completion definition is found, the
+search is retried with the last pathname component. If the command
+starts with a =, completion is tried with the pathname of the command.</p>
+<p>Any of the <code>command</code> strings may be patterns of the form normally used
+for filename generation. These should be quoted to protect them from
+immediate expansion; for example the command string ’foo*’ arranges for
+completion of the words of any command beginning with foo. When
+completion is attempted, all pattern completions are tried in the
+reverse order of their definition until one matches. By default,
+completion then proceeds as normal, i.e. the shell will try to generate
+more matches for the specific command on the command line; this can be
+overridden by including -tn in the flags for the pattern completion.</p>
+<p>Note that aliases are expanded before the command name is determined
+unless the COMPLETE_ALIASES option is set. Commands may not be combined
+with the -C, -D or -T flags.</p>
+<p>-C<br />
+controls completion when the command word itself is being completed. If
+no compctl -C command has been issued, the names of any as aliases or
+functions) are completed.</p>
+<p>-D<br />
+controls default completion behavior for the arguments of commands not
+assigned any special behavior. If no compctl -D command has been issued,
+filenames are completed.</p>
+<p>-T<br />
+supplies completion flags to be used before any other processing is
+done, even before processing for compctls defined for specific commands.
+This is especially useful when combined with extended completion (the -x
+flag, see <a href="#Extended-Completion">Extended Completion</a> below). Using this
+flag you can define default behavior which will apply to all commands
+without exception, or you can alter the standard behavior for all
+commands. For example, if your access to the user database is too slow
+and/or it contains too many users (so that completion after ‘~’ is too
+slow to be usable), you can use</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -T -x 's[~] C[0,[^/]#]' -k friends -S/ -tn
+</code></pre>
+</div>
+<p>to complete the strings in the array friends after a ‘~’. The
+C[<code>...</code>] argument is necessary so that this form of ~-completion is
+not tried after the directory name is finished.</p>
+<p>-L<br />
+<em>no argument</em><br />
+If no argument is given, compctl lists all defined completions in an
+abbreviated form; with a list of <code>options</code>, all completions with those
+flags set (not counting extended completion) are listed.</p>
+<p>If the + flag is alone and followed immediately by the <code>command</code> list,
+the completion behavior for all the commands in the list is reset to the
+default. In other words, completion will subsequently use the options
+specified by the -D flag.</p>
+<p>The form with -M as the first and only option defines global matching
+specifications (see <a href="Completion-Widgets.html#Completion-Matching-Control">Completion Matching
+Control</a>). The
+match specifications given will be used for every completion attempt
+(only when using compctl, not with the new completion system) and are
+tried in the order in which they are defined until one generates at
+least one match. E.g.:</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -M '' 'm:{a-zA-Z}={A-Za-z}'
+</code></pre>
+</div>
+<p>This will first try completion without any global match specifications
+(the empty string) and, if that generates no matches, will try case
+insensitive completion.</p>
+<hr />
+<p><span id="Option-Flags"></span> <span id="Option-Flags-1"></span></p>
+<h2 id="214-option-flags"><a class="header" href="#214-option-flags">21.4 Option Flags</a></h2>
+<p>[ -fcFBdeaRGovNAIOPZEnbjrzu/12 ]</p>
+<p>[ -k <code>array</code> ] [ -g <code>globstring</code> ] [ -s <code>subststring</code> ]</p>
+<p>[ -K <code>function</code> ]</p>
+<p>[ -Q ] [ -P <code>prefix</code> ] [ -S <code>suffix</code> ]</p>
+<p>[ -W <code>file-prefix</code> ] [ -H <code>num pattern</code> ]</p>
+<p>[ -q ] [ -X <code>explanation</code> ] [ -Y <code>explanation</code> ]</p>
+<p>[ -y <code>func-or-var</code> ] [ -l <code>cmd</code> ] [ -h <code>cmd</code> ] [ -U ]</p>
+<p>[ -t <code>continue</code> ] [ -J <code>name</code> ] [ -V <code>name</code> ]</p>
+<p>[ -M <code>match-spec</code> ]</p>
+<p>The remaining <code>options</code> specify the type of command arguments to look
+for during completion. Any combination of these flags may be specified;
+the result is a sorted list of all the possibilities. The options are as
+follows.</p>
+<hr />
+<p><span id="Simple-Flags"></span> <span id="Simple-Flags-1"></span></p>
+<h3 id="2141-simple-flags"><a class="header" href="#2141-simple-flags">21.4.1 Simple Flags</a></h3>
+<p>These produce completion lists made up by the shell itself:</p>
+<p>-f<br />
+Filenames and file system paths.</p>
+<p>-/<br />
+Just file system paths.</p>
+<p>-c<br />
+Command names, including aliases, shell functions, builtins and reserved
+words.</p>
+<p>-F<br />
+Function names.</p>
+<p>-B<br />
+Names of builtin commands.</p>
+<p>-m<br />
+Names of external commands.</p>
+<p>-w<br />
+Reserved words.</p>
+<p>-a<br />
+Alias names.</p>
+<p>-R<br />
+Names of regular (non-global) aliases.</p>
+<p>-G<br />
+Names of global aliases.</p>
+<p>-d<br />
+This can be combined with -F, -B, -w, -a, -R and -G to get names of
+disabled functions, builtins, reserved words or aliases.</p>
+<p>-e<br />
+This option (to show enabled commands) is in effect by default, but may
+be combined with -d; -de in combination with -F, -B, -w, -a, -R and -G
+will complete names of functions, builtins, reserved words or aliases
+whether or not they are disabled.</p>
+<p>-o<br />
+Names of shell options (see <a href="Options.html#Options">Options</a>).</p>
+<p>-v<br />
+Names of any variable defined in the shell.</p>
+<p>-N<br />
+Names of scalar (non-array) parameters.</p>
+<p>-A<br />
+Array names.</p>
+<p>-I<br />
+Names of integer variables.</p>
+<p>-O<br />
+Names of read-only variables.</p>
+<p>-p<br />
+Names of parameters used by the shell (including special parameters).</p>
+<p>-Z<br />
+Names of shell special parameters.</p>
+<p>-E<br />
+Names of environment variables.</p>
+<p>-n<br />
+Named directories.</p>
+<p>-b<br />
+Key binding names.</p>
+<p>-j<br />
+Job names: the first word of the job leader’s command line. This is
+useful with the kill builtin.</p>
+<p>-r<br />
+Names of running jobs.</p>
+<p>-z<br />
+Names of suspended jobs.</p>
+<p>-u<br />
+User names.</p>
+<hr />
+<p><span id="Flags-with-Arguments"></span> <span
+id="Flags-with-Arguments-1"></span></p>
+<h3 id="2142-flags-with-arguments"><a class="header" href="#2142-flags-with-arguments">21.4.2 Flags with Arguments</a></h3>
+<p>These have user supplied arguments to determine how the list of
+completions is to be made up:</p>
+<p>-k <code>array</code><br />
+Names taken from the elements of $<code>array</code> (note that the ‘$’ does not
+appear on the command line). Alternatively, the argument <code>array</code> itself
+may be a set of space- or comma-separated values in parentheses, in
+which any delimiter may be escaped with a backslash; in this case the
+argument should be quoted. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -k "(cputime filesize datasize stacksize
+           coredumpsize resident descriptors)" limit
+</code></pre>
+</div>
+<p>-g <code>globstring</code><br />
+The <code>globstring</code> is expanded using filename globbing; it should be
+quoted to protect it from immediate expansion. The resulting filenames
+are taken as the possible completions. Use ‘*(/)’ instead of ‘*/’ for
+directories. The fignore special parameter is not applied to the
+resulting files. More than one pattern may be given separated by blanks.
+(Note that brace expansion is <em>not</em> part of globbing. Use the syntax
+‘(either|or)’ to match alternatives.)</p>
+<p>-s <code>subststring</code><br />
+The <code>subststring</code> is split into words and these words are than expanded
+using all shell expansion mechanisms (see
+<a href="Expansion.html#Expansion">Expansion</a>). The resulting words are taken as
+possible completions. The fignore special parameter is not applied to
+the resulting files. Note that -g is faster for filenames.</p>
+<p>-K <code>function</code><br />
+<span id="index-reply_002c-use-of-2"></span></p>
+<p>Call the given function to get the completions. Unless the name starts
+with an underscore, the function is passed two arguments: the prefix and
+the suffix of the word on which completion is to be attempted, in other
+words those characters before the cursor position, and those from the
+cursor position onwards. The whole command line can be accessed with the
+-c and -l flags of the read builtin. The function should set the
+variable reply to an array containing the completions (one completion
+per element); note that reply should not be made local to the function.
+From such a function the command line can be accessed with the -c and -l
+flags to the read builtin. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">function whoson { reply=(`users`); }
+compctl -K whoson talk
+</code></pre>
+</div>
+<p>completes only logged-on users after ‘talk’. Note that ‘whoson’ must
+return an array, so ‘reply=‘users‘’ would be incorrect.</p>
+<p>-H <code>num pattern</code><br />
+The possible completions are taken from the last <code>num</code> history lines.
+Only words matching <code>pattern</code> are taken. If <code>num</code> is zero or negative
+the whole history is searched and if <code>pattern</code> is the empty string all
+words are taken (as with ‘*’). A typical use is</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -D -f + -H 0 ''
+</code></pre>
+</div>
+<p>which forces completion to look back in the history list for a word if
+no filename matches.</p>
+<hr />
+<p><span id="Control-Flags"></span> <span id="Control-Flags-1"></span></p>
+<h3 id="2143-control-flags"><a class="header" href="#2143-control-flags">21.4.3 Control Flags</a></h3>
+<p>These do not directly specify types of name to be completed, but
+manipulate the options that do:</p>
+<p>-Q<br />
+This instructs the shell not to quote any metacharacters in the possible
+completions. Normally the results of a completion are inserted into the
+command line with any metacharacters quoted so that they are interpreted
+as normal characters. This is appropriate for filenames and ordinary
+strings. However, for special effects, such as inserting a backquoted
+expression from a completion array (-k) so that the expression will not
+be evaluated until the complete line is executed, this option must be
+used.</p>
+<p>-P <code>prefix</code><br />
+The <code>prefix</code> is inserted just before the completed string; any initial
+part already typed will be completed and the whole <code>prefix</code> ignored for
+completion purposes. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -j -P "%" kill
+</code></pre>
+</div>
+<p>inserts a ‘%’ after the kill command and then completes job names.</p>
+<p>-S <code>suffix</code><br />
+When a completion is found the <code>suffix</code> is inserted after the completed
+string. In the case of menu completion the suffix is inserted
+immediately, but it is still possible to cycle through the list of
+completions by repeatedly hitting the same key.</p>
+<p>-W <code>file-prefix</code><br />
+With directory <code>file-prefix</code>: for command, file, directory and globbing
+completion (options -c, -f, -/, -g), the file prefix is implicitly added
+in front of the completion. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -/ -W ~/Mail maildirs
+</code></pre>
+</div>
+<p>completes any subdirectories to any depth beneath the directory ~/Mail,
+although that prefix does not appear on the command line. The
+<code>file-prefix</code> may also be of the form accepted by the -k flag, i.e. the
+name of an array or a literal list in parenthesis. In this case all the
+directories in the list will be searched for possible completions.</p>
+<p>-q<br />
+If used with a suffix as specified by the -S option, this causes the
+suffix to be removed if the next character typed is a blank or does not
+insert anything or if the suffix consists of only one character and the
+next character typed is the same character; this the same rule used for
+the AUTO_REMOVE_SLASH option. The option is most useful for list
+separators (comma, colon, etc.).</p>
+<p>-l <code>cmd</code><br />
+This option restricts the range of command line words that are
+considered to be arguments. If combined with one of the extended
+completion patterns ‘p[...]’, ‘r[...]’, or ‘R[...]’ (see <a href="#Extended-Completion">Extended
+Completion</a> below) the range is restricted to the
+range of arguments specified in the brackets. Completion is then
+performed as if these had been given as arguments to the <code>cmd</code> supplied
+with the option. If the <code>cmd</code> string is empty the first word in the
+range is instead taken as the command name, and command name completion
+performed on the first word in the range. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -x 'r[-exec,;]' -l '' -- find
+</code></pre>
+</div>
+<p>completes arguments between ‘-exec’ and the following ‘;’ (or the end of
+the command line if there is no such string) as if they were a separate
+command line.</p>
+<p>-h <code>cmd</code><br />
+Normally zsh completes quoted strings as a whole. With this option,
+completion can be done separately on different parts of such strings. It
+works like the -l option but makes the completion code work on the parts
+of the current word that are separated by spaces. These parts are
+completed as if they were arguments to the given <code>cmd</code>. If <code>cmd</code> is the
+empty string, the first part is completed as a command name, as with -l.</p>
+<p>-U<br />
+Use the whole list of possible completions, whether or not they actually
+match the word on the command line. The word typed so far will be
+deleted. This is most useful with a function (given by the -K option)
+which can examine the word components passed to it (or via the read
+builtin’s -c and -l flags) and use its own criteria to decide what
+matches. If there is no completion, the original word is retained. Since
+the produced possible completions seldom have interesting common
+prefixes and suffixes, menu completion is started immediately if
+AUTO_MENU is set and this flag is used.</p>
+<p>-y <code>func-or-var</code><br />
+<span id="index-reply_002c-use-of-3"></span></p>
+<p>The list provided by <code>func-or-var</code> is displayed instead of the list of
+completions whenever a listing is required; the actual completions to be
+inserted are not affected. It can be provided in two ways. Firstly, if
+<code>func-or-var</code> begins with a $ it defines a variable, or if it begins
+with a left parenthesis a literal array, which contains the list. A
+variable may have been set by a call to a function using the -K option.
+Otherwise it contains the name of a function which will be executed to
+create the list. The function will be passed as an argument list all
+matching completions, including prefixes and suffixes expanded in full,
+and should set the array reply to the result. In both cases, the display
+list will only be retrieved after a complete list of matches has been
+created.</p>
+<p>Note that the returned list does not have to correspond, even in length,
+to the original set of matches, and may be passed as a scalar instead of
+an array. No special formatting of characters is performed on the output
+in this case; in particular, newlines are printed literally and if they
+appear output in columns is suppressed.</p>
+<p>-X <code>explanation</code><br />
+Print <code>explanation</code> when trying completion on the current set of
+options. A ‘%n’ in this string is replaced by the number of matches that
+were added for this explanation string. The explanation only appears if
+completion was tried and there was no unique match, or when listing
+completions. Explanation strings will be listed together with the
+matches of the group specified together with the -X option (using the -J
+or -V option). If the same explanation string is given to multiple -X
+options, the string appears only once (for each group) and the number of
+matches shown for the ‘%n’ is the total number of all matches for each
+of these uses. In any case, the explanation string will only be shown if
+there was at least one match added for the explanation string.</p>
+<p>The sequences %B, %b, %S, %s, %U, and %u specify output attributes
+(bold, standout, and underline), %F, %f, %K, %k specify foreground and
+background colours, and %{<code>...</code>%} can be used to include literal escape
+sequences as in prompts.</p>
+<p>-Y <code>explanation</code><br />
+Identical to -X, except that the <code>explanation</code> first undergoes expansion
+following the usual rules for strings in double quotes. The expansion
+will be carried out after any functions are called for the -K or -y
+options, allowing them to set variables.</p>
+<p>-t <code>continue</code><br />
+The <code>continue</code>-string contains a character that specifies which set of
+completion flags should be used next. It is useful:</p>
+<p>(i) With -T, or when trying a list of pattern completions, when
+compctl would usually continue with ordinary processing after finding
+matches; this can be suppressed with ‘-tn’.</p>
+<p>(ii) With a list of alternatives separated by +, when compctl would
+normally stop when one of the alternatives generates matches. It can be
+forced to consider the next set of completions by adding ‘-t+’ to the
+flags of the alternative before the ‘+’.</p>
+<p>(iii) In an extended completion list (see below), when compctl would
+normally continue until a set of conditions succeeded, then use only the
+immediately following flags. With ‘-t-’, compctl will continue trying
+extended completions after the next ‘-’; with ‘-tx’ it will attempt
+completion with the default flags, in other words those before the ‘-x’.</p>
+<p>-J <code>name</code><br />
+This gives the name of the group the matches should be placed in. Groups
+are listed and sorted separately; likewise, menu completion will offer
+the matches in the groups in the order in which the groups were defined.
+If no group name is explicitly given, the matches are stored in a group
+named default. The first time a group name is encountered, a group with
+that name is created. After that all matches with the same group name
+are stored in that group.</p>
+<p>This can be useful with non-exclusive alternative completions. For
+example, in</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -f -J files -t+ + -v -J variables foo
+</code></pre>
+</div>
+<p>both files and variables are possible completions, as the -t+ forces
+both sets of alternatives before and after the + to be considered at
+once. Because of the -J options, however, all files are listed before
+all variables.</p>
+<p>-V <code>name</code><br />
+Like -J, but matches within the group will not be sorted in listings nor
+in menu completion. These unsorted groups are in a different name space
+from the sorted ones, so groups defined as -J files and -V files are
+distinct.</p>
+<p>-1<br />
+If given together with the -V option, makes only consecutive duplicates
+in the group be removed. Note that groups with and without this flag are
+in different name spaces.</p>
+<p>-2<br />
+If given together with the -J or -V option, makes all duplicates be
+kept. Again, groups with and without this flag are in different name
+spaces.</p>
+<p>-M <code>match-spec</code><br />
+This defines additional matching control specifications that should be
+used only when testing words for the list of flags this flag appears in.
+The format of the <code>match-spec</code> string is described in <a href="Completion-Widgets.html#Completion-Matching-Control">Completion
+Matching Control</a>.</p>
+<hr />
+<p><span id="Alternative-Completion"></span> <span
+id="Alternative-Completion-1"></span></p>
+<h2 id="215-alternative-completion"><a class="header" href="#215-alternative-completion">21.5 Alternative Completion</a></h2>
+<p>compctl [ -CDT ] <code>options</code> + <code>options</code> [ + ... ] [ + ] <code>command</code>
+...</p>
+<p>The form with ‘+’ specifies alternative options. Completion is tried
+with the options before the first ‘+’. If this produces no matches
+completion is tried with the flags after the ‘+’ and so on. If there are
+no flags after the last ‘+’ and a match has not been found up to that
+point, default completion is tried. If the list of flags contains a -t
+with a + character, the next list of flags is used even if the current
+list produced matches.</p>
+<hr />
+<p><span id="Extended-Completion"></span></p>
+<p>Additional options are available that restrict completion to some part
+of the command line; this is referred to as ‘extended completion’.</p>
+<p><span id="Extended-Completion-1"></span></p>
+<h2 id="216-extended-completion"><a class="header" href="#216-extended-completion">21.6 Extended Completion</a></h2>
+<p>compctl [ -CDT ] <code>options</code> -x <code>pattern</code> <code>options</code> - ... --</p>
+<p>        [ <code>command</code> ... ]</p>
+<p>compctl [ -CDT ] <code>options</code> [ -x <code>pattern</code> <code>options</code> - ... -- ]</p>
+<p>        [ + <code>options</code> [ -x ... -- ] ... [+] ] [ <code>command</code> ... ]</p>
+<p>The form with ‘-x’ specifies extended completion for the commands given;
+as shown, it may be combined with alternative completion using ‘+’. Each
+<code>pattern</code> is examined in turn; when a match is found, the corresponding
+<code>options</code>, as described in <a href="#Option-Flags">Option Flags</a> above, are used
+to generate possible completions. If no <code>pattern</code> matches, the <code>options</code>
+given before the -x are used.</p>
+<p>Note that each pattern should be supplied as a single argument and
+should be quoted to prevent expansion of metacharacters by the shell.</p>
+<p>A <code>pattern</code> is built of sub-patterns separated by commas; it matches if
+at least one of these sub-patterns matches (they are ‘or’ed). These
+sub-patterns are in turn composed of other sub-patterns separated by
+white spaces which match if all of the sub-patterns match (they are
+‘and’ed). An element of the sub-patterns is of the form
+‘<code>c</code>[...][...]’, where the pairs of brackets may be repeated as
+often as necessary, and matches if any of the sets of brackets match (an
+‘or’). The example below makes this clearer.</p>
+<p>The elements may be any of the following:</p>
+<p>s[<code>string</code>]...<br />
+Matches if the current word on the command line starts with one of the
+strings given in brackets. The <code>string</code> is not removed and is not part
+of the completion.</p>
+<p>S[<code>string</code>]...<br />
+Like s[<code>string</code>] except that the <code>string</code> is part of the completion.</p>
+<p>p[<code>from</code>,<code>to</code>]...<br />
+Matches if the number of the current word is between one of the <code>from</code>
+and <code>to</code> pairs inclusive. The comma and <code>to</code> are optional; <code>to</code> defaults
+to the same value as <code>from</code>. The numbers may be negative: -<code>n</code> refers to
+the <code>n</code>’th last word on the line.</p>
+<p>c[<code>offset</code>,<code>string</code>]...<br />
+Matches if the <code>string</code> matches the word offset by <code>offset</code> from the
+current word position. Usually <code>offset</code> will be negative.</p>
+<p>C[<code>offset</code>,<code>pattern</code>]...<br />
+Like c but using pattern matching instead.</p>
+<p>w[<code>index</code>,<code>string</code>]...<br />
+Matches if the word in position <code>index</code> is equal to the corresponding
+<code>string</code>. Note that the word count is made after any alias expansion.</p>
+<p>W[<code>index</code>,<code>pattern</code>]...<br />
+Like w but using pattern matching instead.</p>
+<p>n[<code>index</code>,<code>string</code>]...<br />
+Matches if the current word contains <code>string</code>. Anything up to and
+including the <code>index</code>th occurrence of this string will not be considered
+part of the completion, but the rest will. <code>index</code> may be negative to
+count from the end: in most cases, <code>index</code> will be 1 or -1. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">compctl -s '`users`' -x 'n[1,@]' -k hosts -- talk
+</code></pre>
+</div>
+<p>will usually complete usernames, but if you insert an @ after the name,
+names from the array <code>hosts</code> (assumed to contain hostnames, though you
+must make the array yourself) will be completed. Other commands such as
+rcp can be handled similarly.</p>
+<p>N[<code>index</code>,<code>string</code>]...<br />
+Like n except that the string will be taken as a character class.
+Anything up to and including the <code>index</code>th occurrence of any of the
+characters in <code>string</code> will not be considered part of the completion.</p>
+<p>m[<code>min</code>,<code>max</code>]...<br />
+Matches if the total number of words lies between <code>min</code> and <code>max</code>
+inclusive.</p>
+<p>r[<code>str1</code>,<code>str2</code>]...<br />
+Matches if the cursor is after a word with prefix <code>str1</code>. If there is
+also a word with prefix <code>str2</code> on the command line after the one matched
+by <code>str1</code> it matches only if the cursor is before this word. If the
+comma and <code>str2</code> are omitted, it matches if the cursor is after a word
+with prefix <code>str1</code>.</p>
+<p>R[<code>str1</code>,<code>str2</code>]...<br />
+Like r but using pattern matching instead.</p>
+<p>q[<code>str</code>]...<br />
+Matches the word currently being completed is in single quotes and the
+<code>str</code> begins with the letter ‘s’, or if completion is done in double
+quotes and <code>str</code> starts with the letter ‘d’, or if completion is done in
+backticks and <code>str</code> starts with a ‘b’.</p>
+<hr />
+<p><span id="Example"></span> <span id="Example-1"></span></p>
+<h2 id="217-example"><a class="header" href="#217-example">21.7 Example</a></h2>
+<div class="example">
+<pre><code class="language-zsh">compctl -u -x 's[+] c[-1,-f],s[-f+]' \ 
+  -g '~/Mail/*(:t)' - 's[-f],c[-1,-f]' -f -- mail
+</code></pre>
+</div>
+<p>This is to be interpreted as follows:</p>
+<p>If the current command is mail, then</p>
+<blockquote>
+<p>if ((the current word begins with + and the previous word is -f) or
+(the current word begins with -f+)), then complete the non-directory
+part (the ‘:t’ glob modifier) of files in the directory ~/Mail; else</p>
+<p>if the current word begins with -f or the previous word was -f, then
+complete any file; else</p>
+<p>complete user names.</p>
+</blockquote>
+<hr />
+<p>This document was generated on <em>May 14, 2022</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html
+5.0</em></a>.<br />
+Zsh version 5.9, released on May 14, 2022.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Completion-System.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="Zsh-Modules.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Completion-System.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="Zsh-Modules.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html lang="en" class="mocha sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Prompt Expansion - Zsh Manual</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./theme/catppuccin.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "mocha" : "mocha";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('mocha')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappe</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#13-prompt-expansion">13 Prompt Expansion</a>
+<ul>
+<li><a href="#131-expansion-of-prompt-sequences">13.1 Expansion of Prompt Sequences</a></li>
+<li><a href="#132-simple-prompt-escapes">13.2 Simple Prompt Escapes</a>
+<ul>
+<li><a href="#1321-special-characters">13.2.1 Special characters</a></li>
+<li><a href="#1322-login-information">13.2.2 Login information</a></li>
+<li><a href="#1323-shell-state">13.2.3 Shell state</a></li>
+<li><a href="#1324-date-and-time">13.2.4 Date and time</a></li>
+<li><a href="#1325-visual-effects">13.2.5 Visual effects</a></li>
+</ul>
+</li>
+<li><a href="#133-conditional-substrings-in-prompts">13.3 Conditional Substrings in Prompts</a></li>
+</ul>
+</li>
+<li><a href="#"></a></li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Prompt-Expansion"></span> <span
+id="Prompt-Expansion-1"></span></p>
+<h1 id="13-prompt-expansion"><a class="header" href="#13-prompt-expansion">13 Prompt Expansion</a></h1>
+<hr />
+<p><span id="Expansion-of-Prompt-Sequences"></span></p>
+<h2 id="131-expansion-of-prompt-sequences"><a class="header" href="#131-expansion-of-prompt-sequences">13.1 Expansion of Prompt Sequences</a></h2>
+<p><span id="index-prompt-expansion"></span> <span
+id="index-expansion_002c-prompt"></span></p>
+<p>Prompt sequences undergo a special form of expansion. This type of
+expansion is also available using the -P option to the print builtin.</p>
+<p><span id="index-PROMPT_005fSUBST_002c-use-of"></span></p>
+<p>If the PROMPT_SUBST option is set, the prompt string is first subjected
+to <em>parameter expansion</em>, <em>command substitution</em> and <em>arithmetic
+expansion</em>. See <a href="Expansion.html#Expansion">Expansion</a>.</p>
+<p>Certain escape sequences may be recognised in the prompt string.</p>
+<p><span id="index-PROMPT_005fBANG_002c-use-of"></span></p>
+<p>If the PROMPT_BANG option is set, a ‘!’ in the prompt is replaced by the
+current history event number. A literal ‘!’ may then be represented as
+‘!!’.</p>
+<p><span id="index-PROMPT_005fPERCENT_002c-use-of"></span></p>
+<p>If the PROMPT_PERCENT option is set, certain escape sequences that start
+with ‘%’ are expanded. Many escapes are followed by a single character,
+although some of these take an optional integer argument that should
+appear between the ‘%’ and the next character of the sequence. More
+complicated escape sequences are available to provide conditional
+expansion.</p>
+<hr />
+<p><span id="Simple-Prompt-Escapes"></span></p>
+<h2 id="132-simple-prompt-escapes"><a class="header" href="#132-simple-prompt-escapes">13.2 Simple Prompt Escapes</a></h2>
+<hr />
+<p><span id="Special-characters"></span></p>
+<h3 id="1321-special-characters"><a class="header" href="#1321-special-characters">13.2.1 Special characters</a></h3>
+<p>%%<br />
+A ‘%’.</p>
+<p>%)<br />
+A ‘)’.</p>
+<hr />
+<p><span id="Login-information"></span></p>
+<h3 id="1322-login-information"><a class="header" href="#1322-login-information">13.2.2 Login information</a></h3>
+<p>%l<br />
+The line (tty) the user is logged in on, without ‘/dev/’ prefix. If the
+name starts with ‘/dev/tty’, that prefix is stripped.</p>
+<p>%M<br />
+The full machine hostname.</p>
+<p>%m<br />
+The hostname up to the first ‘.’. An integer may follow the ‘%’ to
+specify how many components of the hostname are desired. With a negative
+integer, trailing components of the hostname are shown.</p>
+<p>%n<br />
+$USERNAME.</p>
+<p>%y<br />
+The line (tty) the user is logged in on, without ‘/dev/’ prefix. This
+does not treat ‘/dev/tty’ names specially.</p>
+<hr />
+<p><span id="Shell-state"></span></p>
+<h3 id="1323-shell-state"><a class="header" href="#1323-shell-state">13.2.3 Shell state</a></h3>
+<p>%#<br />
+A ‘#’ if the shell is running with privileges, a ‘%’ if not. Equivalent
+to ‘%(!.#.%%)’. The definition of ‘privileged’, for these purposes, is
+that either the effective user ID is zero, or, if POSIX.1e capabilities
+are supported, that capability vectors.</p>
+<p>%?<br />
+The return status of the last command executed just before the prompt.</p>
+<p>%_<br />
+The status of the parser, i.e. the shell constructs (like ‘if’ and
+‘for’) that have been started on the command line. If given an integer
+number that many strings will be printed; zero or negative or no integer
+means print as many as there are. This is most useful in prompts PS2 for
+continuation lines and PS4 for debugging with the XTRACE option; in the
+latter case it will also work non-interactively.</p>
+<p>%^<br />
+The status of the parser in reverse. This is the same as ‘%_’ other
+than the order of strings. It is often used in RPS2.</p>
+<p>%d<br />
+%/<br />
+Current working directory. If an integer follows the ‘%’, it specifies a
+number of trailing components of the current working directory to show;
+zero means the whole path. A negative integer specifies leading
+components, i.e. %-1d specifies the first component.</p>
+<p>%~<br />
+As %d and %/, but if the current working directory starts with $HOME,
+that part is replaced by a ‘~’. Furthermore, if it has a named
+directory as its prefix, that part is replaced by a ‘~’ followed by the
+name of the directory, but only if the result is shorter than the full
+path; <a href="Expansion.html#Filename-Expansion">Filename Expansion</a>.</p>
+<p>%e<br />
+Evaluation depth of the current sourced file, shell function, or eval.
+This is incremented or decremented every time the value of %N is set or
+reverted to a previous value, respectively. This is most useful for
+debugging as part of $PS4.</p>
+<p>%h<br />
+%!<br />
+Current history event number.</p>
+<p>%i<br />
+The line number currently being executed in the script, sourced file, or
+shell function given by %N. This is most useful for debugging as part of
+$PS4.</p>
+<p>%I<br />
+The line number currently being executed in the file %x. This is similar
+to %i, but the line number is always a line number in the file where the
+code was defined, even if the code is a shell function.</p>
+<p>%j<br />
+The number of jobs.</p>
+<p>%L<br />
+The current value of $SHLVL.</p>
+<p>%N<br />
+The name of the script, sourced file, or shell function that zsh is
+currently executing, whichever was started most recently. If there is
+none, this is equivalent to the parameter $0. An integer may follow the
+‘%’ to specify a number of trailing path components to show; zero means
+the full path. A negative integer specifies leading components.</p>
+<p>%x<br />
+The name of the file containing the source code currently being
+executed. This behaves as %N except that function and eval command names
+are not shown, instead the file where they were defined.</p>
+<p>%c<br />
+%.<br />
+%C<br />
+Trailing component of the current working directory. An integer may
+follow the ‘%’ to get more than one component. Unless ‘%C’ is used,
+tilde contraction is performed first. These are deprecated as %c and %C
+are equivalent to %1~ and %1/, respectively, while explicit positive
+integers have the same effect as for the latter two sequences.</p>
+<hr />
+<p><span id="Date-and-time"></span></p>
+<h3 id="1324-date-and-time"><a class="header" href="#1324-date-and-time">13.2.4 Date and time</a></h3>
+<p>%D<br />
+The date in <code>yy</code>-<code>mm</code>-<code>dd</code> format.</p>
+<p>%T<br />
+Current time of day, in 24-hour format.</p>
+<p>%t<br />
+%@<br />
+Current time of day, in 12-hour, am/pm format.</p>
+<p>%*<br />
+Current time of day in 24-hour format, with seconds.</p>
+<p>%w<br />
+The date in <code>day</code>-<code>dd</code> format.</p>
+<p>%W<br />
+The date in <code>mm</code>/<code>dd</code>/<code>yy</code> format.</p>
+<p>%D{<code>string</code>}<br />
+<code>string</code> is formatted using the strftime function. See strftime(3) for
+more details. Various zsh extensions provide numbers with no leading
+zero or space if the number is a single digit:</p>
+<p>%f<br />
+a day of the month</p>
+<p>%K<br />
+the hour of the day on the 24-hour clock</p>
+<p>%L<br />
+the hour of the day on the 12-hour clock</p>
+<p>In addition, if the system supports the POSIX gettimeofday system call,
+%. provides decimal fractions of a second since the epoch with leading
+zeroes. By default three decimal places are provided, but a number of
+digits up to 9 may be given following the %; hence %6. outputs
+microseconds, and %9. outputs nanoseconds. (The latter requires a
+nanosecond-precision clock_gettime; systems lacking this will return a
+value multiplied by the appropriate power of 10.) A typical example of
+this is the format ‘%D{%H:%M:%S.%.}’.</p>
+<p>The GNU extension %N is handled as a synonym for %9..</p>
+<p>Additionally, the GNU extension that a ‘-’ between the % and the format
+character causes a leading zero or space to be stripped is handled
+directly by the shell for the format characters d, f, H, k, l, m, M, S
+and y; any other format characters are provided to the system’s
+strftime(3) with any leading ‘-’ present, so the handling is system
+dependent. Further GNU (or other) extensions are also passed to
+strftime(3) and may work if the system supports them.</p>
+<hr />
+<p><span id="Visual-effects"></span></p>
+<h3 id="1325-visual-effects"><a class="header" href="#1325-visual-effects">13.2.5 Visual effects</a></h3>
+<p>%B (%b)<br />
+Start (stop) boldface mode.</p>
+<p>%E<br />
+Clear to end of line.</p>
+<p>%U (%u)<br />
+Start (stop) underline mode.</p>
+<p>%S (%s)<br />
+Start (stop) standout mode.</p>
+<p>%F (%f)<br />
+Start (stop) using a different foreground colour, if supported by the
+terminal. The colour may be specified two ways: either as a numeric
+argument, as normal, or by a sequence in braces following the %F, for
+example %F{red}. In the latter case the values allowed are as described
+for the fg zle_highlight attribute; <a href="Zsh-Line-Editor.html#Character-Highlighting">Character
+Highlighting</a>. This means
+that numeric colours are allowed in the second format also.</p>
+<p>%K (%k)<br />
+Start (stop) using a different bacKground colour. The syntax is
+identical to that for %F and %f.</p>
+<p>%{...%}<br />
+Include a string as a literal escape sequence. The string within the
+braces should not change the cursor position. Brace pairs can nest.</p>
+<p>A positive numeric argument between the % and the { is treated as
+described for %G below.</p>
+<p>%G<br />
+Within a %{...%} sequence, include a ‘glitch’: that is, assume that a
+single character width will be output. This is useful when outputting
+characters that otherwise cannot be correctly handled by the shell, such
+as the alternate character set on some terminals. The characters in
+question can be included within a %{...%} sequence together with the
+appropriate number of %G sequences to indicate the correct width. An
+integer between the ‘%’ and ‘G’ indicates a character width other than
+one. Hence %{<code>seq</code>%2G%} outputs <code>seq</code> and assumes it takes up the width
+of two standard characters.</p>
+<p>Multiple uses of %G accumulate in the obvious fashion; the position of
+the %G is unimportant. Negative integers are not handled.</p>
+<p>Note that when prompt truncation is in use it is advisable to divide up
+output into single characters within each %{...%} group so that the
+correct truncation point can be found.</p>
+<hr />
+<p><span id="Conditional-Substrings-in-Prompts"></span></p>
+<h2 id="133-conditional-substrings-in-prompts"><a class="header" href="#133-conditional-substrings-in-prompts">13.3 Conditional Substrings in Prompts</a></h2>
+<p>%v<br />
+<span id="index-psvar_002c-use-of"></span></p>
+<p>The value of the first element of the psvar array parameter. Following
+the ‘%’ with an integer gives that element of the array. Negative
+integers count from the end of the array.</p>
+<p>%(<code>x</code>.<code>true-text</code>.<code>false-text</code>)<br />
+Specifies a ternary expression. The character following the <code>x</code> is
+arbitrary; the same character is used to separate the text for the
+‘true’ result from that for the ‘false’ result. This separator may not
+appear in the <code>true-text</code>, except as part of a %-escape sequence. A ‘)’
+may appear in the <code>false-text</code> as ‘%)’. <code>true-text</code> and <code>false-text</code> may
+both contain arbitrarily-nested escape sequences, including further
+ternary expressions.</p>
+<p>The left parenthesis may be preceded or followed by a positive integer
+<code>n</code>, which defaults to zero. A negative integer will be multiplied by
+-1, except as noted below for ‘l’. The test character <code>x</code> may be any of
+the following:</p>
+<p>!<br />
+True if the shell is running with privileges.</p>
+<h1 id=""><a class="header" href="#"></a></h1>
+<p>True if the effective uid of the current process is <code>n</code>.</p>
+<p>?<br />
+True if the exit status of the last command was <code>n</code>.</p>
+<p>_<br />
+True if at least <code>n</code> shell constructs were started.</p>
+<p>C<br />
+/<br />
+True if the current absolute path has at least <code>n</code> elements relative to
+the root directory, hence / is counted as 0 elements.</p>
+<p>c<br />
+.<br />
+~<br />
+True if the current path, with prefix replacement, has at least <code>n</code>
+elements relative to the root directory, hence / is counted as 0
+elements.</p>
+<p>D<br />
+True if the month is equal to <code>n</code> (January = 0).</p>
+<p>d<br />
+True if the day of the month is equal to <code>n</code>.</p>
+<p>e<br />
+True if the evaluation depth is at least <code>n</code>.</p>
+<p>g<br />
+True if the effective gid of the current process is <code>n</code>.</p>
+<p>j<br />
+True if the number of jobs is at least <code>n</code>.</p>
+<p>L<br />
+True if the SHLVL parameter is at least <code>n</code>.</p>
+<p>l<br />
+True if at least <code>n</code> characters have already been printed on the current
+line. When <code>n</code> is negative, true if at least abs(<code>n</code>) characters remain
+before the opposite margin (thus the left margin for RPROMPT).</p>
+<p>S<br />
+True if the SECONDS parameter is at least <code>n</code>.</p>
+<p>T<br />
+True if the time in hours is equal to <code>n</code>.</p>
+<p>t<br />
+True if the time in minutes is equal to <code>n</code>.</p>
+<p>v<br />
+True if the array psvar has at least <code>n</code> elements.</p>
+<p>V<br />
+True if element <code>n</code> of the array psvar is set and non-empty.</p>
+<p>w<br />
+True if the day of the week is equal to <code>n</code> (Sunday = 0).</p>
+<p>%&lt;<code>string</code>&lt;<br />
+%&gt;<code>string</code>&gt;<br />
+%[<code>xstring</code>]<br />
+Specifies truncation behaviour for the remainder of the prompt string.
+The third, deprecated, form is equivalent to ‘%<code>xstringx</code>’, i.e. <code>x</code> may
+be ‘&lt;’ or ‘&gt;’. The <code>string</code> will be displayed in place of the truncated
+portion of any string; note this does not undergo prompt expansion.</p>
+<p>The numeric argument, which in the third form may appear immediately
+after the ‘[’, specifies the maximum permitted length of the various
+strings that can be displayed in the prompt. In the first two forms,
+this numeric argument may be negative, in which case the truncation
+length is determined by subtracting the absolute value of the numeric
+argument from the number of character positions remaining on the current
+prompt line. If this results in a zero or negative length, a length of 1
+is used. In other words, a negative argument arranges that after
+truncation at least <code>n</code> characters remain before the right margin (left
+margin for RPROMPT).</p>
+<p>The forms with ‘&lt;’ truncate at the left of the string, and the forms
+with ‘&gt;’ truncate at the right of the string. For example, if the
+current directory is ‘/home/pike’, the prompt ‘%8&lt;..&lt;%/’ will expand
+to ‘..e/pike’. In this string, the terminating character (‘&lt;’, ‘&gt;’ or
+‘]’), or in fact any character, may be quoted by a preceding ‘\’; note
+when using print -P, however, that this must be doubled as the string is
+also subject to standard print processing, in addition to any
+backslashes removed by a double quoted string: the worst case is
+therefore ‘print -P "%&lt;\\\\&lt;&lt;..."’.</p>
+<p>If the <code>string</code> is longer than the specified truncation length, it will
+appear in full, completely replacing the truncated string.</p>
+<p>The part of the prompt string to be truncated runs to the end of the
+string, or to the end of the next enclosing group of the ‘%(’ construct,
+or to the next truncation encountered at the same grouping level (i.e.
+truncations inside a ‘%(’ are separate), which ever comes first. In
+particular, a truncation with argument zero (e.g., ‘%&lt;&lt;’) marks the
+end of the range of the string to be truncated while turning off
+truncation from there on. For example, the prompt ‘%10&lt;...&lt;%~%&lt;&lt;%#
+’ will print a truncated representation of the current directory,
+followed by a ‘%’ or ‘#’, followed by a space. Without the ‘%&lt;&lt;’,
+those two characters would be included in the string to be truncated.
+Note that ‘%-0&lt;&lt;’ is not equivalent to ‘%&lt;&lt;’ but specifies that the
+prompt is truncated at the right margin.</p>
+<p>Truncation applies only within each individual line of the prompt, as
+delimited by embedded newlines (if any). If the total length of any line
+of the prompt after truncation is greater than the terminal width, or if
+the part to be truncated contains embedded newlines, truncation behavior
+is undefined and may change in a future version of the shell. Use
+‘%-<code>n</code>(l.<code>true-text</code>.<code>false-text</code>)’ to remove parts of the prompt when
+the available space is less than <code>n</code>.</p>
+<hr />
+<p>This document was generated on <em>May 14, 2022</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html
+5.0</em></a>.<br />
+Zsh version 5.9, released on May 14, 2022.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Conditional-Expressions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="Expansion.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Conditional-Expressions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="Expansion.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

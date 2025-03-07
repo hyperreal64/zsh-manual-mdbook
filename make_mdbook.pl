@@ -103,12 +103,12 @@ close(FH);
 # Copy md files to zsh manual mdbook src
 # First ensure it is empty
 my $cwd = getcwd();
-system("rm -rf $cwd/zsh_manual/src") == 0                or die "$?";
-mkdir("$cwd/zsh_manual/src")                             or die "$?";
-system("cp $mdbook_src_dir/* $cwd/zsh_manual/src/") == 0 or die "$?";
+system("rm -rf $cwd/zsh-manual/src") == 0                or die "$?";
+mkdir("$cwd/zsh-manual/src")                             or die "$?";
+system("cp $mdbook_src_dir/* $cwd/zsh-manual/src/") == 0 or die "$?";
 
 # Replace ``` example with ```zsh for syntax highlighting
-@files = <$cwd/zsh_manual/src/*.md>;
+@files = <$cwd/zsh-manual/src/*.md>;
 foreach my $file (@files) {
     system("sed -i 's/``` example/```zsh/g' '$file'") == 0 or die "$?";
 }

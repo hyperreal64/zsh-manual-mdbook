@@ -1,0 +1,601 @@
+<!DOCTYPE HTML>
+<html lang="en" class="mocha sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Functions - Zsh Manual</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./theme/catppuccin.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "mocha" : "mocha";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('mocha')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappe</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#9-functions">9 Functions</a>
+<ul>
+<li><a href="#91-autoloading-functions">9.1 Autoloading Functions</a></li>
+<li><a href="#92-anonymous-functions">9.2 Anonymous Functions</a></li>
+<li><a href="#93-special-functions">9.3 Special Functions</a>
+<ul>
+<li><a href="#931-hook-functions">9.3.1 Hook Functions</a></li>
+<li><a href="#932-trap-functions">9.3.2 Trap Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Functions"></span> <span id="Functions-4"></span></p>
+<h1 id="9-functions"><a class="header" href="#9-functions">9 Functions</a></h1>
+<p><span id="index-functions"></span> <span
+id="index-function_002c-use-of"></span></p>
+<p>Shell functions are defined with the function reserved word or the
+special syntax ‘<code>funcname</code> ()’. Shell functions are read in and stored
+internally. Alias names are resolved when the function is read.
+Functions are executed like commands with the arguments passed as
+positional parameters. (See <a href="Command-Execution.html#Command-Execution">Command
+Execution</a>.)</p>
+<p>Functions execute in the same process as the caller and share all files
+and present working directory with the caller. A trap on EXIT set inside
+a function is executed after the function completes in the environment
+of the caller.</p>
+<p><span id="index-return_002c-use-of"></span></p>
+<p>The return builtin is used to return from function calls.</p>
+<p><span id="index-functions_002c-use-of"></span></p>
+<p>Function identifiers can be listed with the functions builtin. <span
+id="index-unfunction_002c-use-of"></span> Functions can be undefined
+with the unfunction builtin.</p>
+<hr />
+<p><span id="Autoloading-Functions"></span></p>
+<h2 id="91-autoloading-functions"><a class="header" href="#91-autoloading-functions">9.1 Autoloading Functions</a></h2>
+<p><span id="index-autoloading-functions"></span> <span
+id="index-functions_002c-autoloading"></span> <span
+id="index-autoload_002c-use-of"></span> <span
+id="index-fpath_002c-use-of"></span></p>
+<p>A function can be marked as <em>undefined</em> using the autoload builtin (or
+‘functions -u’ or ‘typeset -fu’). Such a function has no body. When the
+function is first executed, the shell searches for its definition using
+the elements of the fpath variable. Thus to define functions for
+autoloading, a typical sequence is:</p>
+<div class="example">
+<pre><code class="language-zsh">fpath=(~/myfuncs $fpath)
+autoload myfunc1 myfunc2 ...
+</code></pre>
+</div>
+<p>The usual alias expansion during reading will be suppressed if the
+autoload builtin or its equivalent is given the option -U. This is
+recommended for the use of functions supplied with the zsh distribution.
+<span id="index-zcompile_002c-use-of"></span> Note that for functions
+precompiled with the zcompile builtin command the flag -U must be
+provided when the .zwc file is created, as the corresponding information
+is compiled into the latter.</p>
+<p>For each <code>element</code> in fpath, the shell looks for three possible files,
+the newest of which is used to load the definition for the function:</p>
+<p><code>element</code>.zwc<br />
+A file created with the zcompile builtin command, which is expected to
+contain the definitions for all functions in the directory named
+<code>element</code>. The file is treated in the same manner as a directory
+containing files for functions and is searched for the definition of the
+function. If the definition is not found, the search for a definition
+proceeds with the other two possibilities described below.</p>
+<p>If <code>element</code> already includes a .zwc extension (i.e. the extension was
+explicitly given by the user), <code>element</code> is searched for the definition
+of the function without comparing its age to that of other files; in
+fact, there does not need to be any directory named <code>element</code> without
+the suffix. Thus including an element such as ‘/usr/local/funcs.zwc’ in
+fpath will speed up the search for functions, with the disadvantage that
+functions included must be explicitly recompiled by hand before the
+shell notices any changes.</p>
+<p><code>element</code>/<code>function</code>.zwc<br />
+A file created with zcompile, which is expected to contain the
+definition for <code>function</code>. It may include other function definitions as
+well, but those are neither loaded nor executed; a file found in this
+way is searched <em>only</em> for the definition of <code>function</code>.</p>
+<p><code>element</code>/<code>function</code><br />
+A file of zsh command text, taken to be the definition for <code>function</code>.</p>
+<p>In summary, the order of searching is, first, in the <em>parents of</em>
+directories in fpath for the newer of either a compiled directory or a
+directory in fpath; second, if more than one of these contains a
+definition for the function that is sought, the leftmost in the fpath is
+chosen; and third, within a directory, the newer of either a compiled
+function or an ordinary function definition is used.</p>
+<p><span id="index-KSH_005fAUTOLOAD_002c-use-of"></span></p>
+<p>If the KSH_AUTOLOAD option is set, or the file contains only a simple
+definition of the function, the file’s contents will be executed. This
+will normally define the function in question, but may also perform
+initialization, which is executed in the context of the function
+execution, and may therefore define local parameters. It is an error if
+the function is not defined by loading the file.</p>
+<p>Otherwise, the function body (with no surrounding ‘<code>funcname</code>()
+{<code>...</code>}’) is taken to be the complete contents of the file. This
+processing of the file results in the function being re-defined, the
+function itself is not re-executed. To force the shell to perform
+initialization and then call the function defined, the file should
+contain initialization code (which will be executed then discarded) in
+addition to a complete function definition (which will be retained for
+subsequent calls to the function), and a call to the shell function,
+including any arguments, at the end.</p>
+<p>For example, suppose the autoload file func contains</p>
+<div class="example">
+<pre><code class="language-zsh">func() { print This is func; }
+print func is initialized
+</code></pre>
+</div>
+<p>then ‘func; func’ with KSH_AUTOLOAD set will produce both messages on
+the first call, but only the message ‘This is func’ on the second and
+subsequent calls. Without KSH_AUTOLOAD set, it will produce the
+initialization message on the first call, and the other message on the
+second and subsequent calls.</p>
+<p>It is also possible to create a function that is not marked as
+autoloaded, but which loads its own definition by searching fpath, by
+using ‘autoload -X’ within a shell function. For example, the following
+are equivalent:</p>
+<div class="example">
+<pre><code class="language-zsh">myfunc() {
+  autoload -X
+}
+myfunc args...
+</code></pre>
+</div>
+<p>and</p>
+<div class="example">
+<pre><code class="language-zsh">unfunction myfunc   # if myfunc was defined
+autoload myfunc
+myfunc args...
+</code></pre>
+</div>
+<p>In fact, the functions command outputs ‘builtin autoload -X’ as the body
+of an autoloaded function. This is done so that</p>
+<div class="example">
+<pre><code class="language-zsh">eval "$(functions)"
+</code></pre>
+</div>
+<p>produces a reasonable result. A true autoloaded function can be
+identified by the presence of the comment ‘# undefined’ in the body,
+because all comments are discarded from defined functions.</p>
+<p>To load the definition of an autoloaded function myfunc without
+executing myfunc, use:</p>
+<div class="example">
+<pre><code class="language-zsh">autoload +X myfunc
+</code></pre>
+</div>
+<hr />
+<p><span id="Anonymous-Functions"></span></p>
+<h2 id="92-anonymous-functions"><a class="header" href="#92-anonymous-functions">9.2 Anonymous Functions</a></h2>
+<p><span id="index-anonymous-functions"></span> <span
+id="index-functions_002c-anonymous"></span></p>
+<p>If no name is given for a function, it is ‘anonymous’ and is handled
+specially. Either form of function definition may be used: a ‘()’ with
+no preceding name, or a ‘function’ with an immediately following open
+brace. The function is executed immediately at the point of definition
+and is not stored for future use. The function name is set to ‘(anon)’.</p>
+<p>Arguments to the function may be specified as words following the
+closing brace defining the function, hence if there are none no
+arguments (other than $0) are set. This is a difference from the way
+other functions are parsed: normal function definitions may be followed
+by certain keywords such as ‘else’ or ‘fi’, which will be treated as
+arguments to anonymous functions, so that a newline or semicolon is
+needed to force keyword interpretation.</p>
+<p>Note also that the argument list of any enclosing script or function is
+hidden (as would be the case for any other function called at this
+point).</p>
+<p>Redirections may be applied to the anonymous function in the same manner
+as to a current-shell structure enclosed in braces. The main use of
+anonymous functions is to provide a scope for local variables. This is
+particularly convenient in start-up files as these do not provide their
+own local variable scope.</p>
+<p>For example,</p>
+<div class="example">
+<pre><code class="language-zsh">variable=outside
+function {
+  local variable=inside
+  print "I am $variable with arguments $*"
+} this and that
+print "I am $variable"
+</code></pre>
+</div>
+<p>outputs the following:</p>
+<div class="example">
+<pre><code class="language-zsh">I am inside with arguments this and that
+I am outside
+</code></pre>
+</div>
+<p>Note that function definitions with arguments that expand to nothing,
+for example ‘name=; function $name { <code>...</code> }’, are not treated as
+anonymous functions. Instead, they are treated as normal function
+definitions where the definition is silently discarded.</p>
+<hr />
+<p><span id="Special-Functions"></span></p>
+<h2 id="93-special-functions"><a class="header" href="#93-special-functions">9.3 Special Functions</a></h2>
+<p>Certain functions, if defined, have special meaning to the shell.</p>
+<hr />
+<p><span id="Hook-Functions"></span></p>
+<h3 id="931-hook-functions"><a class="header" href="#931-hook-functions">9.3.1 Hook Functions</a></h3>
+<p><span id="index-functions_002c-hook"></span> <span
+id="index-hook-functions"></span></p>
+<p>For the functions below, it is possible to define an array that has the
+same name as the function with ‘_functions’ appended. Any element in
+such an array is taken as the name of a function to execute; it is
+executed in the same context and with the same arguments and same
+initial value of $? as the basic function. For example, if
+$chpwd_functions is an array containing the values ‘mychpwd’,
+‘chpwd_save_dirstack’, then the shell attempts to execute the functions
+‘chpwd’, ‘mychpwd’ and ‘chpwd_save_dirstack’, in that order. Any
+function that does not exist is silently ignored. A function found by
+this mechanism is referred to elsewhere as a <em>hook function</em>. An error
+in any function causes subsequent functions not to be run. Note further
+that an error in a precmd hook causes an immediately following periodic
+function not to run (though it may run at the next opportunity).</p>
+<p><span id="index-chpwd"></span> <span
+id="index-chpwd_005ffunctions"></span></p>
+<p>chpwd</p>
+<p>Executed whenever the current working directory is changed.</p>
+<p><span id="index-periodic"></span> <span
+id="index-periodic_005ffunctions"></span></p>
+<p>periodic</p>
+<p><span id="index-PERIOD"></span></p>
+<p>If the parameter PERIOD is set, this function is executed every $PERIOD
+seconds, just before a prompt. Note that if multiple functions are
+defined using the array periodic_functions only one period is applied to
+the complete set of functions, and the scheduled time is not reset if
+the list of functions is altered. Hence the set of functions is always
+called together.</p>
+<p><span id="index-precmd"></span> <span
+id="index-precmd_005ffunctions"></span></p>
+<p>precmd</p>
+<p>Executed before each prompt. Note that precommand functions are not
+re-executed simply because the command line is redrawn, as happens, for
+example, when a notification about an exiting job is displayed.</p>
+<p><span id="index-preexec"></span> <span
+id="index-preexec_005ffunctions"></span></p>
+<p>preexec</p>
+<p>Executed just after a command has been read and is about to be executed.
+If the history mechanism is active (regardless of whether the line was
+discarded from the history buffer), the string that the user typed is
+passed as the first argument, otherwise it is an empty string. The
+actual command that will be executed (including expanded aliases) is
+passed in two different forms: the second argument is a single-line,
+size-limited version of the command (with things like function bodies
+elided); the third argument contains the full text that is being
+executed.</p>
+<p><span id="index-zshaddhistory"></span> <span
+id="index-zshaddhistory_005ffunctions"></span></p>
+<p>zshaddhistory</p>
+<p><span id="index-history_002c-hook-when-line-is-saved"></span></p>
+<p>Executed when a history line has been read interactively, but before it
+is executed. The sole argument is the complete history line (so that any
+terminating newline will still be present).</p>
+<p>If any of the hook functions returns status 1 (or any non-zero value
+other than 2, though this is not guaranteed for future versions of the
+shell) the history line will not be saved, although it lingers in the
+history until the next line is executed, allowing you to reuse or edit
+it immediately.</p>
+<p>If any of the hook functions returns status 2 the history line will be
+saved on the internal history list, but not written to the history file.
+In case of a conflict, the first non-zero status value is taken.</p>
+<p>A hook function may call ‘fc -p <code>...</code>’ to switch the history context so
+that the history is saved in a different file from that in the global
+HISTFILE parameter. This is handled specially: the history context is
+automatically restored after the processing of the history line is
+finished.</p>
+<p>The following example function works with one of the options
+INC_APPEND_HISTORY or SHARE_HISTORY set, in order that the line is
+written out immediately after the history entry is added. It first adds
+the history line to the normal history with the newline stripped, which
+is usually the correct behaviour. Then it switches the history context
+so that the line will be written to a history file in the current
+directory.</p>
+<div class="example">
+<pre><code class="language-zsh">zshaddhistory() {
+  print -sr -- ${1%%$'\n'}
+  fc -p .zsh_local_history
+}
+</code></pre>
+</div>
+<p><span id="index-zshexit"></span> <span
+id="index-zshexit_005ffunctions"></span></p>
+<p>zshexit</p>
+<p>Executed at the point where the main shell is about to exit normally.
+This is not called by exiting subshells, nor when the exec precommand
+modifier is used before an external command. Also, unlike TRAPEXIT, it
+is not called when functions exit.</p>
+<hr />
+<p><span id="Trap-Functions"></span></p>
+<h3 id="932-trap-functions"><a class="header" href="#932-trap-functions">9.3.2 Trap Functions</a></h3>
+<p>The functions below are treated specially but do not have corresponding
+hook arrays.</p>
+<p>TRAP<code>NAL</code><br />
+<span id="index-signals_002c-trapping"></span> <span
+id="index-trapping-signals"></span></p>
+<p>If defined and non-null, this function will be executed whenever the
+shell catches a signal SIG<code>NAL</code>, where <code>NAL</code> is a signal name as
+specified for the kill builtin. The signal number will be passed as the
+first parameter to the function.</p>
+<p>If a function of this form is defined and null, the shell and processes
+spawned by it will ignore SIG<code>NAL</code>.</p>
+<p>The return status from the function is handled specially. If it is zero,
+the signal is assumed to have been handled, and execution continues
+normally. Otherwise, the shell will behave as interrupted except that
+the return status of the trap is retained.</p>
+<p>Programs terminated by uncaught signals typically return the status 128
+plus the signal number. Hence the following causes the handler for
+SIGINT to print a message, then mimic the usual effect of the signal.</p>
+<div class="example">
+<pre><code class="language-zsh">TRAPINT() {
+  print "Caught SIGINT, aborting."
+  return $(( 128 + $1 ))
+}
+</code></pre>
+</div>
+<p>The functions TRAPZERR, TRAPDEBUG and TRAPEXIT are never executed inside
+other traps.</p>
+<p><span id="index-TRAPDEBUG"></span></p>
+<p>TRAPDEBUG<br />
+If the option DEBUG_BEFORE_CMD is set (as it is by default), executed
+before each command; otherwise executed after each command. See the
+description of the trap builtin in <a href="Shell-Builtin-Commands.html#Shell-Builtin-Commands">Shell Builtin
+Commands</a> for
+details of additional features provided in debug traps.</p>
+<p><span id="index-TRAPEXIT"></span></p>
+<p>TRAPEXIT<br />
+Executed when the shell exits, or when the current function exits if
+defined inside a function. The value of $? at the start of execution is
+the exit status of the shell or the return status of the function
+exiting.</p>
+<p><span id="index-TRAPZERR"></span> <span id="index-TRAPERR"></span></p>
+<p>TRAPZERR<br />
+Executed whenever a command has a non-zero exit status. However, the
+function is not executed if the command occurred in a sublist followed
+by ‘&amp;&amp;’ or ‘||’; only the final command in a sublist of this type
+causes the trap to be executed. The function TRAPERR acts the same as
+TRAPZERR on systems where there is no SIGERR (this is the usual case).</p>
+<p><span id="index-trap_002c-use-of"></span></p>
+<p>The functions beginning ‘TRAP’ may alternatively be defined with the
+trap builtin: this may be preferable for some uses. Setting a trap with
+one form removes any trap of the other form for the same signal;
+removing a trap in either form removes all traps for the same signal.
+The forms</p>
+<div class="example">
+<pre><code class="language-zsh">TRAPNAL() { 
+ # code
+}
+</code></pre>
+</div>
+<p>(’function traps’) and</p>
+<div class="example">
+<pre><code class="language-zsh">trap '
+ # code
+' NAL
+</code></pre>
+</div>
+<p>(’list traps’) are equivalent in most ways, the exceptions being the
+following:</p>
+<ul>
+<li>Function traps have all the properties of normal functions,
+appearing in the list of functions and being called with their own
+function context rather than the context where the trap was
+triggered.</li>
+<li>The return status from function traps is special, whereas a return
+from a list trap causes the surrounding context to return with the
+given status.</li>
+<li>Function traps are not reset within subshells, in accordance with
+zsh behaviour; list traps are reset, in accordance with POSIX
+behaviour.</li>
+</ul>
+<hr />
+<p>This document was generated on <em>May 14, 2022</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html
+5.0</em></a>.<br />
+Zsh version 5.9, released on May 14, 2022.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Command-Execution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="Jobs-&amp;-Signals.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Command-Execution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="Jobs-&amp;-Signals.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

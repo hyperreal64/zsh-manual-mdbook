@@ -1,0 +1,11 @@
+[book]
+authors = ["Jeffrey Serio"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Zsh Guide"
+
+[output.html]
+additional-css = ["./theme/catppuccin.css"]
+default-theme = "mocha"
+preferred-dark-theme = "mocha"

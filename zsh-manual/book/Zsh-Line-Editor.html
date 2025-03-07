@@ -1,0 +1,2544 @@
+<!DOCTYPE HTML>
+<html lang="en" class="mocha sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Zsh Line Editor - Zsh Manual</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="./theme/catppuccin.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "mocha" : "mocha";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('mocha')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="latte">Latte</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="frappe">Frappe</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="macchiato">Macchiato</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mocha">Mocha</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Zsh Manual</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc">DocToc</a></em></p>
+<ul>
+<li><a href="#18-zsh-line-editor">18 Zsh Line Editor</a>
+<ul>
+<li><a href="#181-description">18.1 Description</a></li>
+<li><a href="#182-keymaps">18.2 Keymaps</a>
+<ul>
+<li><a href="#1821-reading-commands">18.2.1 Reading Commands</a></li>
+<li><a href="#1822-local-keymaps">18.2.2 Local Keymaps</a></li>
+</ul>
+</li>
+<li><a href="#183-zle-builtins">18.3 Zle Builtins</a></li>
+<li><a href="#184-zle-widgets">18.4 Zle Widgets</a></li>
+<li><a href="#185-user-defined-widgets">18.5 User-Defined Widgets</a>
+<ul>
+<li><a href="#1851-special-widgets">18.5.1 Special Widgets</a></li>
+</ul>
+</li>
+<li><a href="#186-standard-widgets">18.6 Standard Widgets</a>
+<ul>
+<li><a href="#1861-movement">18.6.1 Movement</a></li>
+<li><a href="#1862-history-control">18.6.2 History Control</a></li>
+<li><a href="#1863-modifying-text">18.6.3 Modifying Text</a></li>
+<li><a href="#1864-arguments">18.6.4 Arguments</a></li>
+<li><a href="#1865-completion">18.6.5 Completion</a></li>
+<li><a href="#1866-miscellaneous">18.6.6 Miscellaneous</a></li>
+<li><a href="#1867-text-objects">18.6.7 Text Objects</a></li>
+</ul>
+</li>
+<li><a href="#187-character-highlighting">18.7 Character Highlighting</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p><span id="Zsh-Line-Editor"></span> <span id="Zsh-Line-Editor-1"></span></p>
+<h1 id="18-zsh-line-editor"><a class="header" href="#18-zsh-line-editor">18 Zsh Line Editor</a></h1>
+<p><span id="index-line-editor"></span> <span
+id="index-editor_002c-line"></span> <span id="index-ZLE-1"></span></p>
+<hr />
+<p><span id="Description-6"></span></p>
+<h2 id="181-description"><a class="header" href="#181-description">18.1 Description</a></h2>
+<p><span id="index-ZLE_002c-use-of"></span></p>
+<p>If the ZLE option is set (which it is by default in interactive shells)
+and the shell input is attached to the terminal, the user is able to
+edit command lines.</p>
+<p>There are two display modes. The first, multiline mode, is the default.
+It only works if the TERM parameter is set to a valid terminal type that
+can move the cursor up. The second, single line mode, is used if TERM is
+invalid or incapable of moving the cursor up, or if the SINGLE_LINE_ZLE
+option is set. <span
+id="index-SINGLE_005fLINE_005fZLE_002c-use-of"></span> <span
+id="index-ksh_002c-editor-mode"></span> <span
+id="index-editor-ksh-style"></span> This mode is similar to ksh, and
+uses no termcap sequences. If TERM is "emacs", the ZLE option will be
+unset by default.</p>
+<p><span id="index-BAUD_002c-use-of"></span> <span
+id="index-COLUMNS_002c-use-of"></span> <span
+id="index-LINES_002c-use-of"></span></p>
+<p>The parameters BAUD, COLUMNS, and LINES are also used by the line
+editor. See <a href="Parameters.html#Parameters-Used-By-The-Shell">Parameters Used By The
+Shell</a>.</p>
+<p><span id="index-zle_005fhighlight_002c-use-of"></span></p>
+<p>The parameter zle_highlight is also used by the line editor; see
+<a href="#Character-Highlighting">Character Highlighting</a>. Highlighting of
+special characters and the region between the cursor and the mark (as
+set with set-mark-command in Emacs mode, or by visual-mode in Vi mode)
+is enabled by default; consult this reference for more information.
+Irascible conservatives will wish to know that all highlighting may be
+disabled by the following setting:</p>
+<div class="example">
+<pre><code class="language-zsh">zle_highlight=(none)
+</code></pre>
+</div>
+<p>In many places, references are made to the numeric argument. This can by
+default be entered in emacs mode by holding the alt key and typing a
+number, or pressing escape before each digit, and in vi command mode by
+typing the number before entering a command. Generally the numeric
+argument causes the next command entered to be repeated the specified
+number of times, unless otherwise noted below; this is implemented by
+the digit-argument widget. See also <a href="#Arguments">Arguments</a>for some
+other ways the numeric argument can be modified.</p>
+<hr />
+<p><span id="Keymaps"></span> <span id="Keymaps-1"></span></p>
+<h2 id="182-keymaps"><a class="header" href="#182-keymaps">18.2 Keymaps</a></h2>
+<p><span id="index-keymaps"></span> <span id="index-key-bindings"></span>
+<span id="index-bindings_002c-key"></span></p>
+<p>A keymap in ZLE contains a set of bindings between key sequences and ZLE
+commands. The empty key sequence cannot be bound.</p>
+<p>There can be any number of keymaps at any time, and each keymap has one
+or more names. If all of a keymap’s names are deleted, it disappears.
+<span id="index-bindkey_002c-use-of"></span> bindkey can be used to
+manipulate keymap names.</p>
+<p>Initially, there are eight keymaps:</p>
+<p>emacs<br />
+EMACS emulation</p>
+<p>viins<br />
+vi emulation - insert mode</p>
+<p>vicmd<br />
+vi emulation - command mode</p>
+<p>viopp<br />
+vi emulation - operator pending</p>
+<p>visual<br />
+vi emulation - selection active</p>
+<p>isearch<br />
+incremental search mode</p>
+<p>command<br />
+read a command name</p>
+<p>.safe<br />
+fallback keymap</p>
+<p>The ‘.safe’ keymap is special. It can never be altered, and the name can
+never be removed. However, it can be linked to other names, which can be
+removed. In the future other special keymaps may be added; users should
+avoid using names beginning with ‘.’ for their own keymaps.</p>
+<p><span id="index-VISUAL"></span> <span id="index-EDITOR"></span></p>
+<p>In addition to these names, either ‘emacs’ or ‘viins’ is also linked to
+the name ‘main’. If one of the VISUAL or EDITOR environment variables
+contain the string ‘vi’ when the shell starts up then it will be
+‘viins’, otherwise it will be ‘emacs’. bindkey’s -e and -v options
+provide a convenient way to override this default choice.</p>
+<p>When the editor starts up, it will select the ‘main’ keymap. If that
+keymap doesn’t exist, it will use ‘.safe’ instead.</p>
+<p>In the ‘.safe’ keymap, each single key is bound to self-insert, except
+for ^J (line feed) and ^M (return) which are bound to accept-line. This
+is deliberately not pleasant to use; if you are using it, it means you
+deleted the main keymap, and you should put it back.</p>
+<hr />
+<p><span id="Reading-Commands"></span></p>
+<h3 id="1821-reading-commands"><a class="header" href="#1821-reading-commands">18.2.1 Reading Commands</a></h3>
+<p>When ZLE is reading a command from the terminal, it may read a sequence
+that is bound to some command and is also a prefix of a longer bound
+string. In this case ZLE will wait a certain time to see if more
+characters are typed, and if not (or they don’t match any longer string)
+it will execute the binding. This timeout is defined by the KEYTIMEOUT
+parameter; its default is 0.4 sec. There is no timeout if the prefix
+string is not itself bound to a command.</p>
+<p>The key timeout is also applied when ZLE is reading the bytes from a
+multibyte character string when it is in the appropriate mode. (This
+requires that the shell was compiled with multibyte mode enabled;
+typically also the locale has characters with the UTF-8 encoding,
+although any multibyte encoding known to the operating system is
+supported.) If the second or a subsequent byte is not read within the
+timeout period, the shell acts as if ? were typed and resets the input
+state.</p>
+<p>As well as ZLE commands, key sequences can be bound to other strings, by
+using ‘bindkey -s’. When such a sequence is read, the replacement string
+is pushed back as input, and the command reading process starts again
+using these fake keystrokes. This input can itself invoke further
+replacement strings, but in order to detect loops the process will be
+stopped if there are twenty such replacements without a real command
+being read.</p>
+<p>A key sequence typed by the user can be turned into a command name for
+use in user-defined widgets with the read-command widget, described in
+<a href="#Miscellaneous">Miscellaneous</a> below.</p>
+<hr />
+<p><span id="Local-Keymaps"></span></p>
+<h3 id="1822-local-keymaps"><a class="header" href="#1822-local-keymaps">18.2.2 Local Keymaps</a></h3>
+<p><span id="index-local-keymaps"></span></p>
+<p>While for normal editing a single keymap is used exclusively, in many
+modes a local keymap allows for some keys to be customised. For example,
+in an incremental search mode, a binding in the isearch keymap will
+override a binding in the main keymap but all keys that are not
+overridden can still be used.</p>
+<p>If a key sequence is defined in a local keymap, it will hide a key
+sequence in the global keymap that is a prefix of that sequence. An
+example of this occurs with the binding of iw in viopp as this hides the
+binding of i in vicmd. However, a longer sequence in the global keymap
+that shares the same prefix can still apply so for example the binding
+of ^Xa in the global keymap will be unaffected by the binding of ^Xb in
+the local keymap.</p>
+<hr />
+<p><span id="Zle-Builtins"></span> <span id="Zle-Builtins-1"></span></p>
+<h2 id="183-zle-builtins"><a class="header" href="#183-zle-builtins">18.3 Zle Builtins</a></h2>
+<p><span id="index-zle_002c-builtin-commands"></span></p>
+<p>The ZLE module contains three related builtin commands. The bindkey
+command manipulates keymaps and key bindings; the vared command invokes
+ZLE on the value of a shell parameter; and the zle command manipulates
+editing widgets and allows command line access to ZLE commands from
+within shell functions.</p>
+<p><span id="index-bindkey"></span> <span
+id="index-keys_002c-rebinding"></span> <span
+id="index-rebinding-keys"></span> <span
+id="index-keys_002c-binding"></span> <span
+id="index-binding-keys"></span> <span id="index-keymaps-1"></span></p>
+<p>bindkey [ <code>options</code> ] -l [ -L ] [ <code>keymap</code> ... ]</p>
+<p>bindkey [ <code>options</code> ] -d</p>
+<p>bindkey [ <code>options</code> ] -D <code>keymap</code> ...</p>
+<p>bindkey [ <code>options</code> ] -A <code>old-keymap new-keymap</code></p>
+<p>bindkey [ <code>options</code> ] -N <code>new-keymap</code> [ <code>old-keymap</code> ]</p>
+<p>bindkey [ <code>options</code> ] -m</p>
+<p>bindkey [ <code>options</code> ] -r <code>in-string</code> ...</p>
+<p>bindkey [ <code>options</code> ] -s <code>in-string out-string</code> ...</p>
+<p>bindkey [ <code>options</code> ] <code>in-string command</code> ...</p>
+<p>bindkey [ <code>options</code> ] [ <code>in-string</code> ]</p>
+<p>bindkey’s options can be divided into three categories: keymap selection
+for the current command, operation selection, and others. The keymap
+selection options are:</p>
+<p>-e<br />
+Selects keymap ‘emacs’ for any operations by the current command, and
+also links ‘emacs’ to ‘main’ so that it is selected by default the next
+time the editor starts.</p>
+<p>-v<br />
+Selects keymap ‘viins’ for any operations by the current command, and
+also links ‘viins’ to ‘main’ so that it is selected by default the next
+time the editor starts.</p>
+<p>-a<br />
+Selects keymap ‘vicmd’ for any operations by the current command.</p>
+<p>-M <code>keymap</code><br />
+The <code>keymap</code> specifies a keymap name that is selected for any operations
+by the current command.</p>
+<p>If a keymap selection is required and none of the options above are
+used, the ‘main’ keymap is used. Some operations do not permit a keymap
+to be selected, namely:</p>
+<p>-l<br />
+List all existing keymap names; if any arguments are given, list just
+those keymaps.</p>
+<p>If the -L option is also used, list in the form of bindkey commands to
+create or link the keymaps. ‘bindkey -lL main’ shows which keymap is
+linked to ‘main’, if any, and hence if the standard emacs or vi
+emulation is in effect. This option does not show the .safe keymap
+because it cannot be created in that fashion; however, neither is
+‘bindkey -lL .safe’ reported as an error, it simply outputs nothing.</p>
+<p>-d<br />
+Delete all existing keymaps and reset to the default state.</p>
+<p>-D <code>keymap</code> ...<br />
+Delete the named <code>keymap</code>s.</p>
+<p>-A <code>old-keymap new-keymap</code><br />
+Make the <code>new-keymap</code> name an alias for <code>old-keymap</code>, so that both names
+refer to the same keymap. The names have equal standing; if either is
+deleted, the other remains. If there is already a keymap with the
+<code>new-keymap</code> name, it is deleted.</p>
+<p>-N <code>new-keymap</code> [ <code>old-keymap</code> ]<br />
+Create a new keymap, named <code>new-keymap</code>. If a keymap already has that
+name, it is deleted. If an <code>old-keymap</code> name is given, the new keymap is
+initialized to be a duplicate of it, otherwise the new keymap will be
+empty.</p>
+<p>To use a newly created keymap, it should be linked to main. Hence the
+sequence of commands to create and use a new keymap ‘mymap’ initialized
+from the emacs keymap (which remains unchanged) is:</p>
+<div class="example">
+<pre><code class="language-zsh">bindkey -N mymap emacs
+bindkey -A mymap main
+</code></pre>
+</div>
+<p>Note that while ‘bindkey -A <code>newmap</code> main’ will work when <code>newmap</code> is
+emacs or viins, it will not work for vicmd, as switching from vi insert
+to command mode becomes impossible.</p>
+<p>The following operations act on the ‘main’ keymap if no keymap selection
+option was given:</p>
+<p>-m<br />
+Add the built-in set of meta-key bindings to the selected keymap. Only
+keys that are unbound or bound to self-insert are affected.</p>
+<p>-r <code>in-string</code> ...<br />
+Unbind the specified <code>in-string</code>s in the selected keymap. This is
+exactly equivalent to binding the strings to undefined-key.</p>
+<p>When -R is also used, interpret the <code>in-string</code>s as ranges.</p>
+<p>When -p is also used, the <code>in-string</code>s specify prefixes. Any binding
+that has the given <code>in-string</code> as a prefix, not including the binding
+for the <code>in-string</code> itself, if any, will be removed. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">bindkey -rpM viins '^['
+</code></pre>
+</div>
+<p>will remove all bindings in the vi-insert keymap beginning with an
+escape character (probably cursor keys), but leave the binding for the
+escape character itself (probably vi-cmd-mode). This is incompatible
+with the option -R.</p>
+<p>-s <code>in-string out-string</code> ...<br />
+Bind each <code>in-string</code> to each <code>out-string</code>. When <code>in-string</code> is typed,
+<code>out-string</code> will be pushed back and treated as input to the line
+editor. When -R is also used, interpret the <code>in-string</code>s as ranges.</p>
+<p>Note that both <code>in-string</code> and <code>out-string</code> are subject to the same form
+of interpretation, as described below.</p>
+<p><code>in-string command</code> ...<br />
+Bind each <code>in-string</code> to each <code>command</code>. When -R is used, interpret the
+<code>in-string</code>s as ranges.</p>
+<p>[ <code>in-string</code> ]<br />
+List key bindings. If an <code>in-string</code> is specified, the binding of that
+string in the selected keymap is displayed. Otherwise, all key bindings
+in the selected keymap are displayed. (As a special case, if the -e or
+-v option is used alone, the keymap is <em>not</em> displayed - the implicit
+linking of keymaps is the only thing that happens.)</p>
+<p>When the option -p is used, the <code>in-string</code> must be present. The listing
+shows all bindings which have the given key sequence as a prefix, not
+including any bindings for the key sequence itself.</p>
+<p>When the -L option is used, the list is in the form of bindkey commands
+to create the key bindings.</p>
+<p>When the -R option is used as noted above, a valid range consists of two
+characters, with an optional ‘-’ between them. All characters between
+the two specified, inclusive, are bound as specified.</p>
+<p>For either <code>in-string</code> or <code>out-string</code>, the following escape sequences
+are recognised:</p>
+<p>\a<br />
+bell character</p>
+<p>\b<br />
+backspace</p>
+<p>\e, \E<br />
+escape</p>
+<p>\f<br />
+form feed</p>
+<p>\n<br />
+linefeed (newline)</p>
+<p>\r<br />
+carriage return</p>
+<p>\t<br />
+horizontal tab</p>
+<p>\v<br />
+vertical tab</p>
+<p>\<code>NNN</code><br />
+character code in octal</p>
+<p>\x<code>NN</code><br />
+character code in hexadecimal</p>
+<p>\u<code>NNNN</code><br />
+unicode character code in hexadecimal</p>
+<p>\U<code>NNNNNNNN</code><br />
+unicode character code in hexadecimal</p>
+<p>\M[-]<code>X</code><br />
+character with meta bit set</p>
+<p>\C[-]<code>X</code><br />
+control character</p>
+<p>^<code>X</code><br />
+control character</p>
+<p>In all other cases, ‘\’ escapes the following character. Delete is
+written as ‘^?’. Note that ‘\M^?’ and ‘^\M?’ are not the same, and
+that (unlike emacs), the bindings ‘\M-<code>X</code>’ and ‘\e<code>X</code>’ are entirely
+distinct, although they are initialized to the same bindings by ‘bindkey
+-m’.</p>
+<p><span id="index-vared"></span> <span
+id="index-parameters_002c-editing"></span> <span
+id="index-editing-parameters"></span></p>
+<p>vared [ -Aacghe ] [ -p <code>prompt</code> ] [ -r <code>rprompt</code> ]</p>
+<p>      [ -M <code>main-keymap</code> ] [ -m <code>vicmd-keymap</code> ]</p>
+<p>      [ -i <code>init-widget</code> ] [ -f <code>finish-widget</code> ]</p>
+<p>      [ -t <code>tty</code> ] <code>name</code></p>
+<p>The value of the parameter <code>name</code> is loaded into the edit buffer, and
+the line editor is invoked. When the editor exits, <code>name</code> is set to the
+string value returned by the editor. When the -c flag is given, the
+parameter is created if it doesn’t already exist. The -a flag may be
+given with -c to create an array parameter, or the -A flag to create an
+associative array. If the type of an existing parameter does not match
+the type to be created, the parameter is unset and recreated. The -g
+flag may be given to suppress warnings from the WARN_CREATE_GLOBAL and
+WARN_NESTED_VAR options.</p>
+<p>If an array or array slice is being edited, separator characters as
+defined in $IFS will be shown quoted with a backslash, as will
+backslashes themselves. Conversely, when the edited text is split into
+an array, a backslash quotes an immediately following separator
+character or backslash; no other special handling of backslashes, or any
+handling of quotes, is performed.</p>
+<p>Individual elements of existing array or associative array parameters
+may be edited by using subscript syntax on <code>name</code>. New elements are
+created automatically, even without -c.</p>
+<p>If the -p flag is given, the following string will be taken as the
+prompt to display at the left. If the -r flag is given, the following
+string gives the prompt to display at the right. If the -h flag is
+specified, the history can be accessed from ZLE. If the -e flag is
+given, typing ^D (Control-D) on an empty line causes vared to exit
+immediately with a non-zero return value.</p>
+<p>The -M option gives a keymap to link to the main keymap during editing,
+and the -m option gives a keymap to link to the vicmd keymap during
+editing. For vi-style editing, this allows a pair of keymaps to override
+viins and vicmd. For emacs-style editing, only -M is normally needed but
+the -m option may still be used. On exit, the previous keymaps will be
+restored.</p>
+<p>Vared calls the usual ‘zle-line-init’ and ‘zle-line-finish’ hooks before
+and after it takes control. Using the -i and -f options, it is possible
+to replace these with other custom widgets.</p>
+<p>If ‘-t <code>tty</code>’ is given, <code>tty</code> is the name of a terminal device to be
+used instead of the default /dev/tty. If <code>tty</code> does not refer to a
+terminal an error is reported.</p>
+<p><span id="index-zle"></span> <span
+id="index-widgets_002c-rebinding"></span> <span
+id="index-rebinding-widgets"></span> <span
+id="index-widgets_002c-binding"></span> <span
+id="index-binding-widgets"></span> <span
+id="index-widgets_002c-invoking"></span> <span
+id="index-invoking-widgets"></span> <span
+id="index-widgets_002c-calling"></span> <span
+id="index-calling-widgets"></span> <span
+id="index-widgets_002c-defining"></span> <span
+id="index-defining-widgets"></span></p>
+<p>zle</p>
+<p>zle -l [ -L | -a ] [ <code>string</code> ... ]</p>
+<p>zle -D <code>widget</code> ...</p>
+<p>zle -A <code>old-widget</code> <code>new-widget</code></p>
+<p>zle -N <code>widget</code> [ <code>function</code> ]</p>
+<p>zle -f <code>flag</code> [ <code>flag</code>... ]</p>
+<p>zle -C <code>widget</code> <code>completion-widget</code> <code>function</code></p>
+<p>zle -R [ -c ] [ <code>display-string</code> ] [ <code>string</code> ... ]</p>
+<p>zle -M <code>string</code></p>
+<p>zle -U <code>string</code></p>
+<p>zle -K <code>keymap</code></p>
+<p>zle -F [ -L | -w ] [ <code>fd</code> [ <code>handler</code> ] ]</p>
+<p>zle -I</p>
+<p>zle -T [ tc <code>function</code> | -r tc | -L ]</p>
+<p>zle <code>widget</code> [ -n <code>num</code> ] [ -f <code>flag</code> ] [ -Nw ] [ -K <code>keymap</code> ]
+<code>args</code> ...</p>
+<p>The zle builtin performs a number of different actions concerning ZLE.</p>
+<p>With no options and no arguments, only the return status will be set. It
+is zero if ZLE is currently active and widgets could be invoked using
+this builtin command and non-zero otherwise. Note that even if non-zero
+status is returned, zle may still be active as part of the completion
+system; this does not allow direct calls to ZLE widgets.</p>
+<p>Otherwise, which operation it performs depends on its options:</p>
+<p>-l [ -L | -a ] [ <code>string</code> ]<br />
+List all existing user-defined widgets. If the -L option is used, list
+in the form of zle commands to create the widgets.</p>
+<p>When combined with the -a option, all widget names are listed, including
+the builtin ones. In this case the -L option is ignored.</p>
+<p>If at least one <code>string</code> is given, and -a is present or -L is not used,
+nothing will be printed. The return status will be zero if all <code>string</code>s
+are names of existing widgets and non-zero if at least one <code>string</code> is
+not a name of a defined widget. If -a is also present, all widget names
+are used for the comparison including builtin widgets, else only
+user-defined widgets are used.</p>
+<p>If at least one <code>string</code> is present and the -L option is used,
+user-defined widgets matching any <code>string</code> are listed in the form of zle
+commands to create the widgets.</p>
+<p>-D <code>widget</code> ...<br />
+Delete the named <code>widget</code>s.</p>
+<p>-A <code>old-widget</code> <code>new-widget</code><br />
+Make the <code>new-widget</code> name an alias for <code>old-widget</code>, so that both names
+refer to the same widget. The names have equal standing; if either is
+deleted, the other remains. If there is already a widget with the
+<code>new-widget</code> name, it is deleted.</p>
+<p>-N <code>widget</code> [ <code>function</code> ]<br />
+Create a user-defined widget. If there is already a widget with the
+specified name, it is overwritten. When the new widget is invoked from
+within the editor, the specified shell <code>function</code> is called. If no
+function name is specified, it defaults to the same name as the widget.
+For further information, see <a href="#Zle-Widgets">Zle Widgets</a>.</p>
+<p>-f <code>flag</code> [ <code>flag</code>... ]<br />
+Set various flags on the running widget. Possible values for <code>flag</code> are:</p>
+<p>yank for indicating that the widget has yanked text into the buffer. If
+the widget is wrapping an existing internal widget, no further action is
+necessary, but if it has inserted the text manually, then it should also
+take care to set YANK_START and YANK_END correctly. yankbefore does the
+same but is used when the yanked text appears after the cursor.</p>
+<p>kill for indicating that text has been killed into the cutbuffer. When
+repeatedly invoking a kill widget, text is appended to the cutbuffer
+instead of replacing it, but when wrapping such widgets, it is necessary
+to call ‘zle -f kill’ to retain this effect.</p>
+<p>vichange for indicating that the widget represents a vi change that can
+be repeated as a whole with ‘vi-repeat-change’. The flag should be set
+early in the function before inspecting the value of NUMERIC or invoking
+other widgets. This has no effect for a widget invoked from insert mode.
+If insert mode is active when the widget finishes, the change extends
+until next returning to command mode.</p>
+<p><span id="index-completion-widgets_002c-creating"></span></p>
+<p>-C <code>widget</code> <code>completion-widget</code> <code>function</code><br />
+Create a user-defined completion widget named <code>widget</code>. The completion
+widget will behave like the built-in completion-widget whose name is
+given as <code>completion-widget</code>. To generate the completions, the shell
+function <code>function</code> will be called. For further information, see
+<a href="Completion-Widgets.html#Completion-Widgets">Completion Widgets</a>.</p>
+<p>-R [ -c ] [ <code>display-string</code> ] [ <code>string</code> ... ]<br />
+Redisplay the command line. If a <code>display-string</code> is given and not
+empty, this is shown in the status line (immediately below the line
+being edited).</p>
+<p>If the optional <code>string</code>s are given they are listed below the prompt in
+the same way as completion lists are printed. If no <code>string</code>s are given
+but the -c option is used such a list is cleared.</p>
+<p>Note that immediately after returning from running widgets, the command
+line will be redisplayed and the strings displayed will be erased.
+Therefore, this option is only useful for widgets that do not exit
+immediately after using it.</p>
+<p>This command can safely be called outside user defined widgets; if zle
+is active, the display will be refreshed, while if zle is not active,
+the command has no effect. In this case there will usually be no other
+arguments.</p>
+<p>The status is zero if zle was active, else one.</p>
+<p>-M <code>string</code><br />
+As with the -R option, the <code>string</code> will be displayed below the command
+line; unlike the -R option, the string will not be put into the status
+line but will instead be printed normally below the prompt. This means
+that the <code>string</code> will still be displayed after the widget returns
+(until it is overwritten by subsequent commands).</p>
+<p>-U <code>string</code><br />
+This pushes the characters in the <code>string</code> onto the input stack of ZLE.
+After the widget currently executed finishes ZLE will behave as if the
+characters in the <code>string</code> were typed by the user.</p>
+<p>As ZLE uses a stack, if this option is used repeatedly the last string
+pushed onto the stack will be processed first. However, the characters
+in each <code>string</code> will be processed in the order in which they appear in
+the string.</p>
+<p>-K <code>keymap</code><br />
+Selects the keymap named <code>keymap</code>. An error message will be displayed if
+there is no such keymap.</p>
+<p>This keymap selection affects the interpretation of following keystrokes
+within this invocation of ZLE. Any following invocation (e.g., the next
+command line) will start as usual with the ‘main’ keymap selected.</p>
+<p>-F [ -L | -w ] [ <code>fd</code> [ <code>handler</code> ] ]<br />
+Only available if your system supports one of the ‘poll’ or ‘select’
+system calls; most modern systems do.</p>
+<p>Installs <code>handler</code> (the name of a shell function) to handle input from
+file descriptor <code>fd</code>. Installing a handler for an <code>fd</code> which is already
+handled causes the existing handler to be replaced. Any number of
+handlers for any number of readable file descriptors may be installed.
+Note that zle makes no attempt to check whether this <code>fd</code> is actually
+readable when installing the handler. The user must make their own
+arrangements for handling the file descriptor when zle is not active.</p>
+<p>When zle is attempting to read data, it will examine both the terminal
+and the list of handled <code>fd</code>’s. If data becomes available on a handled
+<code>fd</code>, zle calls <code>handler</code> with the fd which is ready for reading as the
+first argument. Under normal circumstances this is the only argument,
+but if an error was detected, a second argument provides details: ‘hup’
+for a disconnect, ‘nval’ for a closed or otherwise invalid descriptor,
+or ‘err’ for any other condition. Systems that support only the ‘select’
+system call always use ‘err’.</p>
+<p>If the option -w is also given, the <code>handler</code> is instead a line editor
+widget, typically a shell function made into a widget using ‘zle -N’. In
+that case <code>handler</code> can use all the facilities of zle to update the
+current editing line. Note, however, that as handling <code>fd</code> takes place
+at a low level changes to the display will not automatically appear; the
+widget should call ‘zle -R’ to force redisplay. As of this writing,
+widget handlers only support a single argument and thus are never passed
+a string for error state, so widgets must be prepared to test the
+descriptor themselves.</p>
+<p>If either type of handler produces output to the terminal, it should
+call ‘zle -I’ before doing so (see below). Handlers should not attempt
+to read from the terminal.</p>
+<p>If no <code>handler</code> is given, but an <code>fd</code> is present, any handler for that
+<code>fd</code> is removed. If there is none, an error message is printed and
+status 1 is returned.</p>
+<p>If no arguments are given, or the -L option is supplied, a list of
+handlers is printed in a form which can be stored for later execution.</p>
+<p>An <code>fd</code> (but not a <code>handler</code>) may optionally be given with the -L
+option; in this case, the function will list the handler if any, else
+silently return status 1.</p>
+<p>Note that this feature should be used with care. Activity on one of the
+<code>fd</code>’s which is not properly handled can cause the terminal to become
+unusable. Removing an <code>fd</code> handler from within a signal trap may cause</p>
+<p>Here is a simple example of using this feature. A connection to a remote
+TCP port is created using the ztcp command; see <a href="Zsh-Modules.html#The-zsh_002fnet_002ftcp-Module">The zsh/net/tcp
+Module</a>. Then a handler
+is installed which simply prints out any data which arrives on this
+connection. Note that ‘select’ will indicate that the file descriptor
+needs handling if the remote side has closed the connection; we handle
+that by testing for a failed read.</p>
+<div class="example">
+<pre><code class="language-zsh">if ztcp pwspc 2811; then
+  tcpfd=$REPLY
+  handler() {
+    zle -I
+    local line
+    if ! read -r line &lt;&amp;$1; then
+      # select marks this fd if we reach EOF,
+      # so handle this specially.
+      print "[Read on fd $1 failed, removing.]" &gt;&amp;2
+      zle -F $1
+      return 1
+    fi
+    print -r - $line
+  }
+  zle -F $tcpfd handler
+fi
+</code></pre>
+</div>
+<p>-I<br />
+Unusually, this option is most useful outside ordinary widget functions,
+though it may be used within if normal output to the terminal is
+required. It invalidates the current zle display in preparation for
+output; typically this will be from a trap function. It has no effect if
+zle is not active. When a trap exits, the shell checks to see if the
+display needs restoring, hence the following will print output in such a
+way as not to disturb the line being edited:</p>
+<div class="example">
+<pre><code class="language-zsh">TRAPUSR1() {
+  # Invalidate zle display
+  [[ -o zle ]] &amp;&amp; zle -I
+  # Show output
+  print Hello
+}
+</code></pre>
+</div>
+<p>In general, the trap function may need to test whether zle is active
+before using this method (as shown in the example), since the zsh/zle
+module may not even be loaded; if it is not, the command can be skipped.</p>
+<p>It is possible to call ‘zle -I’ several times before control is returned
+to the editor; the display will only be invalidated the first time to
+minimise disruption.</p>
+<p>Note that there are normally better ways of manipulating the display
+from within zle widgets; see, for example, ‘zle -R’ above.</p>
+<p>The returned status is zero if zle was invalidated, even though this may
+have been by a previous call to ‘zle -I’ or by a system notification. To
+test if a zle widget may be called at this point, execute zle with no
+arguments and examine the return status.</p>
+<p>-T<br />
+This is used to add, list or remove internal transformations on the
+processing performed by the line editor. It is typically used only for
+debugging or testing and is therefore of little interest to the general
+user.</p>
+<p>‘zle -T <code>transformation</code> <code>func</code>’ specifies that the given
+<code>transformation</code> (see below) is effected by shell function <code>func</code>.</p>
+<p>‘zle -Tr <code>transformation</code>’ removes the given <code>transformation</code> if it was
+present (it is not an error if none was).</p>
+<p>‘zle -TL’ can be used to list all transformations currently in
+operation.</p>
+<p>Currently the only transformation is tc. This is used instead of
+outputting termcap codes to the terminal. When the transformation is in
+operation the shell function is passed the termcap code that would be
+output as its first argument; if the operation required a numeric
+argument, that is passed as a second argument. The function should set
+the shell variable REPLY to the transformed termcap code. Typically this
+is used to produce some simply formatted version of the code and
+optional argument for debugging or testing. Note that this
+transformation is not applied to other non-printing characters such as
+carriage returns and newlines.</p>
+<p><code>widget</code> [ -n <code>num</code> ] [ -f <code>flag</code> ] [ -Nw ] [ -K <code>keymap</code> ] <code>args</code> ...<br />
+Invoke the specified <code>widget</code>. This can only be done when ZLE is active;
+normally this will be within a user-defined widget.</p>
+<p>With the options -n and -N, the current numeric argument will be saved
+and then restored after the call to <code>widget</code>; ‘-n <code>num</code>’ sets the
+numeric argument temporarily to <code>num</code>, while ‘-N’ sets it to the
+default, i.e. as if there were none.</p>
+<p>With the option -K, <code>keymap</code> will be used as the current keymap during
+the execution of the widget. The previous keymap will be restored when
+the widget exits.</p>
+<p>Normally, calling a widget in this way does not set the special
+parameter WIDGET and related parameters, so that the environment appears
+as if the top-level widget called by the user were still active. With
+the option -w, WIDGET and related parameters are set to reflect the
+widget being executed by the zle call.</p>
+<p>Normally, when <code>widget</code> returns the special parameter LASTWIDGET will
+point to it. This can be inhibited by passing the option -f nolast.</p>
+<p>Any further arguments will be passed to the widget; note that as
+standard argument handling is performed, any general argument list
+should be preceded by --. If it is a shell function, these are passed
+down as positional parameters; for builtin widgets it is up to the
+widget in question what it does with them. Currently arguments are only
+handled by the incremental-search commands, the history-search-forward
+and -backward and the corresponding functions prefixed by vi-, and by
+universal-argument. No error is flagged if the command does not use the
+arguments, or only uses some of them.</p>
+<p>The return status reflects the success or failure of the operation
+carried out by the widget, or if it is a user-defined widget the return
+status of the shell function.</p>
+<p>A non-zero return status causes the shell to beep when the widget exits,
+unless the BEEP options was unset or the widget was called via the zle
+command. Thus if a user defined widget requires an immediate beep, it
+should call the beep widget directly.</p>
+<hr />
+<p><span id="Zle-Widgets"></span> <span id="Zle-Widgets-1"></span></p>
+<h2 id="184-zle-widgets"><a class="header" href="#184-zle-widgets">18.4 Zle Widgets</a></h2>
+<p><span id="index-widgets"></span></p>
+<p>All actions in the editor are performed by ‘widgets’. A widget’s job is
+simply to perform some small action. The ZLE commands that key sequences
+in keymaps are bound to are in fact widgets. Widgets can be user-defined
+or built in.</p>
+<p>The standard widgets built into ZLE are listed in <a href="#Standard-Widgets">Standard
+Widgets</a>. Other built-in widgets can be defined by
+other modules (see <a href="Zsh-Modules.html#Zsh-Modules">Zsh Modules</a>). Each
+built-in widget has two names: its normal canonical name, and the same
+name preceded by a ‘.’. The ‘.’ name is special: it can’t be rebound to
+a different widget. This makes the widget available even when its usual
+name has been redefined.</p>
+<p>User-defined widgets are defined using ‘zle -N’, and implemented as
+shell functions. When the widget is executed, the corresponding shell
+function is executed, and can perform editing (or other) actions. It is
+recommended that user-defined widgets should not have names starting
+with ‘.’.</p>
+<hr />
+<p><span id="User_002dDefined-Widgets"></span> <span
+id="User_002dDefined-Widgets-1"></span></p>
+<h2 id="185-user-defined-widgets"><a class="header" href="#185-user-defined-widgets">18.5 User-Defined Widgets</a></h2>
+<p><span id="index-widgets_002c-user_002ddefined"></span></p>
+<p>User-defined widgets, being implemented as shell functions, can execute
+any normal shell command. They can also run other widgets (whether
+built-in or user-defined) using the zle builtin command. The standard
+input of the function is redirected from /dev/null to prevent external
+commands from unintentionally blocking ZLE by reading from the terminal,
+but read -k or read -q can be used to read characters. Finally, they can
+examine and edit the ZLE buffer being edited by reading and setting the
+special parameters described below.</p>
+<p><span id="index-parameters_002c-editor"></span> <span
+id="index-parameters_002c-zle"></span></p>
+<p>These special parameters are always available in widget functions, but
+are not in any way special outside ZLE. If they have some normal value
+outside ZLE, that value is temporarily inaccessible, but will return
+when the widget function exits. These special parameters in fact have
+local scope, like parameters created in a function using local.</p>
+<p>Inside completion widgets and traps called while ZLE is active, these
+parameters are available read-only.</p>
+<p>Note that the parameters appear as local to any ZLE widget in which they
+appear. Hence if it is desired to override them this needs to be done
+within a nested function:</p>
+<div class="example">
+<pre><code class="language-zsh">widget-function() {
+  # $WIDGET here refers to the special variable
+  # that is local inside widget-function
+  () {
+     # This anonymous nested function allows WIDGET
+     # to be used as a local variable.  The -h
+     # removes the special status of the variable.
+     local -h WIDGET
+  }
+}
+</code></pre>
+</div>
+<p><span id="index-BUFFER"></span></p>
+<p>BUFFER (scalar)</p>
+<p>The entire contents of the edit buffer. If it is written to, the cursor
+remains at the same offset, unless that would put it outside the buffer.</p>
+<p><span id="index-BUFFERLINES"></span></p>
+<p>BUFFERLINES (integer)</p>
+<p>The number of screen lines needed for the edit buffer currently
+displayed on screen (i.e. without any changes to the preceding
+parameters done after the last redisplay); read-only.</p>
+<p><span id="index-CONTEXT"></span></p>
+<p>CONTEXT (scalar)</p>
+<p>The context in which zle was called to read a line; read-only. One of
+the values:</p>
+<p>start<br />
+The start of a command line (at prompt PS1).</p>
+<p>cont<br />
+A continuation to a command line (at prompt PS2).</p>
+<p>select<br />
+In a select loop (at prompt PS3).</p>
+<p>vared<br />
+Editing a variable in vared.</p>
+<p><span id="index-CURSOR"></span></p>
+<p>CURSOR (integer)</p>
+<p>The offset of the cursor, within the edit buffer. This is in the range 0
+to $#BUFFER, and is by definition equal to $#LBUFFER. Attempts to move
+the cursor outside the buffer will result in the cursor being moved to
+the appropriate end of the buffer.</p>
+<p><span id="index-CUTBUFFER"></span></p>
+<p>CUTBUFFER (scalar)</p>
+<p>The last item cut using one of the ‘kill-’ commands; the string which
+the next yank would insert in the line. Later entries in the kill ring
+are in the array killring. Note that the command ‘zle
+copy-region-as-kill <code>string</code>’ can be used to set the text of the cut
+buffer from a shell function and cycle the kill ring in the same way as
+interactively killing text.</p>
+<p><span id="index-HISTNO"></span></p>
+<p>HISTNO (integer)</p>
+<p>The current history number. Setting this has the same effect as moving
+up or down in the history to the corresponding history line. An attempt
+to set it is ignored if the line is not stored in the history. Note this
+is not the same as the parameter HISTCMD, which always gives the number
+of the history line being added to the main shell’s history. HISTNO
+refers to the line being retrieved within zle.</p>
+<p><span id="index-ISEARCHMATCH_005fACTIVE"></span> <span
+id="index-ISEARCHMATCH_005fSTART"></span> <span
+id="index-ISEARCHMATCH_005fEND"></span></p>
+<p>ISEARCHMATCH_ACTIVE (integer)</p>
+<p>ISEARCHMATCH_START (integer)</p>
+<p>ISEARCHMATCH_END (integer)</p>
+<p>ISEARCHMATCH_ACTIVE indicates whether a part of the BUFFER is currently
+matched by an incremental search pattern. ISEARCHMATCH_START and
+ISEARCHMATCH_END give the location of the matched part and are in the
+same units as CURSOR. They are only valid for reading when
+ISEARCHMATCH_ACTIVE is non-zero.</p>
+<p>All parameters are read-only.</p>
+<p><span id="index-KEYMAP"></span></p>
+<p>KEYMAP (scalar)</p>
+<p>The name of the currently selected keymap; read-only.</p>
+<p><span id="index-KEYS"></span></p>
+<p>KEYS (scalar)</p>
+<p>The keys typed to invoke this widget, as a literal string; read-only.</p>
+<p><span id="index-KEYS_005fQUEUED_005fCOUNT"></span></p>
+<p>KEYS_QUEUED_COUNT (integer)</p>
+<p>The number of bytes pushed back to the input queue and therefore
+available for reading immediately before any I/O is done; read-only. See
+also PENDING; the two values are distinct.</p>
+<p><span id="index-killring"></span></p>
+<p>killring (array)</p>
+<p>The array of previously killed items, with the most recently killed
+first. This gives the items that would be retrieved by a yank-pop in the
+same order. Note, however, that the most recently killed item is in
+$CUTBUFFER; $killring shows the array of previous entries.</p>
+<p>The default size for the kill ring is eight, however the length may be
+changed by normal array operations. Any empty string in the kill ring is
+ignored by the yank-pop command, hence the size of the array effectively
+sets the maximum length of the kill ring, while the number of non-zero
+strings gives the current length, both as seen by the user at the
+command line.</p>
+<p><span id="index-LASTABORTEDSEARCH"></span></p>
+<p>LASTABORTEDSEARCH (scalar)</p>
+<p>The last search string used by an interactive search that was aborted by
+the user (status 3 returned by the search widget).</p>
+<p><span id="index-LASTSEARCH"></span></p>
+<p>LASTSEARCH (scalar)</p>
+<p>The last search string used by an interactive search; read-only. This is
+set even if the search failed (status 0, 1 or 2 returned by the search
+widget), but not if it was aborted by the user.</p>
+<p><span id="index-LASTWIDGET"></span></p>
+<p>LASTWIDGET (scalar)</p>
+<p>The name of the last widget that was executed; read-only.</p>
+<p><span id="index-LBUFFER"></span></p>
+<p>LBUFFER (scalar)</p>
+<p>The part of the buffer that lies to the left of the cursor position. If
+it is assigned to, only that part of the buffer is replaced, and the
+cursor remains between the new $LBUFFER and the old $RBUFFER.</p>
+<p><span id="index-MARK"></span></p>
+<p>MARK (integer)</p>
+<p>Like CURSOR, but for the mark. With vi-mode operators that wait for a
+movement command to select a region of text, setting MARK allows the
+selection to extend in both directions from the initial cursor position.</p>
+<p><span id="index-NUMERIC"></span></p>
+<p>NUMERIC (integer)</p>
+<p>The numeric argument. If no numeric argument was given, this parameter
+is unset. When this is set inside a widget function, builtin widgets
+called with the zle builtin command will use the value assigned. If it
+is unset inside a widget function, builtin widgets called behave as if
+no numeric argument was given.</p>
+<p><span id="index-PENDING"></span></p>
+<p>PENDING (integer)</p>
+<p>The number of bytes pending for input, i.e. the number of bytes which
+have already been typed and can immediately be read. On systems where
+the shell is not able to get this information, this parameter will
+always have a value of zero. Read-only. See also KEYS_QUEUED_COUNT; the
+two values are distinct.</p>
+<p><span id="index-PREBUFFER"></span></p>
+<p>PREBUFFER (scalar)</p>
+<p>In a multi-line input at the secondary prompt, this read-only parameter
+contains the contents of the lines before the one the cursor is
+currently in.</p>
+<p><span id="index-PREDISPLAY"></span></p>
+<p>PREDISPLAY (scalar)</p>
+<p>does not have to be a complete line; to display a complete line, a
+newline must be appended explicitly. The text is reset on each new
+invocation (but not recursive invocation) of zle.</p>
+<p><span id="index-POSTDISPLAY"></span></p>
+<p>POSTDISPLAY (scalar)</p>
+<p>does not have to be a complete line; to display a complete line, a
+newline must be prepended explicitly. The text is reset on each new
+invocation (but not recursive invocation) of zle.</p>
+<p><span id="index-RBUFFER"></span></p>
+<p>RBUFFER (scalar)</p>
+<p>The part of the buffer that lies to the right of the cursor position. If
+it is assigned to, only that part of the buffer is replaced, and the
+cursor remains between the old $LBUFFER and the new $RBUFFER.</p>
+<p><span id="index-REGION_005fACTIVE"></span></p>
+<p>REGION_ACTIVE (integer)</p>
+<p>Indicates if the region is currently active. It can be assigned 0 or 1
+to deactivate and activate the region respectively. A value of 2
+activates the region in line-wise mode with the highlighted text
+extending for whole lines only; see <a href="#Character-Highlighting">Character
+Highlighting</a>.</p>
+<p><span id="index-region_005fhighlight"></span></p>
+<p>region_highlight (array)</p>
+<p>Each element of this array may be set to a string that describes
+highlighting for an arbitrary region of the command line that will take
+effect the next time the command line is redisplayed. Highlighting and
+POSTDISPLAY are possible, but note that the P flag is needed for
+character indexing to include PREDISPLAY.</p>
+<p>Each string consists of the following whitespace-separated parts:</p>
+<ul>
+<li>
+<p>Optionally, a ‘P’ to signify that the start and end offset that
+follow include any string set by the PREDISPLAY special parameter;
+this is needed if the predisplay string itself is to be highlighted.
+Whitespace between the ‘P’ and the start offset is optional.</p>
+</li>
+<li>
+<p>A start offset in the same units as CURSOR.</p>
+</li>
+<li>
+<p>An end offset in the same units as CURSOR.</p>
+</li>
+<li>
+<p>A highlight specification in the same format as used for contexts in
+the parameter zle_highlight, see <a href="#Character-Highlighting">Character
+Highlighting</a>; for example, standout or
+fg=red,bold.</p>
+</li>
+<li>
+<p>Optionally, a string of the form ‘memo=<code>token</code>’. The <code>token</code>
+consists of everything between the ‘=’ and the next whitespace,
+comma, NUL, or the end of the string. The <code>token</code> is preserved
+verbatim but not parsed in any way.</p>
+<p>Plugins may use this to identify array elements they have added: for
+example, a plugin might set <code>token</code> to its (the plugin’s) name and
+then use ‘region_highlight=( ${region_highlight:#*memo=<code>token</code>} )’
+in order to remove array elements it have added.</p>
+<p>(This example uses the ‘${<code>name</code>:#<code>pattern</code>}’ array-grepping syntax
+described in <a href="Expansion.html#Parameter-Expansion">Parameter
+Expansion</a>.)</p>
+</li>
+</ul>
+<p>For example,</p>
+<div class="example">
+<pre><code class="language-zsh">region_highlight=("P0 20 bold memo=foobar")
+</code></pre>
+</div>
+<p>specifies that the first twenty characters of the text including any
+predisplay string should be highlighted in bold.</p>
+<p>Note that the effect of region_highlight is not saved and disappears as
+soon as the line is accepted.</p>
+<p>Note that zsh 5.8 and older do not support the ‘memo=<code>token</code>’ field and
+may misparse the third (highlight specification) field when a memo is
+given.</p>
+<p>The final highlighting on the command line depends on both
+region_highlight and zle_highlight; see <a href="#Character-Highlighting">Character
+Highlighting</a> for details.</p>
+<p><span id="index-registers"></span></p>
+<p>registers (associative array)</p>
+<p>The contents of each of the vi register buffers. These are typically set
+using vi-set-buffer followed by a delete, change or yank command.</p>
+<p><span id="index-SUFFIX_005fACTIVE"></span> <span
+id="index-SUFFIX_005fSTART"></span> <span
+id="index-SUFFIX_005fEND"></span></p>
+<p>SUFFIX_ACTIVE (integer)</p>
+<p>SUFFIX_START (integer)</p>
+<p>SUFFIX_END (integer)</p>
+<p>SUFFIX_ACTIVE indicates whether an auto-removable completion suffix is
+currently active. SUFFIX_START and SUFFIX_END give the location of the
+suffix and are in the same units as CURSOR. They are only valid for
+reading when SUFFIX_ACTIVE is non-zero.</p>
+<p>All parameters are read-only.</p>
+<p><span id="index-UNDO_005fCHANGE_005fNO"></span></p>
+<p>UNDO_CHANGE_NO (integer)</p>
+<p>A number representing the state of the undo history. The only use of
+this is passing as an argument to the undo widget in order to undo back
+to the recorded point. Read-only.</p>
+<p><span id="index-UNDO_005fLIMIT_005fNO"></span></p>
+<p>UNDO_LIMIT_NO (integer)</p>
+<p>A number corresponding to an existing change in the undo history;
+compare UNDO_CHANGE_NO. If this is set to a value greater than zero, the
+undo command will not allow the line to be undone beyond the given
+change number. It is still possible to use ‘zle undo <code>change</code>’ in a
+widget to undo beyond that point; in that case, it will not be possible
+to undo at all until UNDO_LIMIT_NO is reduced. Set to 0 to disable the
+limit.</p>
+<p>A typical use of this variable in a widget function is as follows (note
+the additional function scope is required):</p>
+<div class="example">
+<pre><code class="language-zsh">() {
+  local UNDO_LIMIT_NO=$UNDO_CHANGE_NO
+  # Perform some form of recursive edit.
+}
+</code></pre>
+</div>
+<p><span id="index-WIDGET"></span></p>
+<p>WIDGET (scalar)</p>
+<p>The name of the widget currently being executed; read-only.</p>
+<p><span id="index-WIDGETFUNC"></span></p>
+<p>WIDGETFUNC (scalar)</p>
+<p>The name of the shell function that implements a widget defined with
+either zle -N or zle -C. In the former case, this is the second argument
+to the zle -N command that defined the widget, or the first argument if
+there was no second argument. In the latter case this is the third
+argument to the zle -C command that defined the widget. Read-only.</p>
+<p><span id="index-WIDGETSTYLE"></span></p>
+<p>WIDGETSTYLE (scalar)</p>
+<p>Describes the implementation behind the completion widget currently
+being executed; the second argument that followed zle -C when the widget
+was defined. This is the name of a builtin completion widget. For
+widgets defined with zle -N this is set to the empty string. Read-only.</p>
+<p><span id="index-YANK_005fACTIVE"></span> <span
+id="index-YANK_005fSTART"></span> <span id="index-YANK_005fEND"></span></p>
+<p>YANK_ACTIVE (integer)</p>
+<p>YANK_START (integer)</p>
+<p>YANK_END (integer)</p>
+<p>YANK_ACTIVE indicates whether text has just been yanked (pasted) into
+the buffer. YANK_START and YANK_END give the location of the pasted text
+and are in the same units as CURSOR. They are only valid for reading
+when YANK_ACTIVE is non-zero. They can also be assigned by widgets that
+insert text in a yank-like fashion, for example wrappers of
+bracketed-paste. See also zle -f.</p>
+<p>YANK_ACTIVE is read-only.</p>
+<p><span id="index-ZLE_005fRECURSIVE"></span></p>
+<p>ZLE_RECURSIVE (integer)</p>
+<p>Usually zero, but incremented inside any instance of recursive-edit.
+Hence indicates the current recursion level.</p>
+<p>ZLE_RECURSIVE is read-only.</p>
+<p><span id="index-ZLE_005fSTATE"></span></p>
+<p>ZLE_STATE (scalar)</p>
+<p>Contains a set of space-separated words that describe the current zle
+state.</p>
+<p>Currently, the states shown are the insert mode as set by the
+overwrite-mode or vi-replace widgets and whether history commands will
+visit imported entries as controlled by the set-local-history widget.
+The string contains ‘insert’ if characters to be inserted on the command
+line move existing characters to the right or ‘overwrite’ if characters
+to be inserted overwrite existing characters. It contains ‘localhistory’
+if only local history commands will be visited or ‘globalhistory’ if
+imported history commands will also be visited.</p>
+<p>The substrings are sorted in alphabetical order so that if you want to
+test for two specific substrings in a future-proof way, you can do match
+by doing:</p>
+<div class="example">
+<pre><code class="language-zsh">if [[ $ZLE_STATE == *globalhistory*insert* ]]; then ...; fi
+</code></pre>
+</div>
+<hr />
+<p><span id="Special-Widgets"></span></p>
+<h3 id="1851-special-widgets"><a class="header" href="#1851-special-widgets">18.5.1 Special Widgets</a></h3>
+<p>There are a few user-defined widgets which are special to the shell. If
+they do not exist, no special action is taken. The environment provided
+is identical to that for any other editing widget.</p>
+<p><span id="index-zle_002disearch_002dexit"></span></p>
+<p>zle-isearch-exit</p>
+<p>Executed at the end of incremental search at the point where the isearch
+prompt is removed from the display. See zle-isearch-update for an
+example.</p>
+<p><span id="index-zle_002disearch_002dupdate"></span></p>
+<p>zle-isearch-update</p>
+<p>Executed within incremental search when the display is about to be
+redrawn. Additional output below the incremental search prompt can be
+generated by using ‘zle -M’ within the widget. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">zle-isearch-update() { zle -M "Line $HISTNO"; }
+zle -N zle-isearch-update
+</code></pre>
+</div>
+<p>Note the line output by ‘zle -M’ is not deleted on exit from incremental
+search. This can be done from a zle-isearch-exit widget:</p>
+<div class="example">
+<pre><code class="language-zsh">zle-isearch-exit() { zle -M ""; }
+zle -N zle-isearch-exit
+</code></pre>
+</div>
+<p><span id="index-zle_002dline_002dpre_002dredraw"></span></p>
+<p>zle-line-pre-redraw</p>
+<p>Executed whenever the input line is about to be redrawn, providing an
+opportunity to update the region_highlight array.</p>
+<p><span id="index-zle_002dline_002dinit"></span></p>
+<p>zle-line-init</p>
+<p>Executed every time the line editor is started to read a new line of
+input. The following example puts the line editor into vi command mode
+when it starts up.</p>
+<div class="example">
+<pre><code class="language-zsh">zle-line-init() { zle -K vicmd; }
+zle -N zle-line-init
+</code></pre>
+</div>
+<p>(The command inside the function sets the keymap directly; it is
+equivalent to zle vi-cmd-mode.)</p>
+<p><span id="index-zle_002dline_002dfinish"></span></p>
+<p>zle-line-finish</p>
+<p>This is similar to zle-line-init but is executed every time the line
+editor has finished reading a line of input.</p>
+<p><span id="index-zle_002dhistory_002dline_002dset"></span></p>
+<p>zle-history-line-set</p>
+<p>Executed when the history line changes.</p>
+<p><span id="index-zle_002dkeymap_002dselect"></span></p>
+<p>zle-keymap-select</p>
+<p>Executed every time the keymap changes, i.e. the special parameter
+KEYMAP is set to a different value, while the line editor is active.
+Initialising the keymap when the line editor starts does not cause the
+widget to be called.</p>
+<p>The value $KEYMAP within the function reflects the new keymap. The old
+keymap is passed as the sole argument.</p>
+<p>This can be used for detecting switches between the vi command (vicmd)
+and insert (usually main) keymaps.</p>
+<hr />
+<p><span id="Standard-Widgets"></span> <span
+id="Standard-Widgets-1"></span></p>
+<h2 id="186-standard-widgets"><a class="header" href="#186-standard-widgets">18.6 Standard Widgets</a></h2>
+<p><span id="index-widgets_002c-standard"></span></p>
+<p>The following is a list of all the standard widgets, and their default
+bindings in emacs mode, vi command mode and vi insert mode (the ‘emacs’,
+‘vicmd’ and ‘viins’ keymaps, respectively).</p>
+<p>Note that cursor keys are bound to movement keys in all three keymaps;
+the shell assumes that the cursor keys send the key sequences reported
+by the terminal-handling library (termcap or terminfo). The key
+sequences shown in the list are those based on the VT100, common on many
+modern terminals, but in fact these are not necessarily bound. In the
+case of the viins keymap, the initial escape character of the sequences
+serves also to return to the vicmd keymap: whether this happens is
+determined by the KEYTIMEOUT parameter, see
+<a href="Parameters.html#Parameters">Parameters</a>.</p>
+<hr />
+<p><span id="Movement"></span> <span id="Movement-1"></span></p>
+<h3 id="1861-movement"><a class="header" href="#1861-movement">18.6.1 Movement</a></h3>
+<p><span id="index-vi_002dbackward_002dblank_002dword"></span></p>
+<p>vi-backward-blank-word (unbound) (B) (unbound)</p>
+<p>Move backward one word, where a word is defined as a series of non-blank
+characters.</p>
+<p><span id="index-vi_002dbackward_002dblank_002dword_002dend"></span></p>
+<p>vi-backward-blank-word-end (unbound) (gE) (unbound)</p>
+<p>Move to the end of the previous word, where a word is defined as a
+series of non-blank characters.</p>
+<p><span id="index-backward_002dchar"></span></p>
+<p>backward-char (^B ESC-[D) (unbound) (unbound)</p>
+<p>Move backward one character.</p>
+<p><span id="index-vi_002dbackward_002dchar"></span></p>
+<p>vi-backward-char (unbound) (^H h ^?) (ESC-[D)</p>
+<p>Move backward one character, without changing lines.</p>
+<p><span id="index-backward_002dword"></span></p>
+<p>backward-word (ESC-B ESC-b) (unbound) (unbound)</p>
+<p>Move to the beginning of the previous word.</p>
+<p><span id="index-emacs_002dbackward_002dword"></span></p>
+<p>emacs-backward-word</p>
+<p>Move to the beginning of the previous word.</p>
+<p><span id="index-vi_002dbackward_002dword"></span></p>
+<p>vi-backward-word (unbound) (b) (unbound)</p>
+<p>Move to the beginning of the previous word, vi-style.</p>
+<p><span id="index-vi_002dbackward_002dword_002dend"></span></p>
+<p>vi-backward-word-end (unbound) (ge) (unbound)</p>
+<p>Move to the end of the previous word, vi-style.</p>
+<p><span id="index-beginning_002dof_002dline"></span></p>
+<p>beginning-of-line (^A) (unbound) (unbound)</p>
+<p>Move to the beginning of the line. If already at the beginning of the
+line, move to the beginning of the previous line, if any.</p>
+<p><span id="index-vi_002dbeginning_002dof_002dline"></span></p>
+<p>vi-beginning-of-line</p>
+<p>Move to the beginning of the line, without changing lines.</p>
+<p><span id="index-down_002dline"></span></p>
+<p>down-line (unbound) (unbound) (unbound)</p>
+<p>Move down a line in the buffer.</p>
+<p><span id="index-end_002dof_002dline"></span></p>
+<p>end-of-line (^E) (unbound) (unbound)</p>
+<p>Move to the end of the line. If already at the end of the line, move to
+the end of the next line, if any.</p>
+<p><span id="index-vi_002dend_002dof_002dline"></span></p>
+<p>vi-end-of-line (unbound) ($) (unbound)</p>
+<p>Move to the end of the line. If an argument is given to this command,
+the cursor will be moved to the end of the line (argument - 1) lines
+down.</p>
+<p><span id="index-vi_002dforward_002dblank_002dword"></span></p>
+<p>vi-forward-blank-word (unbound) (W) (unbound)</p>
+<p>Move forward one word, where a word is defined as a series of non-blank
+characters.</p>
+<p><span id="index-vi_002dforward_002dblank_002dword_002dend"></span></p>
+<p>vi-forward-blank-word-end (unbound) (E) (unbound)</p>
+<p>Move to the end of the current word, or, if at the end of the current
+word, to the end of the next word, where a word is defined as a series
+of non-blank characters.</p>
+<p><span id="index-forward_002dchar"></span></p>
+<p>forward-char (^F ESC-[C) (unbound) (unbound)</p>
+<p>Move forward one character.</p>
+<p><span id="index-vi_002dforward_002dchar"></span></p>
+<p>vi-forward-char (unbound) (space l) (ESC-[C)</p>
+<p>Move forward one character.</p>
+<p><span id="index-vi_002dfind_002dnext_002dchar"></span></p>
+<p>vi-find-next-char (^X^F) (f) (unbound)</p>
+<p>Read a character from the keyboard, and move to the next occurrence of
+it in the line.</p>
+<p><span id="index-vi_002dfind_002dnext_002dchar_002dskip"></span></p>
+<p>vi-find-next-char-skip (unbound) (t) (unbound)</p>
+<p>Read a character from the keyboard, and move to the position just before
+the next occurrence of it in the line.</p>
+<p><span id="index-vi_002dfind_002dprev_002dchar"></span></p>
+<p>vi-find-prev-char (unbound) (F) (unbound)</p>
+<p>Read a character from the keyboard, and move to the previous occurrence
+of it in the line.</p>
+<p><span id="index-vi_002dfind_002dprev_002dchar_002dskip"></span></p>
+<p>vi-find-prev-char-skip (unbound) (T) (unbound)</p>
+<p>Read a character from the keyboard, and move to the position just after
+the previous occurrence of it in the line.</p>
+<p><span id="index-vi_002dfirst_002dnon_002dblank"></span></p>
+<p>vi-first-non-blank (unbound) (^) (unbound)</p>
+<p>Move to the first non-blank character in the line.</p>
+<p><span id="index-vi_002dforward_002dword"></span></p>
+<p>vi-forward-word (unbound) (w) (unbound)</p>
+<p>Move forward one word, vi-style.</p>
+<p><span id="index-forward_002dword"></span></p>
+<p>forward-word (ESC-F ESC-f) (unbound) (unbound)</p>
+<p>Move to the beginning of the next word. The editor’s idea of a word is
+specified with the WORDCHARS parameter.</p>
+<p><span id="index-emacs_002dforward_002dword"></span></p>
+<p>emacs-forward-word</p>
+<p>Move to the end of the next word.</p>
+<p><span id="index-vi_002dforward_002dword_002dend"></span></p>
+<p>vi-forward-word-end (unbound) (e) (unbound)</p>
+<p>Move to the end of the next word.</p>
+<p><span id="index-vi_002dgoto_002dcolumn"></span></p>
+<p>vi-goto-column (ESC-|) (|) (unbound)</p>
+<p>Move to the column specified by the numeric argument.</p>
+<p><span id="index-vi_002dgoto_002dmark"></span></p>
+<p>vi-goto-mark (unbound) (‘) (unbound)</p>
+<p>Move to the specified mark.</p>
+<p><span id="index-vi_002dgoto_002dmark_002dline"></span></p>
+<p>vi-goto-mark-line (unbound) (’) (unbound)</p>
+<p>Move to beginning of the line containing the specified mark.</p>
+<p><span id="index-vi_002drepeat_002dfind"></span></p>
+<p>vi-repeat-find (unbound) (;) (unbound)</p>
+<p>Repeat the last vi-find command.</p>
+<p><span id="index-vi_002drev_002drepeat_002dfind"></span></p>
+<p>vi-rev-repeat-find (unbound) (,) (unbound)</p>
+<p>Repeat the last vi-find command in the opposite direction.</p>
+<p><span id="index-up_002dline"></span></p>
+<p>up-line (unbound) (unbound) (unbound)</p>
+<p>Move up a line in the buffer.</p>
+<hr />
+<p><span id="History-Control"></span> <span id="History-Control-1"></span></p>
+<h3 id="1862-history-control"><a class="header" href="#1862-history-control">18.6.2 History Control</a></h3>
+<p><span id="index-beginning_002dof_002dbuffer_002dor_002dhistory"></span></p>
+<p>beginning-of-buffer-or-history (ESC-&lt;) (gg) (unbound)</p>
+<p>Move to the beginning of the buffer, or if already there, move to the
+first event in the history list.</p>
+<p><span id="index-beginning_002dof_002dline_002dhist"></span></p>
+<p>beginning-of-line-hist</p>
+<p>Move to the beginning of the line. If already at the beginning of the
+buffer, move to the previous history line.</p>
+<p><span id="index-beginning_002dof_002dhistory"></span></p>
+<p>beginning-of-history</p>
+<p>Move to the first event in the history list.</p>
+<p><span id="index-down_002dline_002dor_002dhistory"></span></p>
+<p>down-line-or-history (^N ESC-[B) (j) (ESC-[B)</p>
+<p>Move down a line in the buffer, or if already at the bottom line, move
+to the next event in the history list.</p>
+<p><span id="index-vi_002ddown_002dline_002dor_002dhistory"></span></p>
+<p>vi-down-line-or-history (unbound) (+) (unbound)</p>
+<p>Move down a line in the buffer, or if already at the bottom line, move
+to the next event in the history list. Then move to the first non-blank
+character on the line.</p>
+<p><span id="index-down_002dline_002dor_002dsearch"></span></p>
+<p>down-line-or-search</p>
+<p>Move down a line in the buffer, or if already at the bottom line, search
+forward in the history for a line beginning with the first word in the
+buffer.</p>
+<p>If called from a function by the zle command with arguments, the first
+argument is taken as the string for which to search, rather than the
+first word in the buffer.</p>
+<p><span id="index-down_002dhistory"></span></p>
+<p>down-history (unbound) (^N) (unbound)</p>
+<p>Move to the next event in the history list.</p>
+<p><span id="index-history_002dbeginning_002dsearch_002dbackward"></span></p>
+<p>history-beginning-search-backward</p>
+<p>Search backward in the history for a line beginning with the current
+line up to the cursor. This leaves the cursor in its original position.</p>
+<p><span id="index-end_002dof_002dbuffer_002dor_002dhistory"></span></p>
+<p>end-of-buffer-or-history (ESC-&gt;) (unbound) (unbound)</p>
+<p>Move to the end of the buffer, or if already there, move to the last
+event in the history list.</p>
+<p><span id="index-end_002dof_002dline_002dhist"></span></p>
+<p>end-of-line-hist</p>
+<p>Move to the end of the line. If already at the end of the buffer, move
+to the next history line.</p>
+<p><span id="index-end_002dof_002dhistory"></span></p>
+<p>end-of-history</p>
+<p>Move to the last event in the history list.</p>
+<p><span id="index-vi_002dfetch_002dhistory"></span></p>
+<p>vi-fetch-history (unbound) (G) (unbound)</p>
+<p>Fetch the history line specified by the numeric argument. This defaults
+to the current history line (i.e. the one that isn’t history yet).</p>
+<p><span id="index-history_002dincremental_002dsearch_002dbackward"></span></p>
+<p>history-incremental-search-backward (^R ^Xr) (unbound) (unbound)</p>
+<p>Search backward incrementally for a specified string. The search is
+case-insensitive if the search string does not have uppercase letters
+and no numeric argument was given. The string may begin with ‘^’ to
+anchor the search to the beginning of the line. When called from a
+user-defined function returns the following statuses: 0, if the search
+succeeded; 1, if the search failed; 2, if the search term was a bad
+pattern; 3, if the search was aborted by the send-break command.</p>
+<p>A restricted set of editing functions is available in the mini-buffer.
+Keys are looked up in the special isearch keymap, and if not found there
+in the main keymap (note that by default the isearch keymap is empty).
+An interrupt signal, as defined by the stty setting, will stop the
+search and go back to the original line. An undefined key will have the
+same effect. Note that the following always perform the same task within
+incremental searches and cannot be replaced by user defined widgets, nor
+can the set of functions be extended. The supported functions are:</p>
+<p>accept-and-hold<br />
+accept-and-infer-next-history<br />
+accept-line<br />
+accept-line-and-down-history<br />
+Perform the usual function after exiting incremental search. The command
+line displayed is executed.</p>
+<p>backward-delete-char<br />
+vi-backward-delete-char<br />
+Back up one place in the search history. If the search has been repeated
+this does not immediately erase a character in the minibuffer.</p>
+<p>accept-search<br />
+Exit incremental search, retaining the command line but performing no
+further action. Note that this function is not bound by default and has
+no effect outside incremental search.</p>
+<p>backward-delete-word<br />
+backward-kill-word<br />
+vi-backward-kill-word<br />
+Back up one character in the minibuffer; if multiple searches have been
+performed since the character was inserted the search history is rewound
+to the point just before the character was entered. Hence this has the
+effect of repeating backward-delete-char.</p>
+<p>clear-screen<br />
+Clear the screen, remaining in incremental search mode.</p>
+<p>history-incremental-search-backward<br />
+Find the next occurrence of the contents of the mini-buffer. If the
+mini-buffer is empty, the most recent previously used search string is
+reinstated.</p>
+<p>history-incremental-search-forward<br />
+Invert the sense of the search.</p>
+<p>magic-space<br />
+Inserts a non-magical space.</p>
+<p>quoted-insert<br />
+vi-quoted-insert<br />
+Quote the character to insert into the minibuffer.</p>
+<p>redisplay<br />
+Redisplay the command line, remaining in incremental search mode.</p>
+<p>vi-cmd-mode<br />
+Select the ‘vicmd’ keymap; the ‘main’ keymap (insert mode) will be
+selected initially.</p>
+<p>In addition, the modifications that were made while in vi insert mode
+are merged to form a single undo event.</p>
+<p>vi-repeat-search<br />
+vi-rev-repeat-search<br />
+Repeat the search. The direction of the search is indicated in the
+mini-buffer.</p>
+<p>Any character that is not bound to one of the above functions, or
+self-insert or self-insert-unmeta, will cause the mode to be exited. The
+character is then looked up and executed in the keymap in effect at that
+point.</p>
+<p>When called from a widget function by the zle command, the incremental
+search commands can take a string argument. This will be treated as a
+string of keys, as for arguments to the bindkey command, and used as
+initial input for the command. Any characters in the string which are
+unused by the incremental search will be silently ignored. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">zle history-incremental-search-backward forceps
+</code></pre>
+</div>
+<p>will search backwards for forceps, leaving the minibuffer containing the
+string ‘forceps’.</p>
+<p><span id="index-history_002dincremental_002dsearch_002dforward"></span></p>
+<p>history-incremental-search-forward (^S ^Xs) (unbound) (unbound)</p>
+<p>Search forward incrementally for a specified string. The search is
+case-insensitive if the search string does not have uppercase letters
+and no numeric argument was given. The string may begin with ‘^’ to
+anchor the search to the beginning of the line. The functions available
+in the mini-buffer are the same as for
+history-incremental-search-backward.</p>
+<p><span
+id="index-history_002dincremental_002dpattern_002dsearch_002dbackward"></span>
+<span
+id="index-history_002dincremental_002dpattern_002dsearch_002dforward"></span></p>
+<p>history-incremental-pattern-search-backward</p>
+<p>history-incremental-pattern-search-forward</p>
+<p>These widgets behave similarly to the corresponding widgets with no
+-pattern, but the search string typed by the user is treated as a
+pattern, respecting the current settings of the various options
+affecting pattern matching. See <a href="Expansion.html#Filename-Generation">Filename
+Generation</a> for a description of
+patterns. If no numeric argument was given lowercase letters in the
+search string may match uppercase letters in the history. The string may
+begin with ‘^’ to anchor the search to the beginning of the line.</p>
+<p>The prompt changes to indicate an invalid pattern; this may simply
+indicate the pattern is not yet complete.</p>
+<p>Note that only non-overlapping matches are reported, so an expression
+with wildcards may return fewer matches on a line than are visible by
+inspection.</p>
+<p><span id="index-history_002dsearch_002dbackward"></span></p>
+<p>history-search-backward (ESC-P ESC-p) (unbound) (unbound)</p>
+<p>Search backward in the history for a line beginning with the first word
+in the buffer.</p>
+<p>If called from a function by the zle command with arguments, the first
+argument is taken as the string for which to search, rather than the
+first word in the buffer.</p>
+<p><span id="index-vi_002dhistory_002dsearch_002dbackward"></span></p>
+<p>vi-history-search-backward (unbound) (/) (unbound)</p>
+<p>Search backward in the history for a specified string. The string may
+begin with ‘^’ to anchor the search to the beginning of the line.</p>
+<p>A restricted set of editing functions is available in the mini-buffer.
+An interrupt signal, as defined by the stty setting, will stop the
+search. The functions available in the mini-buffer are: accept-line,
+backward-delete-char, vi-backward-delete-char, backward-kill-word,
+vi-backward-kill-word, clear-screen, redisplay, quoted-insert and
+vi-quoted-insert.</p>
+<p>vi-cmd-mode is treated the same as accept-line, and magic-space is
+treated as a space. Any other character that is not bound to self-insert
+or self-insert-unmeta will beep and be ignored. If the function is
+called from vi command mode, the bindings of the current insert mode
+will be used.</p>
+<p>If called from a function by the zle command with arguments, the first
+argument is taken as the string for which to search, rather than the
+first word in the buffer.</p>
+<p><span id="index-history_002dsearch_002dforward"></span></p>
+<p>history-search-forward (ESC-N ESC-n) (unbound) (unbound)</p>
+<p>Search forward in the history for a line beginning with the first word
+in the buffer.</p>
+<p>If called from a function by the zle command with arguments, the first
+argument is taken as the string for which to search, rather than the
+first word in the buffer.</p>
+<p><span id="index-vi_002dhistory_002dsearch_002dforward"></span></p>
+<p>vi-history-search-forward (unbound) (?) (unbound)</p>
+<p>Search forward in the history for a specified string. The string may
+begin with ‘^’ to anchor the search to the beginning of the line. The
+functions available in the mini-buffer are the same as for
+vi-history-search-backward. Argument handling is also the same as for
+that command.</p>
+<p><span id="index-infer_002dnext_002dhistory"></span></p>
+<p>infer-next-history (^X^N) (unbound) (unbound)</p>
+<p>Search in the history list for a line matching the current one and fetch
+the event following it.</p>
+<p><span id="index-insert_002dlast_002dword"></span></p>
+<p>insert-last-word (ESC-_ ESC-.) (unbound) (unbound)</p>
+<p>Insert the last word from the previous history event at the cursor
+position. If a positive numeric argument is given, insert that word from
+the end of the previous history event. If the argument is zero or
+negative insert that word from the left (zero inserts the previous
+command word). Repeating this command replaces the word just inserted
+with the last word from the history event prior to the one just used;
+numeric arguments can be used in the same way to pick a word from that
+event.</p>
+<p>When called from a shell function invoked from a user-defined widget,
+the command can take one to three arguments. The first argument
+specifies a history offset which applies to successive calls to this
+widget: if it is -1, the default behaviour is used, while if it is 1,
+successive calls will move forwards through the history. The value 0 can
+be used to indicate that the history line examined by the previous
+execution of the command will be reexamined. Note that negative numbers
+should be preceded by a ‘--’ argument to avoid confusing them with
+options.</p>
+<p>If two arguments are given, the second specifies the word on the command
+line in normal array index notation (as a more natural alternative to
+the numeric argument). Hence 1 is the first word, and -1 (the default)
+is the last word.</p>
+<p>If a third argument is given, its value is ignored, but it is used to
+signify that the history offset is relative to the current history line,
+rather than the one remembered after the previous invocations of
+insert-last-word.</p>
+<p>For example, the default behaviour of the command corresponds to</p>
+<div class="example">
+<pre><code class="language-zsh">zle insert-last-word -- -1 -1
+</code></pre>
+</div>
+<p>while the command</p>
+<div class="example">
+<pre><code class="language-zsh">zle insert-last-word -- -1 1 -
+</code></pre>
+</div>
+<p>always copies the first word of the line in the history immediately
+before the line being edited. This has the side effect that later
+invocations of the widget will be relative to that line.</p>
+<p><span id="index-vi_002drepeat_002dsearch"></span></p>
+<p>vi-repeat-search (unbound) (n) (unbound)</p>
+<p>Repeat the last vi history search.</p>
+<p><span id="index-vi_002drev_002drepeat_002dsearch"></span></p>
+<p>vi-rev-repeat-search (unbound) (N) (unbound)</p>
+<p>Repeat the last vi history search, but in reverse.</p>
+<p><span id="index-up_002dline_002dor_002dhistory"></span></p>
+<p>up-line-or-history (^P ESC-[A) (k) (ESC-[A)</p>
+<p>Move up a line in the buffer, or if already at the top line, move to the
+previous event in the history list.</p>
+<p><span id="index-vi_002dup_002dline_002dor_002dhistory"></span></p>
+<p>vi-up-line-or-history (unbound) (-) (unbound)</p>
+<p>Move up a line in the buffer, or if already at the top line, move to the
+previous event in the history list. Then move to the first non-blank
+character on the line.</p>
+<p><span id="index-up_002dline_002dor_002dsearch"></span></p>
+<p>up-line-or-search</p>
+<p>Move up a line in the buffer, or if already at the top line, search
+backward in the history for a line beginning with the first word in the
+buffer.</p>
+<p>If called from a function by the zle command with arguments, the first
+argument is taken as the string for which to search, rather than the
+first word in the buffer.</p>
+<p><span id="index-up_002dhistory"></span></p>
+<p>up-history (unbound) (^P) (unbound)</p>
+<p>Move to the previous event in the history list.</p>
+<p><span id="index-history_002dbeginning_002dsearch_002dforward"></span></p>
+<p>history-beginning-search-forward</p>
+<p>Search forward in the history for a line beginning with the current line
+up to the cursor. This leaves the cursor in its original position.</p>
+<p><span id="index-set_002dlocal_002dhistory"></span></p>
+<p>set-local-history</p>
+<p>By default, history movement commands visit the imported lines as well
+as the local lines. This widget lets you toggle this on and off, or set
+it with the numeric argument. Zero for both local and imported lines and
+nonzero for only local lines.</p>
+<hr />
+<p><span id="Modifying-Text"></span> <span id="Modifying-Text-1"></span></p>
+<h3 id="1863-modifying-text"><a class="header" href="#1863-modifying-text">18.6.3 Modifying Text</a></h3>
+<p><span id="index-vi_002dadd_002deol"></span></p>
+<p>vi-add-eol (unbound) (A) (unbound)</p>
+<p>Move to the end of the line and enter insert mode.</p>
+<p><span id="index-vi_002dadd_002dnext"></span></p>
+<p>vi-add-next (unbound) (a) (unbound)</p>
+<p>Enter insert mode after the current cursor position, without changing
+lines.</p>
+<p><span id="index-backward_002ddelete_002dchar"></span></p>
+<p>backward-delete-char (^H ^?) (unbound) (unbound)</p>
+<p>Delete the character behind the cursor.</p>
+<p><span id="index-vi_002dbackward_002ddelete_002dchar"></span></p>
+<p>vi-backward-delete-char (unbound) (X) (^H)</p>
+<p>Delete the character behind the cursor, without changing lines. If in
+insert mode, this won’t delete past the point where insert mode was last
+entered.</p>
+<p><span id="index-backward_002ddelete_002dword"></span></p>
+<p>backward-delete-word</p>
+<p>Delete the word behind the cursor.</p>
+<p><span id="index-backward_002dkill_002dline"></span></p>
+<p>backward-kill-line</p>
+<p>Kill from the beginning of the line to the cursor position.</p>
+<p><span id="index-backward_002dkill_002dword"></span></p>
+<p>backward-kill-word (^W ESC-^H ESC-^?) (unbound) (unbound)</p>
+<p>Kill the word behind the cursor.</p>
+<p><span id="index-vi_002dbackward_002dkill_002dword"></span></p>
+<p>vi-backward-kill-word (unbound) (unbound) (^W)</p>
+<p>Kill the word behind the cursor, without going past the point where
+insert mode was last entered.</p>
+<p><span id="index-capitalize_002dword"></span></p>
+<p>capitalize-word (ESC-C ESC-c) (unbound) (unbound)</p>
+<p>Capitalize the current word and move past it.</p>
+<p><span id="index-vi_002dchange"></span></p>
+<p>vi-change (unbound) (c) (unbound)</p>
+<p>Read a movement command from the keyboard, and kill from the cursor
+position to the endpoint of the movement. Then enter insert mode. If the
+command is vi-change, change the current line.</p>
+<p>For compatibility with vi, if the command is vi-forward-word or
+vi-forward-blank-word, the whitespace after the word is not included. If
+you prefer the more consistent behaviour with the whitespace included
+use the following key binding:</p>
+<div class="example">
+<pre><code class="language-zsh">bindkey -a -s cw dwi
+</code></pre>
+</div>
+<p><span id="index-vi_002dchange_002deol"></span></p>
+<p>vi-change-eol (unbound) (C) (unbound)</p>
+<p>Kill to the end of the line and enter insert mode.</p>
+<p><span id="index-vi_002dchange_002dwhole_002dline"></span></p>
+<p>vi-change-whole-line (unbound) (S) (unbound)</p>
+<p>Kill the current line and enter insert mode.</p>
+<p><span id="index-copy_002dregion_002das_002dkill"></span></p>
+<p>copy-region-as-kill (ESC-W ESC-w) (unbound) (unbound)</p>
+<p>Copy the area from the cursor to the mark to the kill buffer.</p>
+<p>If called from a ZLE widget function in the form ‘zle
+copy-region-as-kill <code>string</code>’ then <code>string</code> will be taken as the text to
+copy to the kill buffer. The cursor, the mark and the text on the
+command line are not used in this case.</p>
+<p><span id="index-copy_002dprev_002dword"></span></p>
+<p>copy-prev-word (ESC-^_) (unbound) (unbound)</p>
+<p>Duplicate the word to the left of the cursor.</p>
+<p><span id="index-copy_002dprev_002dshell_002dword"></span></p>
+<p>copy-prev-shell-word</p>
+<p>Like copy-prev-word, but the word is found by using shell parsing,
+whereas copy-prev-word looks for blanks. This makes a difference when
+the word is quoted and contains spaces.</p>
+<p><span id="index-vi_002ddelete"></span></p>
+<p>vi-delete (unbound) (d) (unbound)</p>
+<p>Read a movement command from the keyboard, and kill from the cursor
+position to the endpoint of the movement. If the command is vi-delete,
+kill the current line.</p>
+<p><span id="index-delete_002dchar"></span></p>
+<p>delete-char</p>
+<p>Delete the character under the cursor.</p>
+<p><span id="index-vi_002ddelete_002dchar"></span></p>
+<p>vi-delete-char (unbound) (x) (unbound)</p>
+<p>Delete the character under the cursor, without going past the end of the
+line.</p>
+<p><span id="index-delete_002dword"></span></p>
+<p>delete-word</p>
+<p>Delete the current word.</p>
+<p><span id="index-down_002dcase_002dword"></span></p>
+<p>down-case-word (ESC-L ESC-l) (unbound) (unbound)</p>
+<p>Convert the current word to all lowercase and move past it.</p>
+<p><span id="index-vi_002ddown_002dcase"></span></p>
+<p>vi-down-case (unbound) (gu) (unbound)</p>
+<p>Read a movement command from the keyboard, and convert all characters
+from the cursor position to the endpoint of the movement to lowercase.
+If the movement command is vi-down-case, swap the case of all characters
+on the current line.</p>
+<p><span id="index-kill_002dword"></span></p>
+<p>kill-word (ESC-D ESC-d) (unbound) (unbound)</p>
+<p>Kill the current word.</p>
+<p><span id="index-gosmacs_002dtranspose_002dchars"></span></p>
+<p>gosmacs-transpose-chars</p>
+<p>Exchange the two characters behind the cursor.</p>
+<p><span id="index-vi_002dindent"></span></p>
+<p>vi-indent (unbound) (&gt;) (unbound)</p>
+<p>Indent a number of lines.</p>
+<p><span id="index-vi_002dinsert"></span></p>
+<p>vi-insert (unbound) (i) (unbound)</p>
+<p>Enter insert mode.</p>
+<p><span id="index-vi_002dinsert_002dbol"></span></p>
+<p>vi-insert-bol (unbound) (I) (unbound)</p>
+<p>Move to the first non-blank character on the line and enter insert mode.</p>
+<p><span id="index-vi_002djoin"></span></p>
+<p>vi-join (^X^J) (J) (unbound)</p>
+<p>Join the current line with the next one.</p>
+<p><span id="index-kill_002dline"></span></p>
+<p>kill-line (^K) (unbound) (unbound)</p>
+<p>Kill from the cursor to the end of the line. If already on the end of
+the line, kill the newline character.</p>
+<p><span id="index-vi_002dkill_002dline"></span></p>
+<p>vi-kill-line (unbound) (unbound) (^U)</p>
+<p>Kill from the cursor back to wherever insert mode was last entered.</p>
+<p><span id="index-vi_002dkill_002deol"></span></p>
+<p>vi-kill-eol (unbound) (D) (unbound)</p>
+<p>Kill from the cursor to the end of the line.</p>
+<p><span id="index-kill_002dregion"></span></p>
+<p>kill-region</p>
+<p>Kill from the cursor to the mark.</p>
+<p><span id="index-kill_002dbuffer"></span></p>
+<p>kill-buffer (^X^K) (unbound) (unbound)</p>
+<p>Kill the entire buffer.</p>
+<p><span id="index-kill_002dwhole_002dline"></span></p>
+<p>kill-whole-line (^U) (unbound) (unbound)</p>
+<p>Kill the current line.</p>
+<p><span id="index-vi_002dmatch_002dbracket"></span></p>
+<p>vi-match-bracket (^X^B) (%) (unbound)</p>
+<p>Move to the bracket character (one of {}, () or []) that matches the
+one under the cursor. If the cursor is not on a bracket character, move
+forward without going past the end of the line to find one, and then go
+to the matching bracket.</p>
+<p><span id="index-vi_002dopen_002dline_002dabove"></span></p>
+<p>vi-open-line-above (unbound) (O) (unbound)</p>
+<p>Open a line above the cursor and enter insert mode.</p>
+<p><span id="index-vi_002dopen_002dline_002dbelow"></span></p>
+<p>vi-open-line-below (unbound) (o) (unbound)</p>
+<p>Open a line below the cursor and enter insert mode.</p>
+<p><span id="index-vi_002doper_002dswap_002dcase"></span></p>
+<p>vi-oper-swap-case (unbound) (g~) (unbound)</p>
+<p>Read a movement command from the keyboard, and swap the case of all
+characters from the cursor position to the endpoint of the movement. If
+the movement command is vi-oper-swap-case, swap the case of all
+characters on the current line.</p>
+<p><span id="index-overwrite_002dmode"></span></p>
+<p>overwrite-mode (^X^O) (unbound) (unbound)</p>
+<p>Toggle between overwrite mode and insert mode.</p>
+<p><span id="index-vi_002dput_002dbefore"></span></p>
+<p>vi-put-before (unbound) (P) (unbound)</p>
+<p>Insert the contents of the kill buffer before the cursor. If the kill
+buffer contains a sequence of lines (as opposed to characters), paste it
+above the current line.</p>
+<p><span id="index-vi_002dput_002dafter"></span></p>
+<p>vi-put-after (unbound) (p) (unbound)</p>
+<p>Insert the contents of the kill buffer after the cursor. If the kill
+buffer contains a sequence of lines (as opposed to characters), paste it
+below the current line.</p>
+<p><span id="index-put_002dreplace_002dselection"></span></p>
+<p>put-replace-selection (unbound) (unbound) (unbound)</p>
+<p>Replace the contents of the current region or selection with the
+contents of the kill buffer. If the kill buffer contains a sequence of
+lines (as opposed to characters), the current line will be split by the
+pasted lines.</p>
+<p><span id="index-quoted_002dinsert"></span></p>
+<p>quoted-insert (^V) (unbound) (unbound)</p>
+<p>Insert the next character typed into the buffer literally. An interrupt
+character will not be inserted.</p>
+<p><span id="index-vi_002dquoted_002dinsert"></span></p>
+<p>vi-quoted-insert (unbound) (unbound) (^Q ^V)</p>
+<p>Display a ‘^’ at the cursor position, and insert the next character
+typed into the buffer literally. An interrupt character will not be
+inserted.</p>
+<p><span id="index-quote_002dline"></span></p>
+<p>quote-line (ESC-’) (unbound) (unbound)</p>
+<p>Quote the current line; that is, put a ‘’’ character at the beginning
+and the end, and convert all ‘’’ characters to ‘’\’’’.</p>
+<p><span id="index-quote_002dregion"></span></p>
+<p>quote-region (ESC-") (unbound) (unbound)</p>
+<p>Quote the region from the cursor to the mark.</p>
+<p><span id="index-vi_002dreplace"></span></p>
+<p>vi-replace (unbound) (R) (unbound)</p>
+<p>Enter overwrite mode.</p>
+<p><span id="index-vi_002drepeat_002dchange"></span></p>
+<p>vi-repeat-change (unbound) (.) (unbound)</p>
+<p>Repeat the last vi mode text modification. If a count was used with the
+modification, it is remembered. If a count is given to this command, it
+overrides the remembered count, and is remembered for future uses of
+this command. The cut buffer specification is similarly remembered.</p>
+<p><span id="index-vi_002dreplace_002dchars"></span></p>
+<p>vi-replace-chars (unbound) (r) (unbound)</p>
+<p>Replace the character under the cursor with a character read from the
+keyboard.</p>
+<p><span id="index-self_002dinsert"></span></p>
+<p>Insert a character into the buffer at the cursor position.</p>
+<p><span id="index-self_002dinsert_002dunmeta"></span></p>
+<p>self-insert-unmeta (ESC-^I ESC-^J ESC-^M) (unbound) (unbound)</p>
+<p>Insert a character into the buffer after stripping the meta bit and
+converting ^M to ^J.</p>
+<p><span id="index-vi_002dsubstitute"></span></p>
+<p>vi-substitute (unbound) (s) (unbound)</p>
+<p>Substitute the next character(s).</p>
+<p><span id="index-vi_002dswap_002dcase"></span></p>
+<p>vi-swap-case (unbound) (~) (unbound)</p>
+<p>Swap the case of the character under the cursor and move past it.</p>
+<p><span id="index-transpose_002dchars"></span></p>
+<p>transpose-chars (^T) (unbound) (unbound)</p>
+<p>Exchange the two characters to the left of the cursor if at end of line,
+else exchange the character under the cursor with the character to the
+left.</p>
+<p><span id="index-transpose_002dwords"></span></p>
+<p>transpose-words (ESC-T ESC-t) (unbound) (unbound)</p>
+<p>Exchange the current word with the one before it.</p>
+<p>With a positive numeric argument <em>N</em>, the word around the cursor, or
+following it if the cursor is between words, is transposed with the
+preceding <em>N</em> words. The cursor is put at the end of the resulting group
+of words.</p>
+<p>With a negative numeric argument <em>-N</em>, the effect is the same as using a
+positive argument <em>N</em> except that the original cursor position is
+retained, regardless of how the words are rearranged.</p>
+<p><span id="index-vi_002dunindent"></span></p>
+<p>vi-unindent (unbound) (&lt;) (unbound)</p>
+<p>Unindent a number of lines.</p>
+<p><span id="index-vi_002dup_002dcase"></span></p>
+<p>vi-up-case (unbound) (gU) (unbound)</p>
+<p>Read a movement command from the keyboard, and convert all characters
+from the cursor position to the endpoint of the movement to lowercase.
+If the movement command is vi-up-case, swap the case of all characters
+on the current line.</p>
+<p><span id="index-up_002dcase_002dword"></span></p>
+<p>up-case-word (ESC-U ESC-u) (unbound) (unbound)</p>
+<p>Convert the current word to all caps and move past it.</p>
+<p><span id="index-yank"></span></p>
+<p>yank (^Y) (unbound) (unbound)</p>
+<p>Insert the contents of the kill buffer at the cursor position.</p>
+<p><span id="index-yank_002dpop"></span></p>
+<p>yank-pop (ESC-y) (unbound) (unbound)</p>
+<p>Remove the text just yanked, rotate the kill-ring (the history of
+previously killed text) and yank the new top. Only works following yank,
+vi-put-before, vi-put-after or yank-pop.</p>
+<p><span id="index-vi_002dyank"></span></p>
+<p>vi-yank (unbound) (y) (unbound)</p>
+<p>Read a movement command from the keyboard, and copy the region from the
+cursor position to the endpoint of the movement into the kill buffer. If
+the command is vi-yank, copy the current line.</p>
+<p><span id="index-vi_002dyank_002dwhole_002dline"></span></p>
+<p>vi-yank-whole-line (unbound) (Y) (unbound)</p>
+<p>Copy the current line into the kill buffer.</p>
+<p><span id="index-vi_002dyank_002deol"></span></p>
+<p>vi-yank-eol</p>
+<p>Copy the region from the cursor position to the end of the line into the
+kill buffer. Arguably, this is what Y should do in vi, but it isn’t what
+it actually does.</p>
+<hr />
+<p><span id="Arguments"></span> <span id="Arguments-1"></span></p>
+<h3 id="1864-arguments"><a class="header" href="#1864-arguments">18.6.4 Arguments</a></h3>
+<p><span id="index-digit_002dargument"></span></p>
+<p>digit-argument (ESC-0..ESC-9) (1-9) (unbound)</p>
+<p>Start a new numeric argument, or add to the current one. See also
+vi-digit-or-beginning-of-line. This only works if bound to a key
+sequence ending in a decimal digit.</p>
+<p>Inside a widget function, a call to this function treats the last key of
+the key sequence which called the widget as the digit.</p>
+<p><span id="index-neg_002dargument"></span></p>
+<p>neg-argument (ESC--) (unbound) (unbound)</p>
+<p>Changes the sign of the following argument.</p>
+<p><span id="index-universal_002dargument"></span></p>
+<p>universal-argument</p>
+<p>Multiply the argument of the next command by 4. Alternatively, if this
+command is followed by an integer (positive or negative), use that as
+the argument for the next command. Thus digits cannot be repeated using
+this command. For example, if this command occurs twice, followed
+immediately by forward-char, move forward sixteen spaces; if instead it
+is followed by -2, then forward-char, move backward two spaces.</p>
+<p>Inside a widget function, if passed an argument, i.e. ‘zle
+universal-argument <code>num</code>’, the numeric argument will be set to <code>num</code>;
+this is equivalent to ‘NUMERIC=<code>num</code>’.</p>
+<p><span id="index-argument_002dbase"></span></p>
+<p>argument-base</p>
+<p>Use the existing numeric argument as a numeric base, which must be in
+the range 2 to 36 inclusive. Subsequent use of digit-argument and
+universal-argument will input a new numeric argument in the given base.
+The usual hexadecimal convention is used: the letter a or A corresponds
+to 10, and so on. Arguments in bases requiring digits from 10 upwards
+are more conveniently input with universal-argument, since ESC-a etc.
+are not usually bound to digit-argument.</p>
+<p>The function can be used with a command argument inside a user-defined
+widget. The following code sets the base to 16 and lets the user input a
+hexadecimal argument until a key out of the digit range is typed:</p>
+<div class="example">
+<pre><code class="language-zsh">zle argument-base 16
+zle universal-argument
+</code></pre>
+</div>
+<hr />
+<p><span id="Completion"></span> <span id="Completion-2"></span></p>
+<h3 id="1865-completion"><a class="header" href="#1865-completion">18.6.5 Completion</a></h3>
+<p><span id="index-accept_002dand_002dmenu_002dcomplete"></span></p>
+<p>accept-and-menu-complete</p>
+<p>In a menu completion, insert the current completion into the buffer, and
+advance to the next possible completion.</p>
+<p><span id="index-complete_002dword"></span></p>
+<p>complete-word</p>
+<p>Attempt completion on the current word.</p>
+<p><span id="index-delete_002dchar_002dor_002dlist"></span></p>
+<p>delete-char-or-list (^D) (unbound) (unbound)</p>
+<p>Delete the character under the cursor. If the cursor is at the end of
+the line, list possible completions for the current word.</p>
+<p><span id="index-expand_002dcmd_002dpath"></span></p>
+<p>expand-cmd-path</p>
+<p>Expand the current command to its full pathname.</p>
+<p><span id="index-expand_002dor_002dcomplete"></span></p>
+<p>expand-or-complete (TAB) (unbound) (TAB)</p>
+<p>Attempt shell expansion on the current word. If that fails, attempt
+completion.</p>
+<p><span id="index-expand_002dor_002dcomplete_002dprefix"></span></p>
+<p>expand-or-complete-prefix</p>
+<p>Attempt shell expansion on the current word up to cursor.</p>
+<p><span id="index-expand_002dhistory"></span></p>
+<p>expand-history (ESC-space ESC-!) (unbound) (unbound)</p>
+<p>Perform history expansion on the edit buffer.</p>
+<p><span id="index-expand_002dword"></span></p>
+<p>expand-word (^X*) (unbound) (unbound)</p>
+<p>Attempt shell expansion on the current word.</p>
+<p><span id="index-list_002dchoices"></span></p>
+<p>list-choices (ESC-^D) (^D =) (^D)</p>
+<p>List possible completions for the current word.</p>
+<p><span id="index-list_002dexpand"></span></p>
+<p>list-expand (^Xg ^XG) (^G) (^G)</p>
+<p>List the expansion of the current word.</p>
+<p><span id="index-magic_002dspace"></span></p>
+<p>magic-space</p>
+<p>Perform history expansion and insert a space into the buffer. This is
+intended to be bound to space.</p>
+<p><span id="index-menu_002dcomplete"></span> <span
+id="index-MENU_005fCOMPLETE_002c-use-of"></span></p>
+<p>menu-complete</p>
+<p>Like complete-word, except that menu completion is used. See the
+MENU_COMPLETE option.</p>
+<p><span id="index-menu_002dexpand_002dor_002dcomplete"></span></p>
+<p>menu-expand-or-complete</p>
+<p>Like expand-or-complete, except that menu completion is used.</p>
+<p><span id="index-reverse_002dmenu_002dcomplete"></span></p>
+<p>reverse-menu-complete</p>
+<p>Perform menu completion, like menu-complete, except that if a menu
+completion is already in progress, move to the <em>previous</em> completion
+rather than the next.</p>
+<p><span id="index-end_002dof_002dlist"></span></p>
+<p>end-of-list</p>
+<p>When a previous completion displayed a list below the prompt, this
+widget can be used to move the prompt below the list.</p>
+<hr />
+<p><span id="Miscellaneous"></span> <span id="Miscellaneous-1"></span></p>
+<h3 id="1866-miscellaneous"><a class="header" href="#1866-miscellaneous">18.6.6 Miscellaneous</a></h3>
+<p><span id="index-accept_002dand_002dhold"></span></p>
+<p>accept-and-hold (ESC-A ESC-a) (unbound) (unbound)</p>
+<p>Push the contents of the buffer on the buffer stack and execute it.</p>
+<p><span id="index-accept_002dand_002dinfer_002dnext_002dhistory"></span></p>
+<p>accept-and-infer-next-history</p>
+<p>Execute the contents of the buffer. Then search the history list for a
+line matching the current one and push the event following onto the
+buffer stack.</p>
+<p><span id="index-accept_002dline"></span></p>
+<p>accept-line (^J ^M) (^J ^M) (^J ^M)</p>
+<p>Finish editing the buffer. Normally this causes the buffer to be
+executed as a shell command.</p>
+<p><span id="index-accept_002dline_002dand_002ddown_002dhistory"></span></p>
+<p>accept-line-and-down-history (^O) (unbound) (unbound)</p>
+<p>Execute the current line, and push the next history event on the buffer
+stack.</p>
+<p><span id="index-auto_002dsuffix_002dremove"></span></p>
+<p>auto-suffix-remove</p>
+<p>If the previous action added a suffix (space, slash, etc.) to the word
+on the command line, remove it. Otherwise do nothing. Removing the
+suffix ends any active menu completion or menu selection.</p>
+<p>This widget is intended to be called from user-defined widgets to
+enforce a desired suffix-removal behavior.</p>
+<p><span id="index-auto_002dsuffix_002dretain"></span></p>
+<p>auto-suffix-retain</p>
+<p>If the previous action added a suffix (space, slash, etc.) to the word
+on the command line, force it to be preserved. Otherwise do nothing.
+Retaining the suffix ends any active menu completion or menu selection.</p>
+<p>This widget is intended to be called from user-defined widgets to
+enforce a desired suffix-preservation behavior.</p>
+<p><span id="index-beep"></span></p>
+<p>beep</p>
+<p>Beep, unless the BEEP option is unset.</p>
+<p><span id="index-bracketed_002dpaste"></span></p>
+<p>bracketed-paste (^[[200~) (^[[200~) (^[[200~)</p>
+<p>This widget is invoked when text is pasted to the terminal emulator. It
+is not intended to be bound to actual keys but instead to the special
+sequence generated by the terminal emulator when text is pasted.</p>
+<p>When invoked interactively, the pasted text is inserted to the buffer
+and placed in the cutbuffer. If a numeric argument is given, shell
+quoting will be applied to the pasted text before it is inserted.</p>
+<p>When a named buffer is specified with vi-set-buffer ("x), the pasted
+text is stored in that named buffer but not inserted.</p>
+<p>When called from a widget function as ‘bracketed-paste <code>name</code>‘, the
+pasted text is assigned to the variable <code>name</code> and no other processing
+is done.</p>
+<p>See also the zle_bracketed_paste parameter.</p>
+<p><span id="index-vi_002dcmd_002dmode"></span></p>
+<p>vi-cmd-mode (^X^V) (unbound) (^[)</p>
+<p>Enter command mode; that is, select the ‘vicmd’ keymap. Yes, this is
+bound by default in emacs mode.</p>
+<p><span id="index-vi_002dcaps_002dlock_002dpanic"></span></p>
+<p>vi-caps-lock-panic</p>
+<p>Hang until any lowercase key is pressed. This is for vi users without
+the mental capacity to keep track of their caps lock key (like the
+author).</p>
+<p><span id="index-clear_002dscreen"></span></p>
+<p>clear-screen (^L ESC-^L) (^L) (^L)</p>
+<p>Clear the screen and redraw the prompt.</p>
+<p><span id="index-deactivate_002dregion"></span></p>
+<p>deactivate-region</p>
+<p>Make the current region inactive. This disables vim-style visual
+selection mode if it is active.</p>
+<p><span id="index-describe_002dkey_002dbriefly"></span></p>
+<p>describe-key-briefly</p>
+<p>Reads a key sequence, then prints the function bound to that sequence.</p>
+<p><span id="index-exchange_002dpoint_002dand_002dmark"></span></p>
+<p>exchange-point-and-mark (^X^X) (unbound) (unbound)</p>
+<p>Exchange the cursor position (point) with the position of the mark.
+Unless a negative numeric argument is given, the region between point
+and mark is activated so that it can be highlighted. If a zero numeric
+argument is given, the region is activated but point and mark are not
+swapped.</p>
+<p><span id="index-execute_002dnamed_002dcmd"></span></p>
+<p>execute-named-cmd (ESC-x) (:) (unbound)</p>
+<p>Read the name of an editor command and execute it. Aliasing this widget
+with ‘zle -A’ or replacing it with ‘zle -N’ has no effect when
+interpreting key bindings, but ‘zle execute-named-cmd’ will invoke such
+an alias or replacement.</p>
+<p>A restricted set of editing functions is available in the mini-buffer.
+Keys are looked up in the special command keymap, and if not found there
+in the main keymap. An interrupt signal, as defined by the stty setting,
+will abort the function. Note that the following always perform the same
+task within the executed-named-cmd environment and cannot be replaced by
+user defined widgets, nor can the set of functions be extended. The
+allowed functions are: backward-delete-char, vi-backward-delete-char,
+clear-screen, redisplay, quoted-insert, vi-quoted-insert,
+backward-kill-word, vi-backward-kill-word, kill-whole-line,
+vi-kill-line, backward-kill-line, list-choices, delete-char-or-list,
+complete-word, accept-line, expand-or-complete and
+expand-or-complete-prefix.</p>
+<p>kill-region kills the last word, and vi-cmd-mode is treated the same as
+accept-line. The space and tab characters, if not bound to one of these
+functions, will complete the name and then list the possibilities if the
+AUTO_LIST option is set. Any other character that is not bound to
+self-insert or self-insert-unmeta will beep and be ignored. The bindings
+of the current insert mode will be used.</p>
+<p>Currently this command may not be redefined or called by name.</p>
+<p><span id="index-execute_002dlast_002dnamed_002dcmd"></span></p>
+<p>execute-last-named-cmd (ESC-z) (unbound) (unbound)</p>
+<p>Redo the last function executed with execute-named-cmd.</p>
+<p>Like execute-named-cmd, this command may not be redefined, but it may be
+called by name.</p>
+<p><span id="index-get_002dline"></span></p>
+<p>get-line (ESC-G ESC-g) (unbound) (unbound)</p>
+<p>Pop the top line off the buffer stack and insert it at the cursor
+position.</p>
+<p><span id="index-pound_002dinsert"></span></p>
+<p>pound-insert (unbound) (#) (unbound)</p>
+<p>If there is no # character at the beginning of the buffer, add one to
+the beginning of each line. If there is one, remove a # from each line
+that has one. In either case, accept the current line. The
+INTERACTIVE_COMMENTS option must be set for this to have any usefulness.</p>
+<p><span id="index-vi_002dpound_002dinsert"></span></p>
+<p>vi-pound-insert</p>
+<p>If there is no # character at the beginning of the current line, add
+one. If there is one, remove it. The INTERACTIVE_COMMENTS option must be
+set for this to have any usefulness.</p>
+<p><span id="index-push_002dinput"></span></p>
+<p>push-input</p>
+<p>Push the entire current multiline construct onto the buffer stack and
+return to the top-level (PS1) prompt. If the current parser construct is
+only a single line, this is exactly like push-line. Next time the editor
+starts up or is popped with get-line, the construct will be popped off
+the top of the buffer stack and loaded into the editing buffer.</p>
+<p><span id="index-push_002dline"></span></p>
+<p>push-line (^Q ESC-Q ESC-q) (unbound) (unbound)</p>
+<p>Push the current buffer onto the buffer stack and clear the buffer. Next
+time the editor starts up, the buffer will be popped off the top of the
+buffer stack and loaded into the editing buffer.</p>
+<p><span id="index-push_002dline_002dor_002dedit"></span></p>
+<p>push-line-or-edit</p>
+<p>At the top-level (PS1) prompt, equivalent to push-line. At a secondary
+(PS2) prompt, move the entire current multiline construct into the
+editor buffer. The latter is equivalent to push-input followed by
+get-line.</p>
+<p><span id="index-read_002dcommand"></span></p>
+<p>read-command</p>
+<p>Only useful from a user-defined widget. A keystroke is read just as in
+normal operation, but instead of the command being executed the name of
+the command that would be executed is stored in the shell parameter
+REPLY. This can be used as the argument of a future zle command. If the
+key sequence is not bound, status 1 is returned; typically, however,
+REPLY is set to undefined-key to indicate a useless key sequence.</p>
+<p><span id="index-recursive_002dedit"></span></p>
+<p>recursive-edit</p>
+<p>Only useful from a user-defined widget. At this point in the function,
+the editor regains control until one of the standard widgets which would
+normally cause zle to exit (typically an accept-line caused by hitting
+the return key) is executed. Instead, control returns to the
+user-defined widget. The status returned is non-zero if the return was
+caused by an error, but the function still continues executing and hence
+may tidy up. This makes it safe for the user-defined widget to alter the
+command line or key bindings temporarily.</p>
+<p>The following widget, caps-lock, serves as an example.</p>
+<div class="example">
+<pre><code class="language-zsh">self-insert-ucase() {
+  LBUFFER+=${(U)KEYS[-1]}
+}
+
+integer stat
+
+zle -N self-insert self-insert-ucase
+zle -A caps-lock save-caps-lock
+zle -A accept-line caps-lock
+
+zle recursive-edit
+stat=$?
+
+zle -A .self-insert self-insert
+zle -A save-caps-lock caps-lock
+zle -D save-caps-lock
+
+(( stat )) &amp;&amp; zle send-break
+
+return $stat
+</code></pre>
+</div>
+<p>This causes typed letters to be inserted capitalised until either
+accept-line (i.e. typically the return key) is typed or the caps-lock
+widget is invoked again; the later is handled by saving the old
+definition of caps-lock as save-caps-lock and then rebinding it to
+invoke accept-line. Note that an error from the recursive edit is
+detected as a non-zero return status and propagated by using the
+send-break widget.</p>
+<p><span id="index-redisplay"></span></p>
+<p>redisplay (unbound) (^R) (^R)</p>
+<p>Redisplays the edit buffer.</p>
+<p><span id="index-reset_002dprompt"></span></p>
+<p>reset-prompt (unbound) (unbound) (unbound)</p>
+<p>Force the prompts on both the left and right of the screen to be
+re-expanded, then redisplay the edit buffer. This reflects changes both
+to the prompt variables themselves and changes in the expansion of the
+values (for example, changes in time or directory, or changes to the
+value of variables referred to by the prompt).</p>
+<p>Otherwise, the prompt is only expanded each time zle starts, and when
+the display has been interrupted by output from another part of the
+shell (such as a job notification) which causes the command line to be
+reprinted.</p>
+<p>reset-prompt doesn’t alter the special parameter LASTWIDGET.</p>
+<p><span id="index-send_002dbreak"></span></p>
+<p>send-break (^G ESC-^G) (unbound) (unbound)</p>
+<p>Abort the current editor function, e.g. execute-named-command, or the
+editor itself, e.g. if you are in vared. Otherwise abort the parsing of
+the current line; in this case the aborted line is available in the
+shell variable ZLE_LINE_ABORTED. If the editor is aborted from within
+vared, the variable ZLE_VARED_ABORTED is set.</p>
+<p><span id="index-run_002dhelp"></span></p>
+<p>run-help (ESC-H ESC-h) (unbound) (unbound)</p>
+<p>Push the buffer onto the buffer stack, and execute the command ‘run-help
+<code>cmd</code>’, where <code>cmd</code> is the current command. run-help is normally aliased
+to man.</p>
+<p><span id="index-vi_002dset_002dbuffer"></span></p>
+<p>vi-set-buffer (unbound) (") (unbound)</p>
+<p>Specify a buffer to be used in the following command. There are 37
+buffers that can be specified: the 26 ‘named’ buffers "a to "z, the
+‘yank’ buffer "0, the nine ‘queued’ buffers "1 to "9 and the ‘black
+hole’ buffer "_. The named buffers can also be specified as "A to "Z.</p>
+<p>When a buffer is specified for a cut, change or yank command, the text
+concerned replaces the previous contents of the specified buffer. If a
+named buffer is specified using a capital, the newly cut text is
+appended to the buffer instead of overwriting it. When using the "_
+buffer, nothing happens. This can be useful for deleting text without
+affecting any buffers.</p>
+<p>If no buffer is specified for a cut or change command, "1 is used, and
+the contents of "1 to "8 are each shifted along one buffer; the contents
+of "9 is lost. If no buffer is specified for a yank command, "0 is used.
+Finally, a paste command without a specified buffer will paste the text
+from the most recent command regardless of any buffer that might have
+been used with that command.</p>
+<p>When called from a widget function by the zle command, the buffer can
+optionally be specified with an argument. For example,</p>
+<div class="example">
+<pre><code class="language-zsh">zle vi-set-buffer A
+</code></pre>
+</div>
+<p><span id="index-vi_002dset_002dmark"></span></p>
+<p>vi-set-mark (unbound) (m) (unbound)</p>
+<p>Set the specified mark at the cursor position.</p>
+<p><span id="index-set_002dmark_002dcommand"></span></p>
+<p>set-mark-command (^@) (unbound) (unbound)</p>
+<p>Set the mark at the cursor position. If called with a negative numeric
+argument, do not set the mark but deactivate the region so that it is no
+longer highlighted (it is still usable for other purposes). Otherwise
+the region is marked as active.</p>
+<p><span id="index-spell_002dword"></span></p>
+<p>spell-word (ESC-$ ESC-S ESC-s) (unbound) (unbound)</p>
+<p>Attempt spelling correction on the current word.</p>
+<p><span id="index-split_002dundo"></span></p>
+<p>split-undo</p>
+<p>Breaks the undo sequence at the current change. This is useful in vi
+mode as changes made in insert mode are coalesced on entering command
+mode. Similarly, undo will normally revert as one all the changes made
+by a user-defined widget.</p>
+<p><span id="index-undefined_002dkey"></span></p>
+<p>undefined-key</p>
+<p>This command is executed when a key sequence that is not bound to any
+command is typed. By default it beeps.</p>
+<p><span id="index-undo"></span></p>
+<p>undo (^_ ^Xu ^X^U) (u) (unbound)</p>
+<p>Incrementally undo the last text modification. When called from a
+user-defined widget, takes an optional argument indicating a previous
+state of the undo history as returned by the UNDO_CHANGE_NO variable;
+modifications are undone until that state is reached, subject to any
+limit imposed by the UNDO_LIMIT_NO variable.</p>
+<p>Note that when invoked from vi command mode, the full prior change made
+in insert mode is reverted, the changes having been merged when command
+mode was selected.</p>
+<p><span id="index-redo"></span></p>
+<p>redo (unbound) (^R) (unbound)</p>
+<p>Incrementally redo undone text modifications.</p>
+<p><span id="index-vi_002dundo_002dchange"></span></p>
+<p>vi-undo-change (unbound) (unbound) (unbound)</p>
+<p>Undo the last text modification. If repeated, redo the modification.</p>
+<p><span id="index-visual_002dmode"></span></p>
+<p>visual-mode (unbound) (v) (unbound)</p>
+<p>Toggle vim-style visual selection mode. If line-wise visual mode is
+currently enabled then it is changed to being character-wise. If used
+following an operator, it forces the subsequent movement command to be
+treated as a character-wise movement.</p>
+<p><span id="index-visual_002dline_002dmode"></span></p>
+<p>visual-line-mode (unbound) (V) (unbound)</p>
+<p>Toggle vim-style line-wise visual selection mode. If character-wise
+visual mode is currently enabled then it is changed to being line-wise.
+If used following an operator, it forces the subsequent movement command
+to be treated as a line-wise movement.</p>
+<p><span id="index-what_002dcursor_002dposition"></span></p>
+<p>what-cursor-position (^X=) (ga) (unbound)</p>
+<p>Print the character under the cursor, its code as an octal, decimal and
+hexadecimal number, the current cursor position within the buffer and
+the column of the cursor in the current line.</p>
+<p><span id="index-where_002dis"></span></p>
+<p>where-is</p>
+<p>Read the name of an editor command and print the listing of key
+sequences that invoke the specified command. A restricted set of editing
+functions is available in the mini-buffer. Keys are looked up in the
+special command keymap, and if not found there in the main keymap.</p>
+<p><span id="index-which_002dcommand"></span></p>
+<p>which-command (ESC-?) (unbound) (unbound)</p>
+<p>Push the buffer onto the buffer stack, and execute the command
+‘which-command <code>cmd</code>’. where <code>cmd</code> is the current command. which-command
+is normally aliased to whence.</p>
+<p><span
+id="index-vi_002ddigit_002dor_002dbeginning_002dof_002dline"></span></p>
+<p>vi-digit-or-beginning-of-line (unbound) (0) (unbound)</p>
+<p>If the last command executed was a digit as part of an argument,
+continue the argument. Otherwise, execute vi-beginning-of-line.</p>
+<hr />
+<p><span id="Text-Objects"></span> <span id="Text-Objects-1"></span></p>
+<h3 id="1867-text-objects"><a class="header" href="#1867-text-objects">18.6.7 Text Objects</a></h3>
+<p><span id="index-text-objects"></span></p>
+<p>Text objects are commands that can be used to select a block of text
+according to some criteria. They are a feature of the vim text editor
+and so are primarily intended for use with vi operators or from visual
+selection mode. However, they can also be used from vi-insert or emacs
+mode. Key bindings listed below apply to the viopp and visual keymaps.</p>
+<p><span id="index-select_002da_002dblank_002dword"></span></p>
+<p>select-a-blank-word (aW)</p>
+<p>Select a word including adjacent blanks, where a word is defined as a
+series of non-blank characters. With a numeric argument, multiple words
+will be selected.</p>
+<p><span id="index-select_002da_002dshell_002dword"></span></p>
+<p>select-a-shell-word (aa)</p>
+<p>Select the current command argument applying the normal rules for
+quoting.</p>
+<p><span id="index-select_002da_002dword"></span></p>
+<p>select-a-word (aw)</p>
+<p>Select a word including adjacent blanks, using the normal vi-style word
+definition. With a numeric argument, multiple words will be selected.</p>
+<p><span id="index-select_002din_002dblank_002dword"></span></p>
+<p>select-in-blank-word (iW)</p>
+<p>Select a word, where a word is defined as a series of non-blank
+characters. With a numeric argument, multiple words will be selected.</p>
+<p><span id="index-select_002din_002dshell_002dword"></span></p>
+<p>select-in-shell-word (ia)</p>
+<p>Select the current command argument applying the normal rules for
+quoting. If the argument begins and ends with matching quote characters,
+these are not included in the selection.</p>
+<p><span id="index-select_002din_002dword"></span></p>
+<p>select-in-word (iw)</p>
+<p>Select a word, using the normal vi-style word definition. With a numeric
+argument, multiple words will be selected.</p>
+<hr />
+<p><span id="Character-Highlighting"></span> <span
+id="Character-Highlighting-1"></span></p>
+<h2 id="187-character-highlighting"><a class="header" href="#187-character-highlighting">18.7 Character Highlighting</a></h2>
+<p><span id="index-zle_005fhighlight_002c-setting"></span></p>
+<p>The line editor has the ability to highlight characters or regions of
+the line that have a particular significance. This is controlled by the
+array parameter zle_highlight, if it has been set by the user.</p>
+<p>If the parameter contains the single entry none all highlighting is
+turned off. Note the parameter is still expected to be an array.</p>
+<p>Otherwise each entry of the array should consist of a word indicating a
+context for highlighting, then a colon, then a comma-separated list of
+the types of highlighting to apply in that context.</p>
+<p>The contexts available for highlighting are the following:</p>
+<p><span id="index-region_002c-highlighting"></span> <span
+id="index-highlighting_002c-region"></span></p>
+<p>default</p>
+<p>Any text within the command line not affected by any other highlighting.</p>
+<p>isearch</p>
+<p>When one of the incremental history search widgets is active, the area
+of the command line matched by the search string or pattern.</p>
+<p>region</p>
+<p>The currently selected text. In emacs terminology, this is referred to
+as the region and is bounded by the cursor (point) and the mark. The
+region is only highlighted if it is active, which is the case after the
+mark is modified with set-mark-command or exchange-point-and-mark. Note
+that whether or not the region is active has no effect on its use within
+emacs style widgets, it simply determines whether it is highlighted. In
+vi mode, the region corresponds to selected text in visual mode.</p>
+<p><span id="index-special-characters_002c-highlighting"></span> <span
+id="index-highlighting_002c-special-characters"></span></p>
+<p>special</p>
+<p>representation but are shown in a special manner by the line editor.
+These characters are described below.</p>
+<p><span id="index-completion-removable-suffix_002c-highlighting"></span>
+<span
+id="index-suffix_002c-highlighting-removable_002c-in-completion"></span>
+<span
+id="index-removable-suffix_002c-highlighting-in-completion"></span></p>
+<p>suffix</p>
+<p>This context is used in completion for characters that are marked as
+suffixes that will be removed if the completion ends at that point, the
+most obvious example being a slash (/) after a directory name. Note that
+suffix removal is configurable; the circumstances under which the suffix
+will be removed may differ for different completions.</p>
+<p>paste</p>
+<p>Following a command to paste text, the characters that were inserted.</p>
+<p>When region_highlight is set, the contexts that describe a region —
+isearch, region, suffix, and paste — are applied first, then
+region_highlight is applied, then the remaining zle_highlight contexts
+are applied. If a particular character is affected by multiple
+specifications, the last specification wins.</p>
+<p>zle_highlight may contain additional fields for controlling how terminal
+sequences to change colours are output. Each of the following is
+followed by a colon and a string in the same form as for key bindings.
+This will not be necessary for the vast majority of terminals as the
+defaults shown in parentheses are widely used.</p>
+<p><span
+id="index-escape-sequences_002c-terminal_002c-for-highlighting"></span>
+<span id="index-terminal-escape-sequences-for-highlighting"></span></p>
+<p>fg_start_code (\e[3)</p>
+<p>The start of the escape sequence for the foreground colour. This is
+followed by one to three ASCII digits representing the colour. Only used
+for palette colors, i.e. not 24-bit colors specified via a color
+triplet.</p>
+<p>fg_default_code (9)</p>
+<p>The number to use instead of the colour to reset the default foreground
+colour.</p>
+<p>fg_end_code (m)</p>
+<p>The end of the escape sequence for the foreground colour.</p>
+<p>bg_start_code (\e[4)</p>
+<p>The start of the escape sequence for the background colour. See
+fg_start_code above.</p>
+<p>bg_default_code (9)</p>
+<p>The number to use instead of the colour to reset the default background
+colour.</p>
+<p>bg_end_code (m)</p>
+<p>The end of the escape sequence for the background colour.</p>
+<p>The available types of highlighting are the following. Note that not all
+types of highlighting are available on all terminals:</p>
+<p>none<br />
+No highlighting is applied to the given context. It is not useful for
+this to appear with other types of highlighting; it is used to override
+a default.</p>
+<p>fg=<code>colour</code><br />
+The foreground colour should be set to <code>colour</code>, a decimal integer, the
+name of one of the eight most widely-supported colours or as a ‘#’
+followed by an RGB triplet in hexadecimal format.</p>
+<p>Not all terminals support this and, of those that do, not all provide
+facilities to test the support, hence the user should decide based on
+the terminal type. Most terminals support the colours black, red, green,
+yellow, blue, magenta, cyan and white, which can be set by name. In
+addition. default may be used to set the terminal’s default foreground
+colour. Abbreviations are allowed; b or bl selects black. Some terminals
+may generate additional colours if the bold attribute is also present.</p>
+<p>On recent terminals and on systems with an up-to-date terminal database
+the number of colours supported may be tested by the command ‘echotc
+Co’; if this succeeds, it indicates a limit on the number of colours
+which will be enforced by the line editor. The number of colours is in
+any case limited to 256 (i.e. the range 0 to 255).</p>
+<p>Some modern terminal emulators have support for 24-bit true colour (16
+million colours). In this case, the hex triplet format can be used. This
+consists of a ‘#’ followed by either a three or six digit hexadecimal
+number describing the red, green and blue components of the colour. Hex
+triplets can also be used with 88 and 256 colour terminals via the
+zsh/nearcolor module (see <a href="Zsh-Modules.html#The-zsh_002fnearcolor-Module">The zsh/nearcolor
+Module</a>).</p>
+<p>Colour is also known as color.</p>
+<p>bg=<code>colour</code><br />
+The background colour should be set to <code>colour</code>. This works similarly to
+the foreground colour, except the background is not usually affected by
+the bold attribute.</p>
+<p>bold<br />
+The characters in the given context are shown in a bold font. Not all
+terminals distinguish bold fonts.</p>
+<p>standout<br />
+The characters in the given context are shown in the terminal’s standout
+mode. The actual effect is specific to the terminal; on many terminals
+it is inverse video. On some such terminals, where the cursor does not
+blink it appears with standout mode negated, making it less than clear
+where the cursor actually is. On such terminals one of the other effects
+may be preferable for highlighting the region and matched search string.</p>
+<p>underline<br />
+The characters in the given context are shown underlined. Some terminals
+show the foreground in a different colour instead; in this case
+whitespace will not be highlighted.</p>
+<p>The characters described above as ‘special’ are as follows. The
+formatting described here is used irrespective of whether the characters
+are highlighted:</p>
+<p>ASCII control characters<br />
+Control characters in the ASCII range are shown as ‘^’ followed by the
+base character.</p>
+<p>This item applies to control characters not in the ASCII range, plus
+other characters as follows. If the MULTIBYTE option is in effect,
+multibyte characters not in the ASCII character set that are reported as
+having zero width are treated as combining characters when the option
+COMBINING_CHARS is on. If the option is off, or if a character appears
+where a combining character is not valid, the character</p>
+<p>angle brackets. The number is the code point of the character in the
+wide character set; this may or may not be Unicode, depending on the
+operating system.</p>
+<p>Invalid multibyte characters<br />
+If the MULTIBYTE option is in effect, any sequence of one or more bytes
+that does not form a valid character in the current character set is
+treated as a series of bytes each shown as a special character. as the
+bytes are represented as two hexadecimal digits between angle brackets,
+as distinct from the four or eight digits that are used for character
+set.</p>
+<p>Not all systems support this: for it to work, the system’s
+representation of wide characters must be code values from the Universal
+Character Set, as defined by IS0 10646 (also known as Unicode).</p>
+<p>Wrapped double-width characters<br />
+When a double-width character appears in the final column of a line, it
+is instead shown on the next line. The empty space left in the original
+position is highlighted as a special character.</p>
+<p>If zle_highlight is not set or no value applies to a particular context,
+the defaults applied are equivalent to</p>
+<div class="example">
+<pre><code class="language-zsh">zle_highlight=(region:standout special:standout
+suffix:bold isearch:underline paste:standout)
+</code></pre>
+</div>
+<p>i.e. both the region and special characters are shown in standout mode.</p>
+<p>Within widgets, arbitrary regions may be highlighted by setting the
+special array parameter region_highlight; see <a href="#Zle-Widgets">Zle
+Widgets</a>.</p>
+<hr />
+<p>This document was generated on <em>May 14, 2022</em> using <a href="http://www.nongnu.org/texi2html/"><em>texi2html
+5.0</em></a>.<br />
+Zsh version 5.9, released on May 14, 2022.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Shell-Builtin-Commands.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="Completion-Widgets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Shell-Builtin-Commands.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="Completion-Widgets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
